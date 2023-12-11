@@ -52,8 +52,21 @@ def export_csv(request):
 
 def import_csv(request):
     
+    """with open('census.csv', 'r') as csv_file:
+        import tablib
+
+        census_resource = resources.modelresource_factory(model=Census)()
+        dataset = tablib.Dataset(headers=[field.name for field in Census._meta.fields]).load(csv_file.read())
+        result = census_resource.import_data(dataset, dry_run=True)
+
+        if not result.has_errors():
+            census_resource.import_data(dataset, dry_run=False)
+        
+        return HttpResponse('Census imported')"""
+       
+
     censo= []
-    with open('census.csv', 'r') as csvfile:
+    with open('census.xlsx', 'r') as csvfile:
         reader = list(csv.reader(csvfile, delimiter=','))
         for row in reader[1:]:
             censo.append(
@@ -67,19 +80,7 @@ def import_csv(request):
 
     return HttpResponse('Census imported')
 
-    """
-    with open('census.csv', 'r') as csv_file:
-        import tablib
-
-        census_resource = resources.modelresource_factory(model=Census)()
-        dataset = tablib.Dataset(headers=[field.name for field in Census._meta.fields]).load(csv_file.read())
-        result = census_resource.import_data(dataset, dry_run=True)
-
-        if not result.has_errors():
-            census_resource.import_data(dataset, dry_run=False)
-        
-        return HttpResponse('Census imported')
-    """   
+    
 
 
 class CensusCreate(generics.ListCreateAPIView):
