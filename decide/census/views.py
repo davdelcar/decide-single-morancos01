@@ -12,6 +12,74 @@ from rest_framework.status import (
 
 from base.perms import UserIsStaff
 from .models import Census
+import csv
+from django.http import HttpResponse
+
+from import_export import resources
+
+def export_csv(request):
+
+    """queryset = Census.objects.all()
+
+    options = Census._meta
+
+    print(options.fields)
+
+    fields = [field.name for field in options.fields]
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="census.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow([options.get_field(field).verbose_name for field in fields])
+
+    for obj in queryset:
+        writer.writerow([getattr(obj, field) for field in fields])  
+
+    redirect('/census')
+
+    return response"""
+
+    census_resource = resources.modelresource_factory(model=Census)()
+
+    dataset = census_resource.export()
+
+    response= HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="census.csv"'
+
+    return response
+
+def import_csv(request):
+    
+    censo= []
+    with open('census.csv', 'r') as csvfile:
+        reader = list(csv.reader(csvfile, delimiter=','))
+        for row in reader[1:]:
+            censo.append(
+                Census(
+                    voting_id=row[1],
+                    voter_id=row[2]
+                )
+            )
+    if len(censo) > 0:
+        Census.objects.bulk_create(censo)
+
+    return HttpResponse('Census imported')
+
+    """
+    with open('census.csv', 'r') as csv_file:
+        import tablib
+
+        census_resource = resources.modelresource_factory(model=Census)()
+        dataset = tablib.Dataset(headers=[field.name for field in Census._meta.fields]).load(csv_file.read())
+        result = census_resource.import_data(dataset, dry_run=True)
+
+        if not result.has_errors():
+            census_resource.import_data(dataset, dry_run=False)
+        
+        return HttpResponse('Census imported')
+    """   
 
 
 class CensusCreate(generics.ListCreateAPIView):
