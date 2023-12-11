@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import JSONField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.forms import ValidationError
 
 from base import mods
 from base.models import Auth, Key
@@ -10,8 +11,22 @@ from base.models import Auth, Key
 class Question(models.Model):
     desc = models.TextField()
 
+    voting_types = [
+        ('OQ', 'Optional Question'),
+        ('YN', 'Yes/No Question'),
+    ]
+
+    types = models.CharField(max_length=2,
+        choices=voting_types,
+        default='YN',)
+
     def __str__(self):
         return self.desc
+    
+    def save(self, *args, **kwargs):
+        if self.voting_types == 'YN':
+            self.options = ['Yes', 'No']
+        super().save(*args, **kwargs)
 
 
 class QuestionOption(models.Model):
@@ -19,7 +34,16 @@ class QuestionOption(models.Model):
     number = models.PositiveIntegerField(blank=True, null=True)
     option = models.TextField()
 
+    def clean(self) -> None:
+        if self.question.types == 'YN':
+            if self.option not in ['Yes', 'No']:
+                raise ValidationError("This is a Yes/No question, option must be 'Yes' or 'No'.")
+            if QuestionOption.objects.filter(question=self.question, option=self.option).exists():
+                raise ValidationError("This option already exists for this question.")
+            
     def save(self):
+        if QuestionOption.objects.filter(question=self.question, option=self.option).exists():
+                raise ValidationError("This option already exists for this question.")
         if not self.number:
             self.number = self.question.options.count() + 2
         return super().save()
