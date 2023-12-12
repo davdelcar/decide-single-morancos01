@@ -17,14 +17,14 @@ from django.http import HttpResponse
 
 from import_export import resources
 
-def export_xlsx(request):
+def export_csv(request):
 
     census_resource = resources.modelresource_factory(model=Census)()
 
     dataset = census_resource.export()
 
-    response= HttpResponse(dataset.xlsx, content_type='text/xlsx')
-    response['Content-Disposition'] = 'attachment; filename="census.xlsx"'
+    response= HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="census.csv"'
 
     return response
 

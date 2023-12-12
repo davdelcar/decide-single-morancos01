@@ -234,3 +234,18 @@ class CensusImportViewTest(BaseTestCase):
             "Importación finalizada",
         ]
         self.assertEqual([str(msg) for msg in messages], expected_messages)
+
+class ExportCsvTestCase(TestCase):
+    def setUp(self):
+        Census.objects.create(id=1, voting_id=2, voter_id=2)
+        Census.objects.create(id=2, voting_id=2, voter_id=1)
+
+    def test_export_csv(self):
+        response = self.client.get(reverse('export'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/csv')
+        self.assertEqual(response['Content-Disposition'], 'attachment; filename="census.csv"')
+
+        expected_data = b'id,voting_id,voter_id\r\n1,2,2\r\n2,2,1\r\n'
+        self.assertEqual(response.content, expected_data)
