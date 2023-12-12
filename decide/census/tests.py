@@ -16,6 +16,18 @@ from base.tests import BaseTestCase
 from datetime import datetime
 
 
+from base.tests import BaseTestCase
+from datetime import datetime
+
+from voting.models import Voting, Question, QuestionOption
+from base.models import Auth
+from django.conf import settings
+from openpyxl import Workbook
+from django.core.files.uploadedfile import SimpleUploadedFile
+from io import BytesIO
+from django.urls import reverse
+
+
 class CensusTestCase(BaseTestCase):
 
     def setUp(self):
@@ -164,3 +176,61 @@ class CensusTest(StaticLiveServerTestCase):
 
         self.assertTrue(self.cleaner.find_element_by_xpath('/html/body/div/div[3]/div/div[1]/div/form/div/p').text == 'Please correct the errors below.')
         self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/census/census/add")
+
+class CensusImportViewTest(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+
+    def create_voting(self):
+        q = Question(desc="test_question")
+        q.save()
+
+        options = [
+            QuestionOption(question=q, option=f"option {i + 1}") for i in range(3)
+        ]
+        QuestionOption.objects.bulk_create(options)
+
+        v = Voting(name="test_voting", question=q)
+        v.save()
+
+        auth, _ = Auth.objects.get_or_create(
+            url=settings.BASEURL, defaults={"me": True, "name": "test_auth"}
+        )
+        v.auths.add(auth)
+
+        return v
+
+    def test_census_import_view(self):
+        self.create_voting()
+
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.append(["Voting ID", "Voter ID"])
+        sheet.append([1, 1])
+        sheet.append([1, 2])
+        sheet.append([1, 1])
+        file_buffer = BytesIO()
+        workbook.save(file_buffer)
+        file_buffer.seek(0)
+
+        excel_file = SimpleUploadedFile("census.xlsx", file_buffer.read())
+
+        url = reverse("import")
+
+        response = self.client.post(url, {"census_file": excel_file}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+
+        census_data = Census.objects.all()
+        self.assertEqual(census_data.count(), 2)
+        self.assertEqual(census_data[0].voting_id, 1)
+        self.assertEqual(census_data[0].voter_id, 1)
+        self.assertEqual(census_data[1].voting_id, 1)
+        self.assertEqual(census_data[1].voter_id, 2)
+
+        messages = list(response.context["messages"])
+        expected_messages = [
+            "Ya existe un registro para la pareja de voting_id=1 y voter_id=1",
+            "Importación finalizada",
+        ]
+        self.assertEqual([str(msg) for msg in messages], expected_messages)
