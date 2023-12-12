@@ -28,6 +28,13 @@ def export_xlsx(request):
 
     return response
 
+from django.contrib import messages
+import openpyxl
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Font, Alignment
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.views.generic.base import TemplateView
 
 class CensusCreate(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
@@ -64,3 +71,35 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
+
+
+class CensusImportView(TemplateView):
+    template_name = "census/import.html"
+
+    def post(self, request, *args, **kwargs):
+        if request.method == "POST" and request.FILES["census_file"]:
+            census_file = request.FILES["census_file"]
+            workbook = openpyxl.load_workbook(census_file)
+            sheet = workbook.active
+
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                voting_id = row[0]
+                voter_id = row[1]
+
+                # Comprobar si ya existe un objeto con la misma pareja de voting_id y voter_id
+                existing_census = Census.objects.filter(
+                    voting_id=voting_id, voter_id=voter_id
+                ).first()
+
+                if not existing_census:
+                    # Si no existe, crear uno nuevo
+                    Census.objects.create(voting_id=voting_id, voter_id=voter_id)
+                else:
+                    # Si ya existe, puedes manejar esto según tus requisitos, por ejemplo, mostrar un mensaje de error
+                    messages.error(
+                        request,
+                        f"Ya existe un registro para la pareja de voting_id={voting_id} y voter_id={voter_id}",
+                    )
+
+            messages.success(request, "Importación finalizada")
+            return HttpResponseRedirect("/census/import/")
