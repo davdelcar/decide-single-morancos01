@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+  <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+{% endblock %}
+
+{% block content %}
+    <div class="voting container" style="text-align: center;">
+      <div class="row">
+        <div class="col-sm" style="text-align: left;">
+          <h1>Censos</h1>
+          <br><p>En esta sección se pueden ver todos los censos creados.</p>
+        </div>
+        <div class="col-sm">
+          <button class="btn btn-primary btn-sm" onclick="window.location.href='/admin/census/census/add'">Crear Censo</button> ---
+          <button class="btn btn-primary btn-sm" onclick="window.location.href='/census/import'">Importar Censo</button> ---
+          <button class="btn btn-primary btn-sm" onclick="window.location.href='/census/export'">Exportar Censo</button>
+        </div>
+        <hr>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Voting_ID</th>
+              <th>Voter_ID</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for censu in census %}
+              <tr>
+                <td>{{ censu.id }}</td>
+                <td>{{ censu.voting_id }}</td>
+                <td>{{ censu.voter_id }}</td>
+                <td>
+                  <button class="btn btn-primary btn-sm" onclick="window.location.href='/admin/census/census/{{ censu.id }}'">Ver</button>
+                  <button class="btn btn-primary btn-sm" onclick="window.location.href='/admin/census/census/{{ censu.id }}/delete'">Borrar</button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+       
+
+    </div>
+{% endblock %}
