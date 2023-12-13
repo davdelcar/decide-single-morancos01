@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{% load i18n static %}
-
+{% load static %}
+{% load i18n %}
 {% block extrahead %}
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
 {% endblock %}
+
 
 {% block content %}
     <div id="app-visualizer">
@@ -20,17 +21,17 @@
         <div class="voting container">
             <h1>[[ voting.id ]] - [[ voting.name ]]</h1>
 
-            <h2 v-if="!voting.start_date">Votación no comenzada</h2>
-            <h2 v-else-if="!voting.end_date">Votación en curso</h2>
+            <h2 v-if="!voting.start_date">{% trans 'Votación no comenzada' %}</h2>
+            <h2 v-else-if="!voting.end_date">{% trans 'Votación en curso' %}</h2>
             <div v-else>
-                <h2 class="heading">Resultados:</h2>
+                <h2 class="heading">{% trans 'Resultados' %}:</h2>
 
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Opción</th>
-                            <th>Puntuación</th>
-                            <th>Votos</th>
+                            <th>{% trans 'Opción' %}</th>
+                            <th>{% trans 'Puntuación' %}</th>
+                            <th>{% trans 'Votos' %}</th>
                         </tr>
                     </thead>
                     <tbody>

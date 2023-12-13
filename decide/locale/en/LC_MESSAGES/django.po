@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-13 17:19+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: base/templates/change_language.html:2
+
+#: base/templates/change_language.html:2
+msgid "Change language"
+msgstr "Change language"
+
+#: booth/templates/booth/booth.html:25
+msgid "Logout"
+msgstr "Logout"
+
+#: booth/templates/booth/booth.html:30 booth/templates/booth/booth.html:85
+#: booth/templates/booth/booth.html:111
+msgid "Login"
+msgstr "Login"
+
+#: booth/templates/booth/booth.html:76
+msgid "¡Debe iniciar sesión para poder acceder a la votación!"
+msgstr "You must log in to access voting!"
+
+#: booth/templates/booth/booth.html:92
+msgid "Username"
+msgstr "Username"
+
+#: booth/templates/booth/booth.html:102
+msgid "Password"
+msgstr "Password"
+
+#: booth/templates/booth/booth.html:133
+msgid "Vote"
+msgstr "Vote"
+
+#: booth/templates/booth/booth.html:236 booth/templates/booth/booth.html:247
+#: booth/templates/booth/booth.html:283
+msgid "Error: "
+msgstr "Error: "
+
+#: booth/templates/booth/booth.html:279
+msgid "Congratulations. Your vote has been sent"
+msgstr "Congratulations. Your vote has been sent"
+
+#: decide/settings.py:149
+msgid "English"
+msgstr "English"
+
+#: decide/settings.py:150
+msgid "Spanish"
+msgstr "Spanish"
+
+#: visualizer/templates/visualizer/visualizer.html:24
+msgid "Votación no comenzada"
+msgstr "Voting not started"
+
+#: visualizer/templates/visualizer/visualizer.html:25
+msgid "Votación en curso"
+msgstr "Voting in progress"
+
+#: visualizer/templates/visualizer/visualizer.html:27
+msgid "Resultados"
+msgstr "Results"
+
+#: visualizer/templates/visualizer/visualizer.html:32
+msgid "Opción"
+msgstr "Option"
+
+#: visualizer/templates/visualizer/visualizer.html:33
+msgid "Puntuación"
+msgstr "Score"
+
+#: visualizer/templates/visualizer/visualizer.html:34
+msgid "Votos"
+msgstr "Votes"
