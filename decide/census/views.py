@@ -12,6 +12,21 @@ from rest_framework.status import (
 
 from base.perms import UserIsStaff
 from .models import Census
+import csv
+from django.http import HttpResponse
+
+from import_export import resources
+
+def export_csv(request):
+
+    census_resource = resources.modelresource_factory(model=Census)()
+
+    dataset = census_resource.export()
+
+    response= HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="census.csv"'
+
+    return response
 
 from django.contrib import messages
 import openpyxl
