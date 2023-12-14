@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-13 17:10+0100\n"
+"POT-Creation-Date: 2023-12-14 16:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,72 +18,104 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: base/templates/change_language.html:2
-msgid "Change language"
-msgstr "Cambiar idioma"
-
-#: booth/templates/booth/booth.html:25
-msgid "Logout"
-msgstr "Logout"
-
-#: booth/templates/booth/booth.html:30 booth/templates/booth/booth.html:85
-#: booth/templates/booth/booth.html:111
+#: decide/authentication/templates/login.html:5
+#: decide/booth/templates/booth/booth.html:30
+#: decide/booth/templates/booth/booth.html:85
+#: decide/booth/templates/booth/booth.html:111
 msgid "Login"
 msgstr "Iniciar sesión"
 
-#: booth/templates/booth/booth.html:76
-msgid "¡Debe iniciar sesión para poder acceder a la votación!"
-msgstr "¡Debe iniciar sesión para acceder a la votación!"
+#: decide/authentication/templates/login.html:18
+#: decide/authentication/templates/welcome.html:41
+msgid "Bienvenido a Decide!"
+msgstr "Bienvenido a Decide!"
 
-#: booth/templates/booth/booth.html:92
+#: decide/authentication/templates/login.html:29
+msgid "Usuario"
+msgstr "Usuario"
+
+#: decide/authentication/templates/login.html:33
+msgid "Contraseña"
+msgstr "Contraseña"
+
+#: decide/authentication/templates/login.html:38
+msgid "Recuérdame"
+msgstr "Recuérdame"
+
+#: decide/authentication/templates/login.html:41
+msgid "Iniciar Sesión"
+msgstr "Iniciar Sesión"
+
+#: decide/authentication/templates/welcome.html:42
+msgid "¡Gracias por unirte a nuestra plataforma de votación electrónica!"
+msgstr "¡Gracias por unirte a nuestra plataforma de votación electrónica!"
+
+#: decide/authentication/templates/welcome.html:44
+msgid "Ir a Iniciar Sesión"
+msgstr "Ir a Iniciar Sesión"
+
+#: decide/base/templates/change_language.html:2
+msgid "Change language"
+msgstr "Cambiar idioma"
+
+#: decide/booth/templates/booth/booth.html:25
+msgid "Logout"
+msgstr "Logout"
+
+#: decide/booth/templates/booth/booth.html:76
+msgid "¡Debe iniciar sesión para poder acceder a la votación!"
+msgstr "¡Debe iniciar sesión para poder acceder a la votación!"
+
+#: decide/booth/templates/booth/booth.html:92
 msgid "Username"
 msgstr "Usuario"
 
-#: booth/templates/booth/booth.html:102
+#: decide/booth/templates/booth/booth.html:102
 msgid "Password"
 msgstr "Contraseña"
 
-#: booth/templates/booth/booth.html:133
+#: decide/booth/templates/booth/booth.html:133
 msgid "Vote"
 msgstr "Votar"
 
-#: booth/templates/booth/booth.html:236 booth/templates/booth/booth.html:247
-#: booth/templates/booth/booth.html:283
+#: decide/booth/templates/booth/booth.html:236
+#: decide/booth/templates/booth/booth.html:247
+#: decide/booth/templates/booth/booth.html:283
 msgid "Error: "
 msgstr "Error: "
 
-#: booth/templates/booth/booth.html:279
+#: decide/booth/templates/booth/booth.html:279
 msgid "Congratulations. Your vote has been sent"
 msgstr "Felicidades. Tu voto ha sido enviado."
 
-#: decide/settings.py:149
+#: decide/decide/settings.py:150
 msgid "English"
 msgstr "Inglés"
 
-#: decide/settings.py:150
+#: decide/decide/settings.py:151
 msgid "Spanish"
 msgstr "Español"
 
-#: visualizer/templates/visualizer/visualizer.html:24
+#: decide/visualizer/templates/visualizer/visualizer.html:25
 msgid "Votación no comenzada"
 msgstr "Votación no comenzada"
 
-#: visualizer/templates/visualizer/visualizer.html:25
+#: decide/visualizer/templates/visualizer/visualizer.html:26
 msgid "Votación en curso"
 msgstr "Votación en curso"
 
-#: visualizer/templates/visualizer/visualizer.html:27
+#: decide/visualizer/templates/visualizer/visualizer.html:28
 msgid "Resultados"
 msgstr "Resultados"
 
-#: visualizer/templates/visualizer/visualizer.html:32
+#: decide/visualizer/templates/visualizer/visualizer.html:33
 msgid "Opción"
 msgstr "Opción"
 
-#: visualizer/templates/visualizer/visualizer.html:33
+#: decide/visualizer/templates/visualizer/visualizer.html:34
 msgid "Puntuación"
 msgstr "Puntuación"
 
-#: visualizer/templates/visualizer/visualizer.html:34
+#: decide/visualizer/templates/visualizer/visualizer.html:35
 msgid "Votos"
 msgstr "Votos"
