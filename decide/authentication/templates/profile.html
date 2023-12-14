@@ -25,17 +25,29 @@
         strong {
             font-weight: bold;
         }
+        /* Estilo adicional para el botón */
+        .login-button {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body class="container">
-    <h1 class="mt-5 mb-4">User Profile</h1>
-    <ul class="list-unstyled">
-        <li><strong>Username:</strong> {{ user.username }}</li>
-        <li><strong>First Name:</strong> {{ user.first_name }}</li>
-        <li><strong>Last Name:</strong> {{ user.last_name }}</li>
-        <li><strong>Email:</strong> {{ user.email }}</li>
-        <!-- Agrega aquí otros campos del modelo de usuario según tus necesidades -->
-    </ul>
+    {% if user.is_authenticated %}
+        <h1 class="mt-5 mb-4">User Profile</h1>
+        <ul class="list-unstyled">
+            <li><strong>Username:</strong> {{ user.username }}</li>
+            <li><strong>First Name:</strong> {{ user.first_name }}</li>
+            <li><strong>Last Name:</strong> {{ user.last_name }}</li>
+            <li><strong>Email:</strong> {{ user.email }}</li>
+            <!-- Agrega aquí otros campos del modelo de usuario según tus necesidades -->
+        </ul>
+    {% else %}
+        <div class="alert alert-warning mt-5" role="alert">
+            Inicia sesión para acceder a tu perfil de usuario.
+        </div>
+        <!-- Botón de inicio de sesión -->
+        <a href="{% url 'login' %}" class="btn btn-primary login-button mt-3">Iniciar Sesión</a>
+    {% endif %}
 
     <!-- Enlace a Bootstrap JS y Popper.js (necesario para algunos componentes de Bootstrap) -->
     <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>

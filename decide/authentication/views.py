@@ -5,13 +5,14 @@ from rest_framework.status import (
         HTTP_401_UNAUTHORIZED
 )
 from rest_framework.views import APIView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from .serializers import UserSerializer
 
@@ -64,3 +65,4 @@ class UserProfileView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         return context
+
