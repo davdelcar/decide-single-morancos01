@@ -28,7 +28,7 @@ msgstr "Login"
 #: decide/authentication/templates/login.html:18
 #: decide/authentication/templates/welcome.html:41
 msgid "Bienvenido a Decide!"
-msgstr "Welcomoe to Decide!"
+msgstr "Welcome to Decide!"
 
 #: decide/authentication/templates/login.html:29
 msgid "Usuario"
