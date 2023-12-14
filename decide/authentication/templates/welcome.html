@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n static %}
 
 {% block title %}Decide! - Welcome{% endblock %}
 
@@ -38,19 +39,23 @@
 
 {% block content %}
     <div class="welcome-container">
-        <h1>Bienvenido a Decide!</h1>
-        <p class="welcome-message">¡Gracias por unirte a nuestra plataforma de votación electrónica!</p>
+        <h1>{% trans 'Bienvenido a Decide' %}!</h1>
+        <p class="welcome-message">¡{% trans 'Gracias por unirte a nuestra plataforma de votación electrónica' %}!</p>
 
         {% if user.is_authenticated %}
             <!-- Mostrar un mensaje cuando la sesión está iniciada -->
-            <a href="{% url 'user_profile' %}" class="btn btn-primary login-button">Ir a tu Perfil</a>
+            <a href="{% url 'user_profile' %}" class="btn btn-primary login-button">{% trans 'Ir a tu Perfil' %}</a>
         {% else %}
             <!-- Enlace a Iniciar Sesión como botón -->
-            <a href="{% url 'signin' %}" class="btn btn-primary login-button">Ir a Iniciar Sesión</a>
+            <a href="{% url 'signin' %}" class="btn btn-primary login-button">{% trans 'Ir a Iniciar Sesión' %}</a>
         {% endif %}
+
+        <br><br><button class="btn btn-primary login-button" onclick="window.location.href='/census/'">{% trans 'Ir a Censos' %}</button>
+
     </div>
 {% endblock %}
 
 
 
 <a href="{% url 'user_profile' %}" class="btn btn-primary login-button">Ir a tu Perfil</a>
+<button class="btn btn-primary btn-sm" onclick="window.location.href='/census/'">{% trans 'Censos' %}</button>
