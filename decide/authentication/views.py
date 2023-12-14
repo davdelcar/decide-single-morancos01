@@ -14,6 +14,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import LoginForm
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views import View
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+
 
 from .serializers import UserSerializer
 
@@ -105,4 +110,23 @@ class UserProfileView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
+
+        # Agregar el formulario de cambio de contraseña al contexto
+        context['password_change_form'] = PasswordChangeForm(self.request.user)
+
         return context
+
+    def post(self, request, *args, **kwargs):
+        # Procesar el formulario de cambio de contraseña si se envió por POST
+        password_change_form = PasswordChangeForm(request.user, request.POST)
+        if password_change_form.is_valid():
+            user = password_change_form.save()
+            update_session_auth_hash(request, user)  # Actualiza la sesión para evitar cerrar la sesión del usuario
+            messages.success(request, 'Tu contraseña ha sido cambiada con éxito.')
+        else:
+            for field, errors in password_change_form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+
+        # Volver a renderizar la página con el formulario actualizado
+        return self.render_to_response(self.get_context_data())
