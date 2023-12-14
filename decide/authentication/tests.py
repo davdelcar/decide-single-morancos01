@@ -174,5 +174,24 @@ class WelcomeTestView(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
-        
+
+class UserProfileViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("user_profile")
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+
+    def test_get_authenticated_user(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "profile.html")
+        self.assertEqual(response.context["user"], self.user)
+
+    def test_get_unauthenticated_user(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Inicia sesión para acceder a tu perfil de usuario.")
+        self.assertContains(response, reverse("signin"))
+ 
 
