@@ -36,6 +36,14 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 
+class CensusList(TemplateView):
+    template_name = "census/census.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["census"] = Census.objects.all()
+        return context
+
 class CensusCreate(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
 
