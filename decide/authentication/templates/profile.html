@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Enlace a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px; /* Agregado para separar del contenido siguiente */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="container">
+    <h1 class="mt-5 mb-4">User Profile</h1>
+    <ul class="list-unstyled">
+        <li><strong>Username:</strong> {{ user.username }}</li>
+        <li><strong>First Name:</strong> {{ user.first_name }}</li>
+        <li><strong>Last Name:</strong> {{ user.last_name }}</li>
+        <li><strong>Email:</strong> {{ user.email }}</li>
+        <!-- Agrega aquí otros campos del modelo de usuario según tus necesidades -->
+    </ul>
+
+    <!-- Enlace a Bootstrap JS y Popper.js (necesario para algunos componentes de Bootstrap) -->
+    <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

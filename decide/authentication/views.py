@@ -5,13 +5,16 @@ from rest_framework.status import (
         HTTP_401_UNAUTHORIZED
 )
 from rest_framework.views import APIView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView
 
 from .serializers import UserSerializer
+
 
 
 class GetUserView(APIView):
@@ -53,3 +56,11 @@ class RegisterView(APIView):
         except IntegrityError:
             return Response({}, status=HTTP_400_BAD_REQUEST)
         return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
+    
+class UserProfileView(TemplateView):
+    template_name = 'profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
