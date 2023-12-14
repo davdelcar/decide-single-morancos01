@@ -1,12 +1,12 @@
-from django.test import TestCase
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
-
-from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
-
+#from allauth.socialaccount.models import SocialApp
 from base import mods
+from django.contrib.auth.models import User
+#from django.contrib.sites.models import Site
+from django.test import Client, TestCase
+from django.urls import reverse
+from rest_framework.test import APIClient, APITestCase
 
+from .forms import LoginForm
 
 class AuthTestCase(APITestCase):
 
@@ -128,3 +128,50 @@ class AuthTestCase(APITestCase):
             sorted(list(response.json().keys())),
             ['token', 'user_pk']
         )
+class LoginViewTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("signin")
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+
+    def test_get(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "login.html")
+        self.assertIsInstance(response.context["form"], LoginForm)
+        self.assertIsNone(response.context["msg"])
+
+    def test_post_valid_credentials(self):
+        data = {"username": "testuser", "password": "testpass", "remember_me": False}
+        response = self.client.post(self.url, data, follow=True)  # Agrega follow=True
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "welcome.html")
+
+    def test_post_invalid_credentials(self):
+        data = {"username": "testuser", "password": "wrongpass", "remember_me": False}
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "login.html")
+        self.assertIsInstance(response.context["form"], LoginForm)
+        self.assertEqual(response.context["msg"], "Credenciales incorrectas")
+
+    def test_post_invalid_form(self):
+        data = {"username": "", "password": "", "remember_me": False}
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "login.html")
+        self.assertIsInstance(response.context["form"], LoginForm)
+        self.assertEqual(response.context["msg"], "Error en el formulario")
+
+class WelcomeTestView(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("welcome")
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+
+    def test_get(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "welcome.html")
+        
+
