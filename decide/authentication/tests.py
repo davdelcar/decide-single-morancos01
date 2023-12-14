@@ -6,6 +6,9 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import check_password
+from django.contrib.messages import get_messages
+from django.utils.translation import activate
 
 from .forms import LoginForm
 
@@ -180,6 +183,46 @@ class UserProfileViewTest(TestCase):
         self.client = Client()
         self.url = reverse("user_profile")
         self.user = User.objects.create_user(username="testuser", password="testpass")
+
+    def test_change_password_valid_form(self):
+        self.client.force_login(self.user)
+
+        data = {
+            'old_password': 'testpass',
+            'new_password1': 'newpassword123',
+            'new_password2': 'newpassword123',
+        }
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username="testuser")
+        self.assertTrue(check_password('newpassword123', user.password))
+        self.assertContains(response, 'Tu contraseña ha sido cambiada con éxito.')
+
+    def test_change_password_invalid_form(self):
+        self.client.force_login(self.user)
+
+        activate('en')
+
+        data = {
+            'old_password': 'wrongpassword',
+            'new_password1': 'short',
+            'new_password2': 'short',
+        }
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username="testuser")
+        self.assertTrue(check_password('testpass', user.password))
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('old_password: Your old password was entered incorrectly. Please enter it again.', messages)
+        self.assertIn('new_password2: This password is too short. It must contain at least 8 characters.', messages)
+
+    def test_change_password_unauthenticated_user(self):
+        response = self.client.post(self.url, follow=True)  # Agrega follow=True para seguir redirecciones
+        self.assertEqual(response.status_code, 200)  # Se espera un código 200 después de la redirección
+        self.assertContains(response, 'Iniciar Sesión')  # Ajusta este texto según lo que contenga tu botón de inicio de sesión
+        self.assertNotContains(response, 'Deseo cambiar de contraseña')  # Verifica que el botón de cambio de contraseña no esté presente
 
     def test_get_authenticated_user(self):
         self.client.force_login(self.user)
