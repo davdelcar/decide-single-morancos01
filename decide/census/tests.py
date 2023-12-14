@@ -253,6 +253,12 @@ class ExportCsvTestCase(TestCase):
 class CensusListTestCase(BaseTestCase):
     def setUp(self):
         super().setUp()
+        self.census = Census(voting_id=1, voter_id=1)
+        self.census.save()
+
+    def tearDown(self):
+        super().tearDown()
+        self.census = None
 
     def test_census_list(self):
         response = self.client.get('/census/', format='html')
