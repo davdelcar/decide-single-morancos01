@@ -1,5 +1,7 @@
 import random
 import itertools
+from selenium.webdriver.support.ui import Select
+from django.forms import ValidationError
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -40,7 +42,7 @@ class VotingTestCase(BaseTestCase):
         return k.encrypt(msg)
 
     def create_voting(self):
-        q = Question(desc='test question')
+        q = Question(desc='test question', types='OQ')
         q.save()
         for i in range(5):
             opt = QuestionOption(question=q, option='option {}'.format(i+1))
@@ -52,7 +54,39 @@ class VotingTestCase(BaseTestCase):
                                           defaults={'me': True, 'name': 'test auth'})
         a.save()
         v.auths.add(a)
+        return v
+    
+    def create_voting_yes_no(self):
+        q = Question(desc='test question', types='YN')
+        q.save()
+        opt1 = QuestionOption(question=q, option='Yes')
+        opt1.save()
+        opt2 = QuestionOption(question=q, option='No')
+        opt2.save()
+        
+        v = Voting(name='test voting', question=q)
+        v.save()
 
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        return v
+    
+    def error_create_voting_yes_no(self):
+        q = Question(desc='test question', types='YN')
+        q.save()
+        opt1 = QuestionOption(question=q, option='Puede')
+        self.assertRaises(ValidationError, opt1.save())
+        opt2 = QuestionOption(question=q, option='Tal vez')
+        self.assertRaises(ValidationError, opt2.save())
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
         return v
 
     def create_voters(self, v):
@@ -113,31 +147,30 @@ class VotingTestCase(BaseTestCase):
 
         for q in v.postproc:
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
+            
+    def test_create_yes_no_voting(self):
+        v = self.create_voting()
+        self.create_voters(v)
 
-    def test_create_voting_from_api(self):
-        data = {'name': 'Example'}
-        response = self.client.post('/voting/', data, format='json')
-        self.assertEqual(response.status_code, 401)
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
 
-        # login with user no admin
-        self.login(user='noadmin')
-        response = mods.post('voting', params=data, response=True)
-        self.assertEqual(response.status_code, 403)
+        clear = self.store_votes(v)
 
-        # login with user admin
-        self.login()
-        response = mods.post('voting', params=data, response=True)
-        self.assertEqual(response.status_code, 400)
+        self.login()  # set token
+        v.tally_votes(self.token)
 
-        data = {
-            'name': 'Example',
-            'desc': 'Description example',
-            'question': 'I want a ',
-            'question_opt': ['cat', 'dog', 'horse']
-        }
+        tally = v.tally
+        tally.sort()
+        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
 
-        response = self.client.post('/voting/', data, format='json')
-        self.assertEqual(response.status_code, 201)
+        for q in v.question.options.all():
+            self.assertEqual(tally.get(q.number, 0), clear.get(q.number, 0))
+
+        for q in v.postproc:
+            self.assertEqual(tally.get(q["number"], 0), q["votes"])
+        
 
     def test_update_voting(self):
         voting = self.create_voting()
@@ -315,6 +348,38 @@ class QuestionsTests(StaticLiveServerTestCase):
 
         self.base.tearDown()
 
+    def createQuestionYesNoSuccess(self):
+        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
+        self.cleaner.set_window_size(1280, 720)
+
+        self.cleaner.find_element(By.ID, "id_username").click()
+        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
+
+        self.cleaner.find_element(By.ID, "id_password").click()
+        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
+
+        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
+
+        self.cleaner.get(self.live_server_url+"/admin/voting/question/add/")
+        
+        self.cleaner.find_element(By.ID, "id_desc").click()
+        self.cleaner.find_element(By.ID, "id_desc").send_keys('Test')
+        select_element = self.cleaner.find_element(By.ID, "id_types")
+        select = Select(select_element)
+        select.select_by_visible_text('Yes/No Question')
+        self.cleaner.find_element(By.ID, "id_options-0-number").click()
+        self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
+        self.cleaner.find_element(By.ID, "id_options-0-option").click()
+        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('Yes')
+        self.cleaner.find_element(By.ID, "id_options-1-number").click()
+        self.cleaner.find_element(By.ID, "id_options-1-number").send_keys('2')
+        self.cleaner.find_element(By.ID, "id_options-1-option").click()
+        self.cleaner.find_element(By.ID, "id_options-1-option").send_keys('No')
+        self.cleaner.find_element(By.NAME, "_save").click()
+
+        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/voting/question/")
+        
+    
     def createQuestionSuccess(self):
         self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
         self.cleaner.set_window_size(1280, 720)
@@ -331,6 +396,9 @@ class QuestionsTests(StaticLiveServerTestCase):
         
         self.cleaner.find_element(By.ID, "id_desc").click()
         self.cleaner.find_element(By.ID, "id_desc").send_keys('Test')
+        select_element = self.cleaner.find_element(By.ID, "id_types")
+        select = Select(select_element)
+        select.select_by_visible_text('Yes/No Question')
         self.cleaner.find_element(By.ID, "id_options-0-number").click()
         self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
         self.cleaner.find_element(By.ID, "id_options-0-option").click()

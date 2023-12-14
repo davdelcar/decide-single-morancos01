@@ -42,6 +42,9 @@ class QuestionOption(models.Model):
                 raise ValidationError("This option already exists for this question.")
             
     def save(self):
+        if self.question.types == 'YN':
+            if self.option not in ['Yes', 'No']:
+                raise ValidationError("This is a Yes/No question, option must be 'Yes' or 'No'.")
         if QuestionOption.objects.filter(question=self.question, option=self.option).exists():
                 raise ValidationError("This option already exists for this question.")
         if not self.number:
