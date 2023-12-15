@@ -1,0 +1,335 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: census/templates/census/import.html:3
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-15 16:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: authentication/templates/login.html:5 booth/templates/booth/booth.html:30
+#: booth/templates/booth/booth.html:85 booth/templates/booth/booth.html:111
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: authentication/templates/login.html:18
+#: authentication/templates/welcome.html:41
+msgid "Bienvenido a Decide"
+msgstr "Bienvenido a Decide"
+
+#: authentication/templates/login.html:29
+msgid "Usuario"
+msgstr "Usuario"
+
+#: authentication/templates/login.html:33
+msgid "Contraseña"
+msgstr "Contraseña"
+
+#: authentication/templates/login.html:38
+msgid "Recuérdame"
+msgstr "Recuérdame"
+
+#: authentication/templates/login.html:41
+msgid "Iniciar Sesión"
+msgstr "Iniciar Sesión"
+
+#: authentication/templates/welcome.html:42
+msgid "Gracias por unirte a nuestra plataforma de votación electrónica"
+msgstr "Gracias por unirte a nuestra plataforma de votación electrónica"
+
+#: authentication/templates/welcome.html:46
+msgid "Ir a tu Perfil"
+msgstr "It a tu Perfil"
+
+#: authentication/templates/welcome.html:49
+msgid "Ir a Iniciar Sesión"
+msgstr "Ir a Iniciar Sesión"
+
+#: authentication/templates/welcome.html:52
+msgid "Ir a Censos"
+msgstr "Ir a Censos"
+
+#: base/models.py:26 voting/models.py:70
+msgid "Name"
+msgstr "Nombre"
+
+#: base/models.py:28
+msgid "Me"
+msgstr "Yo"
+
+#: base/models.py:34
+msgid "Auth"
+msgstr "Autenticación"
+
+#: base/models.py:35 mixnet/models.py:20 voting/models.py:78
+msgid "Auths"
+msgstr "Autenticaciones"
+
+#: base/templates/change_language.html:2
+msgid "Change language"
+msgstr "Cambiar idioma"
+
+#: booth/templates/booth/booth.html:25
+msgid "Logout"
+msgstr "Logout"
+
+#: booth/templates/booth/booth.html:76
+msgid "¡Debe iniciar sesión para poder acceder a la votación!"
+msgstr "¡Debe iniciar sesión para poder acceder a la votación!"
+
+#: booth/templates/booth/booth.html:92
+msgid "Username"
+msgstr "Usuario"
+
+#: booth/templates/booth/booth.html:102
+msgid "Password"
+msgstr "Contraseña"
+
+#: booth/templates/booth/booth.html:133 store/models.py:20
+msgid "Vote"
+msgstr "Votar"
+
+#: booth/templates/booth/booth.html:236 booth/templates/booth/booth.html:247
+#: booth/templates/booth/booth.html:283
+msgid "Error: "
+msgstr "Error: "
+
+#: booth/templates/booth/booth.html:279
+msgid "Congratulations. Your vote has been sent"
+msgstr "Felicidades. Tu voto ha sido enviado."
+
+#: census/models.py:7 mixnet/models.py:18 store/models.py:8
+msgid "Voting ID"
+msgstr "ID de la Votación"
+
+#: census/models.py:8 store/models.py:9
+msgid "Voter ID"
+msgstr "ID del votante"
+
+#: census/models.py:12 census/models.py:13
+msgid "Census"
+msgstr "Censos"
+
+#: census/templates/census/census.html:13
+msgid "Censos"
+msgstr "Censos"
+
+#: census/templates/census/census.html:14
+msgid "En esta sección se pueden ver todos los censos creados"
+msgstr "En esta sección se pueden ver todos los censos creados"
+
+#: census/templates/census/census.html:17
+msgid "Crear Censo"
+msgstr "Crear Censo"
+
+#: census/templates/census/census.html:18
+msgid "Importar Censo"
+msgstr "Importar Censo"
+
+#: census/templates/census/census.html:19
+msgid "Exportar Censo"
+msgstr "Exportar Censo"
+
+#: census/templates/census/census.html:21
+msgid "Pestaña de Inicio"
+msgstr "Pestaña de Inicio"
+
+#: census/templates/census/census.html:22
+msgid "Pestaña de Admin"
+msgstr "Pestaña de Admin"
+
+#: census/templates/census/census.html:32
+msgid "Voting_ID"
+msgstr "ID de la Votación"
+
+#: census/templates/census/census.html:33
+msgid "Voter_ID"
+msgstr "ID del votante"
+
+#: census/templates/census/census.html:34
+msgid "Acciones"
+msgstr "Acciones"
+
+#: census/templates/census/census.html:44
+msgid "Ver"
+msgstr "Ver"
+
+#: census/templates/census/census.html:45
+msgid "Borrar"
+msgstr "Borrar"
+
+#: census/templates/census/import.html:13
+msgid "El archivo debe ser de Excel"
+msgstr "El archivo debe ser de Excel"
+
+#: census/templates/census/import.html:15
+msgid "En la primera columna debe aparecer el ID de la votación"
+msgstr "En la primera columna debe aparecer el ID de la votación"
+
+#: census/templates/census/import.html:16
+msgid "y en la segunda el ID del votante"
+msgstr "y en la segunda el ID del votante"
+
+#: census/templates/census/import.html:23
+msgid "Importar Censos"
+msgstr "Importar Censos"
+
+#: census/templates/census/import.html:26
+msgid "Volver"
+msgstr "Volver"
+
+#: decide/settings.py:151
+msgid "English"
+msgstr "Inglés"
+
+#: decide/settings.py:152
+msgid "Spanish"
+msgstr "Español"
+
+#: mixnet/models.py:19
+msgid "Auth Position"
+msgstr "Posición de autenticación"
+
+#: mixnet/models.py:23
+msgid "Key"
+msgstr "Clave"
+
+#: mixnet/models.py:26 voting/models.py:77
+msgid "Public Key"
+msgstr "Clave pública"
+
+#: mixnet/models.py:89
+msgid "Mixnet"
+msgstr "Red mixta"
+
+#: mixnet/models.py:90
+msgid "Mixnets"
+msgstr "Redes mixtas"
+
+#: store/models.py:21
+msgid "Votes"
+msgstr "Votos"
+
+#: visualizer/templates/visualizer/visualizer.html:25
+msgid "Votación no comenzada"
+msgstr "Votación no comenzada"
+
+#: visualizer/templates/visualizer/visualizer.html:26
+msgid "Votación en curso"
+msgstr "Votación en curso"
+
+#: visualizer/templates/visualizer/visualizer.html:28
+msgid "Resultados"
+msgstr "Resultados"
+
+#: visualizer/templates/visualizer/visualizer.html:33
+msgid "Opción"
+msgstr "Opción"
+
+#: visualizer/templates/visualizer/visualizer.html:34
+msgid "Puntuación"
+msgstr "Puntuación"
+
+#: visualizer/templates/visualizer/visualizer.html:35
+msgid "Votos"
+msgstr "Votos"
+
+#: voting/admin.py:21
+msgid "start"
+msgstr "Iniciar"
+
+#: voting/admin.py:30
+msgid "stop"
+msgstr "Parar"
+
+#: voting/admin.py:39
+msgid "tally"
+msgstr "Conteo"
+
+#: voting/models.py:14 voting/models.py:71
+msgid "Description"
+msgstr "Descripción"
+
+#: voting/models.py:17
+msgid "Optional Question"
+msgstr "Pregunta opcional"
+
+#: voting/models.py:18
+msgid "Yes/No Question"
+msgstr "Pregunta de Sí/no"
+
+#: voting/models.py:24
+msgid "Type"
+msgstr "Tipo"
+
+#: voting/models.py:31 voting/models.py:46 voting/models.py:53
+msgid "Yes"
+msgstr "Sí"
+
+#: voting/models.py:35 voting/models.py:40 voting/models.py:72
+msgid "Question"
+msgstr "Pregunta"
+
+#: voting/models.py:36
+msgid "Questions"
+msgstr "Preguntas"
+
+#: voting/models.py:41
+msgid "Number"
+msgstr "Número"
+
+#: voting/models.py:42
+msgid "Option"
+msgstr "Opción"
+
+#: voting/models.py:46 voting/models.py:53
+msgid "No"
+msgstr "No"
+
+#: voting/models.py:47 voting/models.py:54
+msgid "This is a Yes/No question, option must be 'Yes' or 'No'."
+msgstr "Esta es una pregunta de Sí/No, la opción debe ser 'Sí' o 'No'."
+
+#: voting/models.py:49 voting/models.py:56
+msgid "This option already exists for this question."
+msgstr "Esta opción ya existe para esta pregunta."
+
+#: voting/models.py:65
+msgid "Question Option"
+msgstr "Opción de pregunta"
+
+#: voting/models.py:66
+msgid "Question Options"
+msgstr "Opciones de preguntas"
+
+#: voting/models.py:74
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#: voting/models.py:75
+msgid "End Date"
+msgstr "Fecha de finalización"
+
+#: voting/models.py:80
+msgid "Tally"
+msgstr "Conteo"
+
+#: voting/models.py:174
+msgid "Voting"
+msgstr "Votación"
+
+#: voting/models.py:175
+msgid "Votings"
+msgstr "Votaciones"

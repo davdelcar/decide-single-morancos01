@@ -4,6 +4,9 @@ from django.utils import timezone
 from .models import QuestionOption
 from .models import Question
 from .models import Voting
+from parler.admin import TranslatableAdmin
+from django.utils.translation import gettext_lazy as _
+
 
 from .filters import StartedFilter
 
@@ -13,18 +16,27 @@ def start(modeladmin, request, queryset):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
+    
+    class Meta:
+        verbose_name = _('start')
 
 
 def stop(ModelAdmin, request, queryset):
     for v in queryset.all():
         v.end_date = timezone.now()
         v.save()
+    
+    class Meta:
+        verbose_name = _('stop')
 
 
 def tally(ModelAdmin, request, queryset):
     for v in queryset.filter(end_date__lt=timezone.now()):
         token = request.session.get('auth-token', '')
         v.tally_votes(token)
+
+    class Meta:
+        verbose_name = _('tally')
 
 
 class QuestionOptionInline(admin.TabularInline):
@@ -48,3 +60,15 @@ class VotingAdmin(admin.ModelAdmin):
 
 admin.site.register(Voting, VotingAdmin)
 admin.site.register(Question, QuestionAdmin)
+
+class VotingAdmin(TranslatableAdmin):
+    pass
+
+class Voting(TranslatableAdmin):
+    pass
+
+class Question(TranslatableAdmin):
+    pass
+
+class QuestionAdmin(TranslatableAdmin):
+    pass

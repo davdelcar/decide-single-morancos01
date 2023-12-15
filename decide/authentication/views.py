@@ -64,18 +64,23 @@ class RegisterView(APIView):
             return Response({}, status=HTTP_400_BAD_REQUEST)
         return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
 
-class WelcomeView(APIView):
-    def get(self, request):
-        return render(request, 'welcome.html')
+class WelcomeView(TemplateView):
+    template_name = 'welcome.html'
 
-    def post(self, request):
-        # Si necesitas manejar solicitudes POST, puedes agregar lógica aquí
-        return Response({'message': 'This is a welcome view for POST requests.'}, status=status.HTTP_200_OK)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
 
 class LoginView(TemplateView):
-    def post(self, request):
-        form = LoginForm(request.POST)
+    template_name = 'login.html'
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.template_name = 'login.html'
+
+    def post(self, request, *args, **kwargs):
+        form = LoginForm(request.POST)
         msg = None
 
         if form.is_valid():
@@ -88,21 +93,19 @@ class LoginView(TemplateView):
                 if not remember_me:
                     request.session.set_expiry(0)
 
-                next_url = request.GET.get("next", None)
-                if next_url:
-                    return redirect(next_url)
-                return redirect("/authentication/welcome")
+                # Usa self.template_name aquí
+                return redirect("/")
             else:
                 msg = "Credenciales incorrectas"
         else:
             msg = "Error en el formulario"
 
-        return render(request, "login.html", {"form": form, "msg": msg})
+        # Retorno de la vista en el caso de credenciales incorrectas o error en el formulario
+        return render(request, self.template_name, {"form": form, "msg": msg, "user": None})
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         form = LoginForm(None)
-
-        return render(request, "login.html", {"form": form, "msg": None})
+        return render(request, self.template_name, {"form": form, "msg": None})
     
 class UserProfileView(TemplateView):
     template_name = 'profile.html'

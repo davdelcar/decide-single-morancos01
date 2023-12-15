@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% load i18n static %}
+{% load static %}
+{% load i18n %}
 
-{% block title %}Login{% endblock %}
-
+{% block title %}{% trans 'Login' %}{% endblock %}
 {% block extrahead %}
     <!-- Agrega el enlace a Bootstrap CSS -->
     <link type="text/css" rel="stylesheet"
@@ -15,7 +15,7 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-8 mx-auto">
-                <h2 class="text-center mb-4">Bienvenido a Decide!</h2>
+                <h2 class="text-center mb-4">{% trans 'Bienvenido a Decide' %}!</h2>
 
                 {% if msg %}
                     <div class="alert alert-danger" role="alert">
@@ -26,19 +26,19 @@
                 <form method="POST">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="{{ form.username.id_for_label }}">Usuario</label>
+                        <label for="{{ form.username.id_for_label }}">{% trans 'Usuario' %}</label>
                         {{ form.username}}
                     </div>
                     <div class="form-group">
-                        <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                        <label for="{{ form.password.id_for_label }}">{% trans 'Contraseña' %}</label>
                         {{ form.password }}
                     </div>
                     <div class="form-group form-check">
                         {{ form.remember_me }}
-                        <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recuérdame</label>
+                        <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">{% trans 'Recuérdame' %}</label>
                     </div>
                     <!-- Aumenta el tamaño del botón y centra -->
-                    <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                    <button type="submit" class="btn btn-primary btn-block">{% trans 'Iniciar Sesión' %}</button>
                 </form>
             </div>
         </div>

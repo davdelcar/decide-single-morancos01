@@ -1,9 +1,11 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
         <title>{% block title %}Decide!{% endblock %}</title>
         {% block extrahead %}{% endblock %}
+        {% include "change_language.html" %}
     </head>
     <body>
         {% block content %}
