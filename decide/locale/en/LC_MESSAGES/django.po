@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 16:05+0100\n"
+"POT-Creation-Date: 2023-12-15 16:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -246,6 +246,20 @@ msgstr "Score"
 msgid "Votos"
 msgstr "Votes"
 
+#: voting/admin.py:21
+msgid "start"
+msgstr ""
+
+#: voting/admin.py:30
+msgid "stop"
+msgstr ""
+
+#: voting/admin.py:39
+#, fuzzy
+#| msgid "Tally"
+msgid "tally"
+msgstr "Tally"
+
 #: voting/models.py:14 voting/models.py:71
 msgid "Description"
 msgstr "Description"
@@ -262,7 +276,7 @@ msgstr "Question"
 msgid "Type"
 msgstr "Type"
 
-#: voting/models.py:31
+#: voting/models.py:31 voting/models.py:46 voting/models.py:53
 msgid "Yes"
 msgstr "Yes"
 
@@ -281,6 +295,18 @@ msgstr "Number"
 #: voting/models.py:42
 msgid "Option"
 msgstr "Option"
+
+#: voting/models.py:46 voting/models.py:53
+msgid "No"
+msgstr ""
+
+#: voting/models.py:47 voting/models.py:54
+msgid "This is a Yes/No question, option must be 'Yes' or 'No'."
+msgstr ""
+
+#: voting/models.py:49 voting/models.py:56
+msgid "This option already exists for this question."
+msgstr ""
 
 #: voting/models.py:65
 msgid "Question Option"

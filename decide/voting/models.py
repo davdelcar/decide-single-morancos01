@@ -43,17 +43,17 @@ class QuestionOption(models.Model):
 
     def clean(self) -> None:
         if self.question.types == 'YN':
-            if self.option not in ['Yes', 'No']:
-                raise ValidationError("This is a Yes/No question, option must be 'Yes' or 'No'.")
+            if self.option not in [_('Yes'),_('No')]:
+                raise ValidationError(_("This is a Yes/No question, option must be 'Yes' or 'No'."))
             if QuestionOption.objects.filter(question=self.question, option=self.option).exists():
-                raise ValidationError("This option already exists for this question.")
+                raise ValidationError(_("This option already exists for this question."))
             
     def save(self):
         if self.question.types == 'YN':
-            if self.option not in ['Yes', 'No']:
-                raise ValidationError("This is a Yes/No question, option must be 'Yes' or 'No'.")
+            if self.option not in [_('Yes'),_('No')]:
+                raise ValidationError(_("This is a Yes/No question, option must be 'Yes' or 'No'."))
         if QuestionOption.objects.filter(question=self.question, option=self.option).exists():
-                raise ValidationError("This option already exists for this question.")
+                raise ValidationError(_("This option already exists for this question."))
         if not self.number:
             self.number = self.question.options.count() + 2
         return super().save()
