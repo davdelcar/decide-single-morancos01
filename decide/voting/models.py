@@ -3,70 +3,81 @@ from django.db.models import JSONField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
+from parler.models import TranslatableModel, TranslatedFields
 
 from base import mods
 from base.models import Auth, Key
 
 
 class Question(models.Model):
-    desc = models.TextField()
+    desc = models.TextField(verbose_name=_('Description'))
 
     voting_types = [
-        ('OQ', 'Optional Question'),
-        ('YN', 'Yes/No Question'),
+        ('OQ', _('Optional Question')),
+        ('YN', _('Yes/No Question')),
     ]
 
     types = models.CharField(max_length=2,
         choices=voting_types,
-        default='YN',)
+        default='YN',
+        verbose_name=_('Type'),)
 
     def __str__(self):
         return self.desc
     
     def save(self, *args, **kwargs):
         if self.voting_types == 'YN':
-            self.options = ['Yes', 'No']
+            self.options = [_('Yes'), 'No']
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _('Question')
+        verbose_name_plural = _('Questions')
 
 
 class QuestionOption(models.Model):
-    question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
-    number = models.PositiveIntegerField(blank=True, null=True)
-    option = models.TextField()
+    question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE, verbose_name=_('Question'))
+    number = models.PositiveIntegerField(blank=True, null=True, verbose_name=_('Number'))
+    option = models.TextField(verbose_name=_('Option'))
 
     def clean(self) -> None:
         if self.question.types == 'YN':
-            if self.option not in ['Yes', 'No']:
-                raise ValidationError("This is a Yes/No question, option must be 'Yes' or 'No'.")
+            if self.option not in [_('Yes'),_('No')]:
+                raise ValidationError(_("This is a Yes/No question, option must be 'Yes' or 'No'."))
             if QuestionOption.objects.filter(question=self.question, option=self.option).exists():
-                raise ValidationError("This option already exists for this question.")
+                raise ValidationError(_("This option already exists for this question."))
             
     def save(self):
         if self.question.types == 'YN':
-            if self.option not in ['Yes', 'No']:
-                raise ValidationError("This is a Yes/No question, option must be 'Yes' or 'No'.")
+            if self.option not in [_('Yes'),_('No')]:
+                raise ValidationError(_("This is a Yes/No question, option must be 'Yes' or 'No'."))
         if QuestionOption.objects.filter(question=self.question, option=self.option).exists():
-                raise ValidationError("This option already exists for this question.")
+                raise ValidationError(_("This option already exists for this question."))
         if not self.number:
             self.number = self.question.options.count() + 2
         return super().save()
 
     def __str__(self):
         return '{} ({})'.format(self.option, self.number)
+    
+    class Meta:
+        verbose_name = _('Question Option')
+        verbose_name_plural = _('Question Options')
 
 
 class Voting(models.Model):
-    name = models.CharField(max_length=200)
-    desc = models.TextField(blank=True, null=True)
-    question = models.ForeignKey(Question, related_name='voting', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    desc = models.TextField(blank=True, null=True, verbose_name=_('Description'))
+    question = models.ForeignKey(Question, related_name='voting', on_delete=models.CASCADE, verbose_name=_('Question'))
 
-    start_date = models.DateTimeField(blank=True, null=True)
-    end_date = models.DateTimeField(blank=True, null=True)
+    start_date = models.DateTimeField(blank=True, null=True, verbose_name=_('Start Date'))
+    end_date = models.DateTimeField(blank=True, null=True, verbose_name=_('End Date'))
 
-    pub_key = models.OneToOneField(Key, related_name='voting', blank=True, null=True, on_delete=models.SET_NULL)
-    auths = models.ManyToManyField(Auth, related_name='votings')
+    pub_key = models.OneToOneField(Key, related_name='voting', blank=True, null=True, on_delete=models.SET_NULL, verbose_name=_('Public Key'))
+    auths = models.ManyToManyField(Auth, related_name='votings', verbose_name=_('Auths'))
 
-    tally = JSONField(blank=True, null=True)
+    tally = JSONField(blank=True, null=True, verbose_name=_('Tally'))
     postproc = JSONField(blank=True, null=True)
 
     def create_pubkey(self):
@@ -158,3 +169,7 @@ class Voting(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = _('Voting')
+        verbose_name_plural = _('Votings')

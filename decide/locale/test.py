@@ -7,6 +7,7 @@ from django.utils.translation import activate, deactivate_all, get_language, get
 from django.contrib.auth.models import User
 from django.utils.translation import activate, get_language, gettext
 from django.utils import translation
+from django.utils.translation import gettext_lazy as _
 
 class ChangeLanguageFormTest(TestCase):
 
@@ -66,3 +67,12 @@ class ChangeLanguageFormTest(TestCase):
 
         html_content = response.content.decode('utf-8')
         self.assertNotIn('Welcome to Decide!', html_content)
+
+    def testSpanishTranslation(self):
+        #Vemos si se traducen las palabras correctamente al español desde el .po
+        self.assertEqual(_("Congratulations. Your vote has been sent"), "Felicidades. Tu voto ha sido enviado.")
+        deactivate_all()
+
+    def testEnglishTranslation(self):
+        #Vemos si se traducen las palabras correctamente al inglés desde el .po
+        self.assertEqual(_("Gracias por unirte a nuestra plataforma de votación electrónica"), "Thank you for joining our electronic voting platform")

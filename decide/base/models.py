@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+from parler.models import TranslatableModel, TranslatedFields
 
 
 class BigBigField(models.TextField):
@@ -21,12 +23,16 @@ class BigBigField(models.TextField):
 
 
 class Auth(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
     url = models.URLField()
-    me = models.BooleanField(default=False)
+    me = models.BooleanField(default=False, verbose_name=_('Me'))
 
     def __str__(self):
         return self.url
+    
+    class Meta:
+        verbose_name = _('Auth')
+        verbose_name_plural = _('Auths')
 
 
 class Key(models.Model):
