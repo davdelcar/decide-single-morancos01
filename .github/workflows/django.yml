@@ -3,8 +3,8 @@ name: Python application
 on:
   push:
      branches:
-     - develop
-	   - master
+     - develop 
+     - master
   workflow_call:
     secrets:
       CODACY_PROJECT_TOKEN:
