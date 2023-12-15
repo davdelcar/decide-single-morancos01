@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 15:52+0100\n"
+"POT-Creation-Date: 2023-12-15 16:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -140,7 +140,7 @@ msgstr "Import Census"
 
 #: census/templates/census/census.html:19
 msgid "Exportar Censo"
-msgstr "Export Censu"
+msgstr "Export Census"
 
 #: census/templates/census/census.html:21
 msgid "Pestaña de Inicio"
@@ -149,6 +149,14 @@ msgstr "Home Tab"
 #: census/templates/census/census.html:22
 msgid "Pestaña de Admin"
 msgstr "Admin Tab"
+
+#: census/templates/census/census.html:32
+msgid "Voting_ID"
+msgstr "Voting ID"
+
+#: census/templates/census/census.html:33
+msgid "Voter_ID"
+msgstr "Voter ID"
 
 #: census/templates/census/census.html:34
 msgid "Acciones"

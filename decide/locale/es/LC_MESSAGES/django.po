@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 15:52+0100\n"
+"POT-Creation-Date: 2023-12-15 16:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,7 +112,7 @@ msgstr "Felicidades. Tu voto ha sido enviado."
 
 #: census/models.py:7 mixnet/models.py:18 store/models.py:8
 msgid "Voting ID"
-msgstr "Id de la Votación"
+msgstr "ID de la Votación"
 
 #: census/models.py:8 store/models.py:9
 msgid "Voter ID"
@@ -149,6 +149,14 @@ msgstr "Pestaña de Inicio"
 #: census/templates/census/census.html:22
 msgid "Pestaña de Admin"
 msgstr "Pestaña de Admin"
+
+#: census/templates/census/census.html:32
+msgid "Voting_ID"
+msgstr "ID de la Votación"
+
+#: census/templates/census/census.html:33
+msgid "Voter_ID"
+msgstr "ID del votante"
 
 #: census/templates/census/census.html:34
 msgid "Acciones"
@@ -301,4 +309,3 @@ msgstr "Votación"
 #: voting/models.py:175
 msgid "Votings"
 msgstr "Votaciones"
-
