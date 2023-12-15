@@ -187,19 +187,21 @@ class UserProfileViewTest(TestCase):
     def test_change_password_valid_form(self):
         self.client.force_login(self.user)
 
+        activate('es')
+        
         data = {
             'old_password': 'testpass',
-            'new_password1': 'newpassword123',
-            'new_password2': 'newpassword123',
+            'new_password1': 'JMC112003',
+            'new_password2': 'JMC112003',
         }
         response = self.client.post(self.url, data)
 
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(username="testuser")
-        self.assertTrue(check_password('newpassword123', user.password))
+        self.assertTrue(check_password('JMC112003', user.password))
         self.assertContains(response, 'Tu contraseña ha sido cambiada con éxito.')
 
-    def test_change_password_invalid_form(self):
+    def test_change_password_invalid_form(self): # Comprueba dos restricciones: la contraseña actual es incorrecta y la contraseña nueva es muy corta (menos de 8 carracteres)
         self.client.force_login(self.user)
 
         activate('en')
@@ -217,6 +219,60 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('old_password: Your old password was entered incorrectly. Please enter it again.', messages)
         self.assertIn('new_password2: This password is too short. It must contain at least 8 characters.', messages)
+
+    def test_change_password_numeric_password(self):
+        self.client.force_login(self.user)
+
+        activate('en')
+
+        data = {
+            'old_password': 'testpass',
+            'new_password1': '12345678',
+            'new_password2': '12345678',
+        }
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username="testuser")
+        self.assertTrue(check_password('testpass', user.password))
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('new_password2: This password is entirely numeric.', messages)
+
+    def test_change_password_username_password(self):
+        self.client.force_login(self.user)
+
+        activate('en')
+
+        data = {
+            'old_password': 'testpass',
+            'new_password1': 'testuser',
+            'new_password2': 'testuser',
+        }
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username="testuser")
+        self.assertTrue(check_password('testpass', user.password))
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('new_password2: The password is too similar to the username.', messages)
+
+    def test_change_password_common_password(self): #Test que comprueba si se ha añadido una contraseña común. EJEMPLOS: 'password', '123456','qwerty','admin','letmein','password123','abc123','111111','123abc','test'
+        self.client.force_login(self.user)
+
+        activate('en')
+
+        data = {
+            'old_password': 'testpass',
+            'new_password1': 'password123',
+            'new_password2': 'password123',
+        }
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username="testuser")
+        self.assertTrue(check_password('testpass', user.password))
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('new_password2: This password is too common.', messages)
 
     def test_change_password_unauthenticated_user(self):
         response = self.client.post(self.url, follow=True)  # Agrega follow=True para seguir redirecciones
