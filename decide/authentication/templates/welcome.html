@@ -38,9 +38,18 @@
 
 {% block content %}
     <div class="welcome-container">
-        <h1>{% trans 'Bienvenido a Decide!' %}</h1>
-        <p class="welcome-message">{% trans '¡Gracias por unirte a nuestra plataforma de votación electrónica!' %}</p>
-        <!-- Enlace a Iniciar Sesión como botón -->
-        <a href="{% url 'signin' %}" class="btn btn-primary login-button">{% trans 'Ir a Iniciar Sesión' %}</a>
+        <h1>{% trans 'Bienvenido a Decide' %}!</h1>
+        <p class="welcome-message">¡{% trans 'Gracias por unirte a nuestra plataforma de votación electrónica' %}!</p>
+
+        {% if user.is_authenticated %}
+            <!-- Mostrar un mensaje cuando la sesión está iniciada -->
+            <a href="{% url 'user_profile' %}" class="btn btn-primary login-button">{% trans 'Ir a tu Perfil' %}</a>
+        {% else %}
+            <!-- Enlace a Iniciar Sesión como botón -->
+            <a href="{% url 'signin' %}" class="btn btn-primary login-button">{% trans 'Ir a Iniciar Sesión' %}</a>
+        {% endif %}
+
+        <br><br><button class="btn btn-primary login-button" onclick="window.location.href='/census/'">{% trans 'Ir a Censos' %}</button>
     </div>
 {% endblock %}
+

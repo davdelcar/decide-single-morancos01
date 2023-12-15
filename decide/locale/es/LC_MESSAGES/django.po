@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: census/templates/census/import.html:3
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-14 16:59+0100\n"
+"POT-Creation-Date: 2023-12-15 11:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,104 +19,172 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: decide/authentication/templates/login.html:5
-#: decide/booth/templates/booth/booth.html:30
-#: decide/booth/templates/booth/booth.html:85
-#: decide/booth/templates/booth/booth.html:111
+#: authentication/templates/login.html:5 booth/templates/booth/booth.html:30
+#: booth/templates/booth/booth.html:85 booth/templates/booth/booth.html:111
 msgid "Login"
 msgstr "Iniciar sesión"
 
-#: decide/authentication/templates/login.html:18
-#: decide/authentication/templates/welcome.html:41
+#: authentication/templates/login.html:18
 msgid "Bienvenido a Decide!"
 msgstr "Bienvenido a Decide!"
 
-#: decide/authentication/templates/login.html:29
+#: authentication/templates/login.html:29
 msgid "Usuario"
 msgstr "Usuario"
 
-#: decide/authentication/templates/login.html:33
+#: authentication/templates/login.html:33
 msgid "Contraseña"
 msgstr "Contraseña"
 
-#: decide/authentication/templates/login.html:38
+#: authentication/templates/login.html:38
 msgid "Recuérdame"
 msgstr "Recuérdame"
 
-#: decide/authentication/templates/login.html:41
+#: authentication/templates/login.html:41
 msgid "Iniciar Sesión"
 msgstr "Iniciar Sesión"
 
-#: decide/authentication/templates/welcome.html:42
-msgid "¡Gracias por unirte a nuestra plataforma de votación electrónica!"
-msgstr "¡Gracias por unirte a nuestra plataforma de votación electrónica!"
+#: authentication/templates/welcome.html:41
+msgid "Bienvenido a Decide"
+msgstr "Bienvenido a Decide"
 
-#: decide/authentication/templates/welcome.html:44
+#: authentication/templates/welcome.html:42
+msgid "Gracias por unirte a nuestra plataforma de votación electrónica"
+msgstr "Gracias por unirte a nuestra plataforma de votación electrónica"
+
+#: authentication/templates/welcome.html:46
+msgid "Ir a tu Perfil"
+msgstr "It a tu Perfil"
+
+#: authentication/templates/welcome.html:49
 msgid "Ir a Iniciar Sesión"
 msgstr "Ir a Iniciar Sesión"
 
-#: decide/base/templates/change_language.html:2
+#: authentication/templates/welcome.html:52
+msgid "Ir a Censos"
+msgstr "Ir a Censos"
+
+#: base/templates/change_language.html:2
 msgid "Change language"
 msgstr "Cambiar idioma"
 
-#: decide/booth/templates/booth/booth.html:25
+#: booth/templates/booth/booth.html:25
 msgid "Logout"
 msgstr "Logout"
 
-#: decide/booth/templates/booth/booth.html:76
+#: booth/templates/booth/booth.html:76
 msgid "¡Debe iniciar sesión para poder acceder a la votación!"
 msgstr "¡Debe iniciar sesión para poder acceder a la votación!"
 
-#: decide/booth/templates/booth/booth.html:92
+#: booth/templates/booth/booth.html:92
 msgid "Username"
 msgstr "Usuario"
 
-#: decide/booth/templates/booth/booth.html:102
+#: booth/templates/booth/booth.html:102
 msgid "Password"
 msgstr "Contraseña"
 
-#: decide/booth/templates/booth/booth.html:133
+#: booth/templates/booth/booth.html:133
 msgid "Vote"
 msgstr "Votar"
 
-#: decide/booth/templates/booth/booth.html:236
-#: decide/booth/templates/booth/booth.html:247
-#: decide/booth/templates/booth/booth.html:283
+#: booth/templates/booth/booth.html:236 booth/templates/booth/booth.html:247
+#: booth/templates/booth/booth.html:283
 msgid "Error: "
 msgstr "Error: "
 
-#: decide/booth/templates/booth/booth.html:279
+#: booth/templates/booth/booth.html:279
 msgid "Congratulations. Your vote has been sent"
 msgstr "Felicidades. Tu voto ha sido enviado."
 
-#: decide/decide/settings.py:150
+#: census/templates/census/census.html:13
+msgid "Censos"
+msgstr "Censos"
+
+#: census/templates/census/census.html:14
+msgid "En esta sección se pueden ver todos los censos creados"
+msgstr "En esta sección se pueden ver todos los censos creados"
+
+#: census/templates/census/census.html:17
+msgid "Crear Censo"
+msgstr "Crear Censo"
+
+#: census/templates/census/census.html:18
+msgid "Importar Censo"
+msgstr "Importar Censo"
+
+#: census/templates/census/census.html:19
+msgid "Exportar Censo"
+msgstr "Exportar Censo"
+
+#: census/templates/census/census.html:21
+msgid "Pestaña de Inicio"
+msgstr "Pestaña de Inicio"
+
+#: census/templates/census/census.html:22
+msgid "Pestaña de Admin"
+msgstr "Pestaña de Admin"
+
+#: census/templates/census/census.html:34
+msgid "Acciones"
+msgstr "Acciones"
+
+#: census/templates/census/census.html:44
+msgid "Ver"
+msgstr "Ver"
+
+#: census/templates/census/census.html:45
+msgid "Borrar"
+msgstr "Borrar"
+
+#: census/templates/census/import.html:13
+msgid "El archivo debe ser de Excel"
+msgstr "El archivo debe ser de Excel"
+
+#: census/templates/census/import.html:15
+msgid "En la primera columna debe aparecer el ID de la votación"
+msgstr "En la primera columna debe aparecer el ID de la votación"
+
+#: census/templates/census/import.html:16
+msgid "y en la segunda el ID del votante"
+msgstr "y en la segunda el ID del votante"
+
+#: census/templates/census/import.html:23
+msgid "Importar Censos"
+msgstr "Importar Censos"
+
+#: census/templates/census/import.html:26
+msgid "Volver"
+msgstr "Volver"
+
+#: decide/settings.py:151
 msgid "English"
 msgstr "Inglés"
 
-#: decide/decide/settings.py:151
+#: decide/settings.py:152
 msgid "Spanish"
 msgstr "Español"
 
-#: decide/visualizer/templates/visualizer/visualizer.html:25
+#: visualizer/templates/visualizer/visualizer.html:25
 msgid "Votación no comenzada"
 msgstr "Votación no comenzada"
 
-#: decide/visualizer/templates/visualizer/visualizer.html:26
+#: visualizer/templates/visualizer/visualizer.html:26
 msgid "Votación en curso"
 msgstr "Votación en curso"
 
-#: decide/visualizer/templates/visualizer/visualizer.html:28
+#: visualizer/templates/visualizer/visualizer.html:28
 msgid "Resultados"
 msgstr "Resultados"
 
-#: decide/visualizer/templates/visualizer/visualizer.html:33
+#: visualizer/templates/visualizer/visualizer.html:33
 msgid "Opción"
 msgstr "Opción"
 
-#: decide/visualizer/templates/visualizer/visualizer.html:34
+#: visualizer/templates/visualizer/visualizer.html:34
 msgid "Puntuación"
 msgstr "Puntuación"
 
-#: decide/visualizer/templates/visualizer/visualizer.html:35
+#: visualizer/templates/visualizer/visualizer.html:35
 msgid "Votos"
 msgstr "Votos"

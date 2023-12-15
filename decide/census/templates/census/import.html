@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n static %}
+{% trans '' %}
 
 {% block extrahead %}
   <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
@@ -9,20 +10,20 @@
 {% block content %}
   <div class="voting container">
     <h3>Importar Censo</h3>
-    <p>El archivo debe ser de Excel (.xlsx)</p>
+    <p>{% trans 'El archivo debe ser de Excel' %} (.xlsx)</p>
     <p>
-      En la primera columna debe aparecer el ID de la votación <b>(voting_id)</b>,
-      y en la segunda el ID del votante <b>(voter_id)</b>.
+      {% trans 'En la primera columna debe aparecer el ID de la votación' %} <b>(voting_id)</b>,
+      {% trans 'y en la segunda el ID del votante' %} <b>(voter_id)</b>.
     </p>
     <hr/>
 
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="file" name="census_file" accept=".xlsx" />
-      <button class="btn btn-primary btn-sm" type="submit">Importar Censos</button>
+      <button class="btn btn-primary btn-sm" type="submit">{% trans 'Importar Censos' %}</button>
     </form>
 
-    <br><button class="btn btn-primary btn-sm" onclick="window.location.href='/census'">Volver</button>
+    <br><button class="btn btn-primary btn-sm" onclick="window.location.href='/census'">>{% trans 'Volver' %}</button>
 
   </div>
 
