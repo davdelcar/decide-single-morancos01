@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 11:05+0100\n"
+"POT-Creation-Date: 2023-12-15 12:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,6 +64,22 @@ msgstr "Ir a Iniciar Sesión"
 msgid "Ir a Censos"
 msgstr "Ir a Censos"
 
+#: base/models.py:26 voting/models.py:70
+msgid "Name"
+msgstr "Nombre"
+
+#: base/models.py:28
+msgid "Me"
+msgstr "Yo"
+
+#: base/models.py:34
+msgid "Auth"
+msgstr "Autenticación"
+
+#: base/models.py:35 mixnet/models.py:20 voting/models.py:78
+msgid "Auths"
+msgstr "Autenticaciones"
+
 #: base/templates/change_language.html:2
 msgid "Change language"
 msgstr "Cambiar idioma"
@@ -84,7 +100,7 @@ msgstr "Usuario"
 msgid "Password"
 msgstr "Contraseña"
 
-#: booth/templates/booth/booth.html:133
+#: booth/templates/booth/booth.html:133 store/models.py:20
 msgid "Vote"
 msgstr "Votar"
 
@@ -96,6 +112,18 @@ msgstr "Error: "
 #: booth/templates/booth/booth.html:279
 msgid "Congratulations. Your vote has been sent"
 msgstr "Felicidades. Tu voto ha sido enviado."
+
+#: census/models.py:7 mixnet/models.py:18 store/models.py:8
+msgid "Voting ID"
+msgstr "Id de la Votación"
+
+#: census/models.py:8 store/models.py:9
+msgid "Voter ID"
+msgstr "ID del votante"
+
+#: census/models.py:12 census/models.py:13
+msgid "Census"
+msgstr "Censos"
 
 #: census/templates/census/census.html:13
 msgid "Censos"
@@ -165,6 +193,30 @@ msgstr "Inglés"
 msgid "Spanish"
 msgstr "Español"
 
+#: mixnet/models.py:19
+msgid "Auth Position"
+msgstr "Posición de autenticación"
+
+#: mixnet/models.py:23
+msgid "Key"
+msgstr "Clave"
+
+#: mixnet/models.py:26 voting/models.py:77
+msgid "Public Key"
+msgstr "Clave pública"
+
+#: mixnet/models.py:89
+msgid "Mixnet"
+msgstr "Red mixta"
+
+#: mixnet/models.py:90
+msgid "Mixnets"
+msgstr "Redes mixtas"
+
+#: store/models.py:21
+msgid "Votes"
+msgstr "Votos"
+
 #: visualizer/templates/visualizer/visualizer.html:25
 msgid "Votación no comenzada"
 msgstr "Votación no comenzada"
@@ -188,3 +240,67 @@ msgstr "Puntuación"
 #: visualizer/templates/visualizer/visualizer.html:35
 msgid "Votos"
 msgstr "Votos"
+
+#: voting/models.py:14 voting/models.py:71
+msgid "Description"
+msgstr "Descripción"
+
+#: voting/models.py:17
+msgid "Optional Question"
+msgstr "Pregunta opcional"
+
+#: voting/models.py:18
+msgid "Yes/No Question"
+msgstr "Pregunta de Sí/no"
+
+#: voting/models.py:24
+msgid "Type"
+msgstr "Tipo"
+
+#: voting/models.py:31
+msgid "Yes"
+msgstr "Sí"
+
+#: voting/models.py:35 voting/models.py:40 voting/models.py:72
+msgid "Question"
+msgstr "Pregunta"
+
+#: voting/models.py:36
+msgid "Questions"
+msgstr "Preguntas"
+
+#: voting/models.py:41
+msgid "Number"
+msgstr "Número"
+
+#: voting/models.py:42
+msgid "Option"
+msgstr "Opción"
+
+#: voting/models.py:65
+msgid "Question Option"
+msgstr "Opción de pregunta"
+
+#: voting/models.py:66
+msgid "Question Options"
+msgstr "Opciones de preguntas"
+
+#: voting/models.py:74
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#: voting/models.py:75
+msgid "End Date"
+msgstr "Fecha de finalización"
+
+#: voting/models.py:80
+msgid "Tally"
+msgstr "Conteo"
+
+#: voting/models.py:174
+msgid "Voting"
+msgstr "Votación"
+
+#: voting/models.py:175
+msgid "Votings"
+msgstr "Votaciones"
