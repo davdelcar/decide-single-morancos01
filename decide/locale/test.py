@@ -15,7 +15,6 @@ class ChangeLanguageFormTest(TestCase):
         response_post = self.client.post(reverse('set_language'), {'language': 'en'})
         self.assertEqual(response_post.status_code, 302)
 
-
         response = self.client.get(reverse('welcome'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'English')
@@ -23,10 +22,8 @@ class ChangeLanguageFormTest(TestCase):
         self.assertContains(response, '<select name="language" onchange="javascript:form.submit()">')
         self.assertContains(response, '<option value="es" >Spanish</option>')
         self.assertContains(response, '<option value="en" selected="selected">English</option>')
-        
-        
+                
         html_content = response.content.decode('utf-8')
-        print(html_content)
         self.assertIn('Welcome to Decide!', html_content)
         
 
@@ -45,3 +42,27 @@ class ChangeLanguageFormTest(TestCase):
         
         html_content = response.content.decode('utf-8')
         self.assertIn('Bienvenido a Decide!', html_content)
+
+    def testErrorChangeLanguageFormEnglish(self):
+
+        response_post = self.client.post(reverse('set_language'), {'language': 'en'})
+        self.assertEqual(response_post.status_code, 302)
+
+        response = self.client.get(reverse('welcome'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Inglés')
+               
+        html_content = response.content.decode('utf-8')
+        self.assertNotIn('Bienvenido a Decide!', html_content)
+
+    def testErrorChangeLanguageFormSpanish(self):
+
+        response_post = self.client.post(reverse('set_language'), {'language': 'es'})
+        self.assertEqual(response_post.status_code, 302)
+
+        response = self.client.get(reverse('welcome'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Spanish')
+
+        html_content = response.content.decode('utf-8')
+        self.assertNotIn('Welcome to Decide!', html_content)
