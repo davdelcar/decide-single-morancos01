@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% load i18n static %}
-
-{% block title %}Decide! - Welcome{% endblock %}
+{% load i18n %}
+{% block title %}Decide! - Welcome{% endblock %} 
 
 {% block extrahead %}
     <!-- Agrega el enlace a Bootstrap CSS -->
@@ -51,11 +50,6 @@
         {% endif %}
 
         <br><br><button class="btn btn-primary login-button" onclick="window.location.href='/census/'">{% trans 'Ir a Censos' %}</button>
-
     </div>
 {% endblock %}
 
-
-
-<a href="{% url 'user_profile' %}" class="btn btn-primary login-button">Ir a tu Perfil</a>
-<button class="btn btn-primary btn-sm" onclick="window.location.href='/census/'">{% trans 'Censos' %}</button>

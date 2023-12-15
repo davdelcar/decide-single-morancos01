@@ -24,6 +24,7 @@ from authentication.views import WelcomeView
 schema_view = get_swagger_view(title='Decide API')
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
