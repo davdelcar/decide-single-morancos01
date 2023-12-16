@@ -190,7 +190,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 
 STATICFILES_DIRS = os.path.join(PROJECT_PATH, 'static'),
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256
