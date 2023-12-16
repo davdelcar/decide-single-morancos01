@@ -39,7 +39,10 @@ class VotingView(generics.ListCreateAPIView):
         question.save()
         for idx, q_opt in enumerate(request.data.get('question_opt')):
             opt = QuestionOption(question=question, option=q_opt, number=idx)
-            opt.save()
+            try:
+                opt.save()
+            except Exception:
+                return Response({}, status=status.HTTP_400_BAD_REQUEST)
         voting = Voting(name=request.data.get('name'), desc=request.data.get('desc'),
                 question=question)
         voting.save()
