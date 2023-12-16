@@ -6,9 +6,12 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient, APITestCase
 from rest_framework.authtoken.models import Token
+from voting.models import Voting
+from voting.models import Question, QuestionOption
 from django.contrib.auth.hashers import check_password
 from django.contrib.messages import get_messages
 from django.utils.translation import activate
+
 
 from .forms import LoginForm
 
@@ -146,13 +149,13 @@ class LoginViewTestCase(TestCase):
         self.assertIsNone(response.context["msg"])
 
     def test_post_valid_credentials(self):
-        data = {"username": "testuser", "password": "testpass", "remember_me": False}
-        response = self.client.post(self.url, data, follow=True)  # Agrega follow=True
+        data = {"identifier": "testuser", "password": "testpass", "remember_me": False}
+        response = self.client.post(self.url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
 
     def test_post_invalid_credentials(self):
-        data = {"username": "testuser", "password": "wrongpass", "remember_me": False}
+        data = {"identifier": "testuser", "password": "wrongpass", "remember_me": False}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
@@ -160,7 +163,7 @@ class LoginViewTestCase(TestCase):
         self.assertEqual(response.context["msg"], "Credenciales incorrectas")
 
     def test_post_invalid_form(self):
-        data = {"username": "", "password": "", "remember_me": False}
+        data = {"identifier": "", "password": "", "remember_me": False}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
@@ -173,10 +176,41 @@ class WelcomeTestView(TestCase):
         self.url = reverse("welcome")
         self.user = User.objects.create_user(username="testuser", password="testpass")
 
-    def test_get(self):
+    def test_get_unauthenticated_user(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
+         
+        self.assertContains(response, "Go to Login", msg_prefix="La cadena esperada no se encontró en la respuesta.")
+
+
+    
+    def test_get_authenticated_user(self):
+        
+        self.client.force_login(self.user)
+        q = Question(desc='test question', types='OQ')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        open_voting = Voting(name='test open voting', question=q , start_date="2023-01-01")
+        open_voting.save()
+        closed_voting = Voting(name='test open voting', question=q , start_date="2023-01-01", end_date="2023-02-01", tally={})
+        closed_voting.save()
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "welcome.html")
+
+        self.assertNotContains(response, "Go to Login")
+
+        self.assertContains(response, "Votaciones Abiertas:")
+        self.assertContains(response, reverse("booth", args=[open_voting.id]))
+
+        self.assertContains(response, "Votaciones Cerradas:")
+        self.assertContains(response, reverse("visualizer", args=[closed_voting.id]))
+
+    
 
 class UserProfileViewTest(TestCase):
     def setUp(self):

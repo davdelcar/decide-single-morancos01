@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import LoginForm
 from django.shortcuts import render
+from voting.models import Voting
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
@@ -69,6 +70,13 @@ class WelcomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
+
+        closed_votings = Voting.objects.filter(tally__isnull=False)
+        context['closed_votings'] = closed_votings
+
+        open_votings = Voting.objects.filter(start_date__isnull=False, end_date__isnull=True)
+        context['open_votings'] = open_votings
+
         return context
 
 class LoginView(TemplateView):
@@ -77,34 +85,47 @@ class LoginView(TemplateView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.template_name = 'login.html'
-
+    
     def post(self, request, *args, **kwargs):
         form = LoginForm(request.POST)
         msg = None
 
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            identifier = form.cleaned_data.get("identifier")
             password = form.cleaned_data.get("password")
             remember_me = form.cleaned_data.get("remember_me")
-            user = authenticate(request, username=username, password=password)
+
+            # Verifica si el identificador es un correo electrónico
+            if '@' in identifier:
+                try:
+                    # Autenticar por correo electrónico
+                    user = User.objects.get(email=identifier)
+                    username = user.username
+                    user = authenticate(request, username=username, password=password)
+                except User.DoesNotExist:
+                    user = None
+            else:
+                # Autenticar por nombre de usuario
+                user = authenticate(request, username=identifier, password=password)
+                username = identifier
+
             if user is not None:
                 login(request, user)
                 if not remember_me:
                     request.session.set_expiry(0)
 
-                # Usa self.template_name aquí
                 return redirect("/")
             else:
                 msg = "Credenciales incorrectas"
         else:
             msg = "Error en el formulario"
 
-        # Retorno de la vista en el caso de credenciales incorrectas o error en el formulario
         return render(request, self.template_name, {"form": form, "msg": msg, "user": None})
 
     def get(self, request, *args, **kwargs):
         form = LoginForm(None)
         return render(request, self.template_name, {"form": form, "msg": None})
+
     
 class UserProfileView(TemplateView):
     template_name = 'profile.html'

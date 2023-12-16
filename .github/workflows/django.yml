@@ -1,6 +1,10 @@
 name: Python application
 
 on:
+  pull_request:
+    branches:
+    - develop
+    - main
   push:
      branches:
      - develop 
@@ -14,7 +18,7 @@ jobs:
   build:
     strategy:
       matrix:
-        pyversion: ['3.8','3.9']
+        pyversion: ['3.10.12','3.11']
 
     runs-on: ubuntu-latest
 
@@ -47,6 +51,7 @@ jobs:
     - name: Run migrations (unnecessary)
       run: |
         cd decide
+        python manage.py makemigrations
         python manage.py migrate
     - name: Run tests
       run: |

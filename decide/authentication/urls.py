@@ -2,6 +2,8 @@ from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
 
 from .views import GetUserView, LogoutView, RegisterView, WelcomeView, LoginView, UserProfileView
+from booth.views import BoothView
+from visualizer.views import VisualizerView
 
 
 urlpatterns = [
@@ -12,4 +14,6 @@ urlpatterns = [
     path('', WelcomeView.as_view(), name='welcome'),
     path("signin/", LoginView.as_view(), name="signin"),
     path("profile/", UserProfileView.as_view(), name='user_profile'),
+    path('booth/<int:voting_id>/', BoothView.as_view(), name='booth'),
+    path('visualizer/<int:voting_id>/', VisualizerView.as_view(), name='visualizer'),
 ]
