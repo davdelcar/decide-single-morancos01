@@ -181,7 +181,7 @@ class CensusImportViewTest(BaseTestCase):
     def setUp(self):
         super().setUp()
 
-    def create_voting(self):
+    def createVoting(self):
         q = Question(desc="test_question")
         q.save()
 
@@ -200,7 +200,7 @@ class CensusImportViewTest(BaseTestCase):
 
         return v
 
-    def test_census_import_view(self):
+    def testCensusImportView(self):
         self.create_voting()
 
         workbook = Workbook()
@@ -240,7 +240,7 @@ class ExportCsvTestCase(TestCase):
         Census.objects.create(id=1, voting_id=2, voter_id=2)
         Census.objects.create(id=2, voting_id=2, voter_id=1)
 
-    def test_export_csv(self):
+    def testExportCsv(self):
         response = self.client.get(reverse('export'))
 
         self.assertEqual(response.status_code, 200)
@@ -260,14 +260,14 @@ class CensusListTestCase(BaseTestCase):
         super().tearDown()
         self.census = None
 
-    def test_census_list(self):
+    def testCensusList(self):
         response = self.client.get('/census/', format='html')
         self.assertEqual(response.status_code, 200)
     
-    def test_census_export(self):
+    def testCensusExport(self):
         response = self.client.get('/census/export/', format='html')
         self.assertEqual(response.status_code, 200)
 
-    def test_census_import(self):
+    def testCensusImport(self):
         response = self.client.get('/census/import/', format='html')
         self.assertEqual(response.status_code, 200)
