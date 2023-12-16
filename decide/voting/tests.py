@@ -93,23 +93,23 @@ class VotingTestCase(BaseTestCase):
         return v
 
     def testErrorMoreThanTwoOptionsCreateVotingYesNo(self):
-            q = Question(desc='test question', types='YN')
-            q.save()
-            opt1 = QuestionOption(question=q, option='Yes')
-            opt1.save()
-            opt2 = QuestionOption(question=q, option='No')
-            opt2.save()
-            opt3 = QuestionOption(question=q, option='Tal vez')
-            with self.assertRaises(ValidationError):
-                opt3.save()
-            v = Voting(name='test voting', question=q)
-            v.save()
+        q = Question(desc='test question', types='YN')
+        q.save()
+        opt1 = QuestionOption(question=q, option='Yes')
+        opt1.save()
+        opt2 = QuestionOption(question=q, option='No')
+        opt2.save()
+        opt3 = QuestionOption(question=q, option='Tal vez')
+        with self.assertRaises(ValidationError):
+            opt3.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
 
-            a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
-                                            defaults={'me': True, 'name': 'test auth'})
-            a.save()
-            v.auths.add(a)
-            return v
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                        defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        return v
         
     def testCreateYesNoVotingFromAPI(self):
         data = {'name': 'Example'}
