@@ -75,4 +75,7 @@ class ChangeLanguageFormTest(TestCase):
 
     def testEnglishTranslation(self):
         #Vemos si se traducen las palabras correctamente al inglés desde el .po
+        response_post = self.client.post(reverse('set_language'), {'language': 'en'})
+        self.assertEqual(response_post.status_code, 302)
         self.assertEqual(_("Gracias por unirte a nuestra plataforma de votación electrónica"), "Thank you for joining our electronic voting platform")
+        deactivate_all()
