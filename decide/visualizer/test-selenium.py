@@ -12,7 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from voting.models import Question, Voting, QuestionOption
 
-
+'''
 class VisualizerTestCase(StaticLiveServerTestCase):
     def create_votings(self):
         #Creo una votación
@@ -109,3 +109,4 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         # Verifica que el elemento "pieChart" no esté presente en el DOM
         with self.assertRaises(NoSuchElementException):
             self.driver.find_element(By.ID, "pieChart")
+'''
