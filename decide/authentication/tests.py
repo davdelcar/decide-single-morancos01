@@ -150,7 +150,7 @@ class LoginViewTestCase(TestCase):
 
     def test_post_valid_credentials(self):
         data = {"username": "testuser", "password": "testpass", "remember_me": False}
-        response = self.client.post(self.url, data, follow=True)  
+        response = self.client.post(self.url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
 
@@ -180,12 +180,11 @@ class WelcomeTestView(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
-        
-        content = response.content.decode('utf-8')  
+         
         self.assertContains(response, "Go to Login", msg_prefix="La cadena esperada no se encontró en la respuesta.")
 
 
-    #Pendiente de Arreglar por nuevos cambios en las votaciones
+    
     def test_get_authenticated_user(self):
         
         self.client.force_login(self.user)

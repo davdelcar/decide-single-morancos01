@@ -13,7 +13,6 @@ from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import LoginForm
 from django.shortcuts import render
-from django.utils import timezone
 from voting.models import Voting
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm

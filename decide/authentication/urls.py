@@ -14,6 +14,6 @@ urlpatterns = [
     path('', WelcomeView.as_view(), name='welcome'),
     path("signin/", LoginView.as_view(), name="signin"),
     path("profile/", UserProfileView.as_view(), name='user_profile'),
-    path('booth/<int:voting_id>/', BoothView.as_view(), name='booth'), 
-    path('visualizer/<int:voting_id>/', VisualizerView.as_view(), name='visualizer'),   
+    path('booth/<int:voting_id>/', BoothView.as_view(), name='booth'),
+    path('visualizer/<int:voting_id>/', VisualizerView.as_view(), name='visualizer'),
 ]
