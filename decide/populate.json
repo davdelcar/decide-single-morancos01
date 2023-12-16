@@ -243,7 +243,8 @@
         "model": "voting.question",
         "pk": 1,
         "fields": {
-            "desc": "¿Es esto una votación correcta?"
+            "desc": "¿Es esto una votación correcta?",
+            "types": "YN"
         }
     },
     {
