@@ -12,11 +12,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from voting.models import Question, Voting, QuestionOption
 
-'''
+
 class VisualizerTestCase(StaticLiveServerTestCase):
     def create_votings(self):
         #Creo una votación
-        q = Question(desc="Pregunta de Ejemplo")
+        q = Question(desc='test question', types='OQ')
         q.save()
         for i in range(5):
             opt = QuestionOption(question=q, option="Opcion {}".format(i + 1))
@@ -73,7 +73,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
 
         # Verifica elementos específicos en la página cerrada
         self.assertIn("Decide", self.driver.title)
-        self.assertIn("Resultados:", self.driver.page_source)
+        self.assertIn("Results:", self.driver.page_source)
 
         # Espera a que los gráficos estén presentes y visibles
         bar_chart = WebDriverWait(self.driver, 10).until(
@@ -109,4 +109,3 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         # Verifica que el elemento "pieChart" no esté presente en el DOM
         with self.assertRaises(NoSuchElementException):
             self.driver.find_element(By.ID, "pieChart")
-'''
