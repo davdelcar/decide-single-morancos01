@@ -384,3 +384,21 @@ class RegisterUserTest(TestCase):
         self.assertTemplateUsed(response, "register.html")
         self.assertContains(response, 'El correo electrónico ya está en uso', status_code=200, html=True)
         self.assertFalse(User.objects.filter(email='testuser@example.com').exists())
+
+    def testPostInvalidRegistrationEmptyFields(self):
+    # Definir los campos y valores iniciales
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+        for field in fields:
+            with self.subTest(field=field):
+                # Crear una copia del diccionario data
+                data = {'username': 'createuser', 'first_name': 'test', 'last_name': 'user',
+                        'email': 'test@gmail.com', 'password1': '123456789test', 'password2': '123456789test'}
+
+                # Establecer el campo actual en cadena vacía para simular un campo vacío
+                data[field] = ''
+
+                response = self.client.post(self.url, data)
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(response, "register.html")
+                self.assertContains(response, 'This field is required.', status_code=200, html=True)
