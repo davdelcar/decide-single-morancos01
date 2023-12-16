@@ -26,8 +26,8 @@
                 <form method="POST">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="{{ form.username.id_for_label }}">{% trans 'Usuario' %}</label>
-                        {{ form.username}}
+                        <label for="{{ form.identifier.id_for_label }}">{% trans 'Usuario o Correo Electrónico' %}</label>
+                        {{ form.identifier }}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.password.id_for_label }}">{% trans 'Contraseña' %}</label>
@@ -45,3 +45,4 @@
         </div>
     </div>
 {% endblock %}
+

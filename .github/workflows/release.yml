@@ -10,9 +10,9 @@ permissions:
 
 jobs:
   buildTest:
-    uses: davdelcar/decide-single-morancos01/.github/workflows/django.yml@main
+    uses: davdelcar/decide-single-morancos01/.github/workflows/django.yml@develop
     secrets: 
-      CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
+      CODACY_PROJECT_TOKEN: 606f1744650d495ebfb8b6523afcd963
      
   release:
     needs: buildTest
