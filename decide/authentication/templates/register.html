@@ -17,7 +17,7 @@
             <div class="col-lg-8 mx-auto">
                 <h2 class="text-center mb-4">{% trans 'Registro' %}!</h2>
 
-                <form method="post" action="{% url 'register' %}">
+                <form method="post" action="{% url 'registerUser' %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="{{ form.username.id_for_label }}">{% trans 'Usuario' %}</label>

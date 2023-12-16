@@ -194,4 +194,29 @@ class UserProfileViewTest(TestCase):
         self.assertContains(response, "Inicia sesión para acceder a tu perfil de usuario.")
         self.assertContains(response, reverse("signin"))
  
+class RegisterUserTest(TestCase):
 
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("registerUser")
+        self.user = User.objects.create_user(username="createuser", password="createuser123")
+
+    def testGetRegisterFrom(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, "form")
+
+    def testPostValidRegistration(self):
+        data = {
+            'username' : 'testuser',
+            'first_name' : 'test',
+            'las_name' : 'user',
+            'email' : 'test@email.com',
+            'password1' : 'testuser123',
+            'password2' : 'testuser123'
+        }
+        reponse = self.client.post(reverse('registerUser'), data)
+        self.assertEqual(reponse.status_code, 302)
+        self.assertRedirects(reponse, '/')
+        self.assertTrue(User.objects.filter(username='testuser').exists())

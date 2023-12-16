@@ -134,7 +134,6 @@ class RegisterFormView(TemplateView):
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(request, username=user.username, password=raw_password)
                 login(request, user)
-
                 # Usa self.template_name aquí
                 return redirect("/")
             else:
