@@ -41,9 +41,8 @@ class VotingView(generics.ListCreateAPIView):
             opt = QuestionOption(question=question, option=q_opt, number=idx)
             try:
                 opt.save()
-            except:
+            except Exception:
                 return Response({}, status=status.HTTP_400_BAD_REQUEST)
-            
         voting = Voting(name=request.data.get('name'), desc=request.data.get('desc'),
                 question=question)
         voting.save()
