@@ -146,13 +146,13 @@ class LoginViewTestCase(TestCase):
         self.assertIsNone(response.context["msg"])
 
     def test_post_valid_credentials(self):
-        data = {"username": "testuser", "password": "testpass", "remember_me": False}
-        response = self.client.post(self.url, data, follow=True)  # Agrega follow=True
+        data = {"identifier": "testuser", "password": "testpass", "remember_me": False}
+        response = self.client.post(self.url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
 
     def test_post_invalid_credentials(self):
-        data = {"username": "testuser", "password": "wrongpass", "remember_me": False}
+        data = {"identifier": "testuser", "password": "wrongpass", "remember_me": False}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
@@ -160,7 +160,7 @@ class LoginViewTestCase(TestCase):
         self.assertEqual(response.context["msg"], "Credenciales incorrectas")
 
     def test_post_invalid_form(self):
-        data = {"username": "", "password": "", "remember_me": False}
+        data = {"identifier": "", "password": "", "remember_me": False}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
