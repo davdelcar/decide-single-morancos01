@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Registro' %}{% endblock %}
+{% block extrahead %}
+    <!-- Agrega el enlace a Bootstrap CSS -->
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-center mb-4">{% trans 'Registro' %}!</h2>
+
+                <form method="post" action="{% url 'registerUser' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">{% trans 'Usuario' %}</label>
+                        {{ form.username}}
+                        <small class="text-danger">{{ form.username.errors }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}">{% trans 'Correo electrónico' %}</label>
+                        {{ form.email }}
+                        <small class="text-danger">{{ form.email.errors }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.password1.id_for_label }}">{% trans 'Contraseña' %}</label>
+                        {{ form.password1 }}
+                        <small class="text-danger">{{ form.password1.errors }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.password2.id_for_label }}">{% trans 'Confirmar contraseña' %}</label>
+                        {{ form.password2 }}
+                        <small class="text-danger">{{ form.password2.errors }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}">{% trans 'Nombre' %}</label>
+                        {{ form.first_name }}
+                        <small class="text-danger">{{ form.first_name.errors }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}">{% trans 'Apellidos' %}</label>
+                        {{ form.last_name }}
+                        <small class="text-danger">{{ form.last_name.errors }}</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">{% trans 'Registrarse' %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

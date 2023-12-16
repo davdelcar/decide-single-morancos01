@@ -329,4 +329,73 @@ class UserProfileViewTest(TestCase):
         self.assertContains(response, "Inicia sesión para acceder a tu perfil de usuario.")
         self.assertContains(response, reverse("signin"))
  
+class RegisterUserTest(TestCase):
 
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("registerUser")
+        self.user = User.objects.create_user(username="createuser", password="createuser123", email="createuser@gmail.com")
+        self.data = {
+            'username' : 'testuser',
+            'first_name' : 'test',
+            'last_name' : 'user',
+            'email' : 'test@gmail.com',
+            'password1' : '123456789test',
+            'password2' : '123456789test'
+        }
+
+    def testGetRegisterFrom(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, "form")
+
+    def testPostValidRegistration(self):
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(User.objects.filter(username='testuser').exists())
+
+    def testPostInvalidRegistration(self):
+        data = {}
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'This field is required.', status_code=200, html=True)
+
+    def testPostExistingUserRegistration(self):
+        self.data['username'] = 'createuser'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'A user with that username already exists.', status_code=200, html=True)
+        self.assertFalse(User.objects.filter(username='testuser').exists())
+
+    def testPostValueErrorRegistration(self):
+        self.data['password2'] = 'invalidpassword'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'The two password fields didn’t match.', status_code=200, html=True)
+
+    def testPostDuplicateEmailRegistration(self):
+        self.data['email'] = 'createuser@gmail.com'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'El correo electrónico ya está en uso', status_code=200, html=True)
+        self.assertFalse(User.objects.filter(email='testuser@example.com').exists())
+
+    def testPostInvalidRegistrationEmptyFields(self):
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+        for field in fields:
+            with self.subTest(field=field):
+                data = {'username': 'createuser', 'first_name': 'test', 'last_name': 'user',
+                        'email': 'test@gmail.com', 'password1': '123456789test', 'password2': '123456789test'}
+
+                data[field] = ''
+
+                response = self.client.post(self.url, data)
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(response, "register.html")
+                self.assertContains(response, 'This field is required.', status_code=200, html=True)
