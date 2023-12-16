@@ -201,7 +201,8 @@ class UserProfileViewTest(TestCase):
         self.assertTrue(check_password('JMC112003', user.password))
         self.assertContains(response, 'Tu contraseña ha sido cambiada con éxito.')
 
-    def test_change_password_invalid_form(self): # Comprueba dos restricciones: la contraseña actual es incorrecta y la contraseña nueva es muy corta (menos de 8 carracteres)
+    # Comprueba dos restricciones: la contraseña actual es incorrecta y la contraseña nueva es muy corta (menos de 8 carracteres)
+    def test_change_password_invalid_form(self):
         self.client.force_login(self.user)
 
         activate('en')
@@ -220,7 +221,7 @@ class UserProfileViewTest(TestCase):
         self.assertIn('old_password: Your old password was entered incorrectly. Please enter it again.', messages)
         self.assertIn('new_password2: This password is too short. It must contain at least 8 characters.', messages)
 
-    def test_change_password_numeric_password(self):
+    def test_change_password_numeric_password(self): #No puede ser numérica
         self.client.force_login(self.user)
 
         activate('en')
@@ -238,7 +239,7 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('new_password2: This password is entirely numeric.', messages)
 
-    def test_change_password_username_password(self):
+    def test_change_password_username_password(self): #No puede ser similar al username
         self.client.force_login(self.user)
 
         activate('en')
@@ -256,7 +257,8 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('new_password2: The password is too similar to the username.', messages)
 
-    def test_change_password_common_password(self): #Test que comprueba si se ha añadido una contraseña común. EJEMPLOS: 'password', '123456','qwerty','admin','letmein','password123','abc123','111111','123abc','test'
+    #Test que comprueba si se ha añadido una contraseña común. EJEMPLOS: 'password', '123456','qwerty','admin','letmein','password123','abc123','111111','123abc','test'
+    def test_change_password_common_password(self): 
         self.client.force_login(self.user)
 
         activate('en')

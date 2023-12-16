@@ -14,7 +14,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import LoginForm
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from django.views import View
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
