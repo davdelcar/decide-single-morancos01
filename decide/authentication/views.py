@@ -13,6 +13,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import LoginForm
 from django.shortcuts import render
+from django.utils import timezone
+from voting.models import Voting
 from django.views.generic import TemplateView
 
 from .serializers import UserSerializer
@@ -65,6 +67,13 @@ class WelcomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
+
+        closed_votings = Voting.objects.filter(tally__isnull=False)
+        context['closed_votings'] = closed_votings
+
+        open_votings = Voting.objects.filter(start_date__isnull=False, end_date__isnull=True)
+        context['open_votings'] = open_votings
+
         return context
 
 class LoginView(TemplateView):
