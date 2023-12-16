@@ -12,7 +12,7 @@ jobs:
   buildTest:
     uses: davdelcar/decide-single-morancos01/.github/workflows/django.yml@develop
     secrets: 
-      CODACY_PROJECT_TOKEN: 606f1744650d495ebfb8b6523afcd963
+      CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
      
   release:
     needs: buildTest

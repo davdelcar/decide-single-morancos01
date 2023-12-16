@@ -1,6 +1,10 @@
 name: Python application
 
 on:
+  pullrequest:
+    branches:
+    - develop
+    - main
   push:
      branches:
      - develop 
@@ -47,6 +51,7 @@ jobs:
     - name: Run migrations (unnecessary)
       run: |
         cd decide
+        python manage.py makemigrations
         python manage.py migrate
     - name: Run tests
       run: |
