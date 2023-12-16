@@ -74,35 +74,35 @@
             
             <div class="voting-container">
                 {% if closed_votings %}
-                    <h2>Votaciones Cerradas:</h2>
+                    <h2>{% trans 'Votaciones Cerradas:' %}</h2>
                     {% for voting in closed_votings %}
                         <div class="voting-box">
                             <p class="voting-name">{{ voting.name }}</p>
                             <p class="voting-desc">{{ voting.desc }}</p>
                             {% if voting.start_date %}
-                                <p class="voting-date">Fecha de Inicio: {{ voting.start_date }}</p>
+                                <p class="voting-date">{% trans 'Fecha de Inicio:' %} {{ voting.start_date }}</p>
                             {% endif %}
                             {% if voting.end_date %}
-                                <p class="voting-date">Fecha de Finalización: {{ voting.end_date }}</p>
+                                <p class="voting-date">{% trans 'Fecha de Finalización:' %} {{ voting.end_date }}</p>
                             {% endif %}
-                            <a class="btn btn-primary" href="{% url 'visualizer' voting.id %}">Ver resultados</a>
+                            <a class="btn btn-primary" href="{% url 'visualizer' voting.id %}">{% trans 'Ver resultados'%}</a>
                         </div>
                     {% endfor %}
                 {% else %}
-                    <p>No hay votaciones disponibles en este momento.</p>
+                    <p>{% trans 'No hay votaciones disponibles en este momento' %}</p>
                 {% endif %}
                 
                 {% if open_votings %}
-                    <h2>Votaciones Abiertas:</h2>
+                    <h2>{% trans 'Votaciones Abiertas:'%}</h2>
                     {% for voting in open_votings %}
                         <div class="voting-box">
                             <p class="voting-name">{{ voting.name }}</p>
                             <p class="voting-desc">{{ voting.desc }}</p>
-                            <a class="btn btn-primary" href="{% url 'booth' voting.id %}">Ir a Votación</a>
+                            <a class="btn btn-primary" href="{% url 'booth' voting.id %}">{%trans 'Ir a Votación'%}</a>
                         </div>
                     {% endfor %}
                 {% else %}
-                    <p>No hay votaciones abiertas en este momento.</p>
+                    <p>{% trans 'No hay votaciones abiertas en este momento' %}</p>
                 {% endif %}
             </div>
 
