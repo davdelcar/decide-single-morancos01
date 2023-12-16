@@ -89,6 +89,24 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
         return v
 
+    def error_more_than_2_questions_create_voting_yes_no(self):
+            q = Question(desc='test question', types='YN')
+            q.save()
+            opt1 = QuestionOption(question=q, option='Yes')
+            opt1.save()
+            opt2 = QuestionOption(question=q, option='No')
+            opt2.save()
+            opt3 = QuestionOption(question=q, option='Tal vez')
+            self.assertRaises(ValidationError, opt3.save())
+            v = Voting(name='test voting', question=q)
+            v.save()
+
+            a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                            defaults={'me': True, 'name': 'test auth'})
+            a.save()
+            v.auths.add(a)
+            return v
+
     def create_voters(self, v):
         for i in range(100):
             u, _ = User.objects.get_or_create(username='testvoter{}'.format(i))
@@ -149,7 +167,7 @@ class VotingTestCase(BaseTestCase):
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
             
     def test_create_yes_no_voting(self):
-        v = self.create_voting()
+        v = self.create_voting_yes_no()
         self.create_voters(v)
 
         v.create_pubkey()
@@ -370,7 +388,7 @@ class QuestionsTests(StaticLiveServerTestCase):
         self.cleaner.find_element(By.ID, "id_options-0-number").click()
         self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
         self.cleaner.find_element(By.ID, "id_options-0-option").click()
-        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('Yes')
+        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('Sí')
         self.cleaner.find_element(By.ID, "id_options-1-number").click()
         self.cleaner.find_element(By.ID, "id_options-1-number").send_keys('2')
         self.cleaner.find_element(By.ID, "id_options-1-option").click()
