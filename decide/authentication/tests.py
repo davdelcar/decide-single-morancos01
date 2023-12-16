@@ -276,9 +276,10 @@ class UserProfileViewTest(TestCase):
         self.assertIn('new_password2: This password is too common.', messages)
 
     def test_change_password_unauthenticated_user(self):
+
         response = self.client.post(self.url, follow=True)  # Agrega follow=True para seguir redirecciones
         self.assertEqual(response.status_code, 200)  # Se espera un código 200 después de la redirección
-        self.assertContains(response, 'Iniciar Sesión')  # Ajusta este texto según lo que contenga tu botón de inicio de sesión
+        self.assertContains(response, 'Login')
         self.assertNotContains(response, 'Deseo cambiar de contraseña')  # Verifica que el botón de cambio de contraseña no esté presente
 
     def test_get_authenticated_user(self):
