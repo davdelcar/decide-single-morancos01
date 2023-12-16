@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['.vercel.app', 'localhost', '.now.sh', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -189,8 +190,8 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/images/'
 
-STATICFILES_DIRS = os.path.join(PROJECT_PATH, 'static'),
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256
