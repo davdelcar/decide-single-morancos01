@@ -257,7 +257,6 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('new_password2: The password is too similar to the username.', messages)
 
-    #Test que comprueba si se ha añadido una contraseña común. EJEMPLOS: 'password', '123456','qwerty','admin','letmein','password123','abc123','111111','123abc','test'
     def test_change_password_common_password(self): 
         self.client.force_login(self.user)
 
