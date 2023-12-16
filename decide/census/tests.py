@@ -201,7 +201,7 @@ class CensusImportViewTest(BaseTestCase):
         return v
 
     def testCensusImportView(self):
-        self.create_voting()
+        self.createVoting()
 
         workbook = Workbook()
         sheet = workbook.active
