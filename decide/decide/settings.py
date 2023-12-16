@@ -166,6 +166,8 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
+ADMIN_MEDIA_PREFIX = '/admin/media/'
+
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256
 
