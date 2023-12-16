@@ -1,56 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <!-- Enlace a Bootstrap CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css">
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "User Profile" %}{% endblock %}
+
+{% block extrahead %}
+    <!-- Agrega el enlace a Bootstrap CSS -->
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
     <style>
+        /* Estilos adicionales para mensajes de error */
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 20px; /* Márgenes añadidos aquí */
         }
-        h1 {
-            color: #333;
-            margin-bottom: 20px; /* Agregado para separar del contenido siguiente */
+
+        /* Estilos para el formulario de cambio de contraseña */
+        .password-change-form {
+            max-width: 400px;
+            margin: 20px auto;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        strong {
+
+        .password-change-form label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: bold;
         }
-        /* Estilo adicional para el botón */
-        .login-button {
-            margin-top: 10px;
+
+        .password-change-form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        .password-change-form .password-hint {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .password-change-form button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .password-change-form button:hover {
+            background-color: #0056b3;
         }
     </style>
-</head>
-<body class="container">
-    {% if user.is_authenticated %}
-        <h1 class="mt-5 mb-4">User Profile</h1>
-        <ul class="list-unstyled">
-            <li><strong>Username:</strong> {{ user.username }}</li>
-            <li><strong>First Name:</strong> {{ user.first_name }}</li>
-            <li><strong>Last Name:</strong> {{ user.last_name }}</li>
-            <li><strong>Email:</strong> {{ user.email }}</li>
-            <!-- Agrega aquí otros campos del modelo de usuario según tus necesidades -->
-        </ul>
-    {% else %}
-        <div class="alert alert-warning mt-5" role="alert">
-            Inicia sesión para acceder a tu perfil de usuario.
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <div class="alert alert-danger mt-3" role="alert">
+            {% for message in messages %}
+                {{ message }}<br>
+            {% endfor %}
         </div>
-        <!-- Botón de inicio de sesión -->
-        <a href="{% url 'signin' %}" class="btn btn-primary login-button mt-3">Iniciar Sesión</a>
     {% endif %}
 
-    <!-- Enlace a Bootstrap JS y Popper.js (necesario para algunos componentes de Bootstrap) -->
-    <script src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/bootstrap/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
+    {% if user.is_authenticated %}
+        <h1 class="mt-5 mb-4">{% trans "Perfil de usuario" %}</h1>
+        <ul class="list-unstyled">
+            <li><strong>{% trans "Usuario" %}:</strong> {{ user.username }}</li>
+            <li><strong>{% trans "Nombre" %}:</strong> {{ user.first_name }}</li>
+            <li><strong>{% trans "Apellidos" %}:</strong> {{ user.last_name }}</li>
+            <li><strong>{% trans "Email" %}:</strong> {{ user.email }}</li>
+            <!-- Agrega aquí otros campos del modelo de usuario según tus necesidades -->
+        </ul>
+
+        <!-- Botón para mostrar el formulario de cambio de contraseña -->
+        <button class="btn btn-primary mt-3" id="changePasswordBtn">{% trans "Deseo cambiar de contraseña" %}</button>
+        <br><br>
+
+        <!-- Formulario de cambio de contraseña (inicialmente oculto) -->
+        <form method="post" class="password-change-form mt-3" id="passwordChangeForm" style="display: none;">
+            {% csrf_token %}
+            <label for="{{ password_change_form.old_password.id_for_label }}">
+                {% trans "Contraseña Actual" %}:
+            </label>
+            {{ password_change_form.old_password }}
+            <label for="{{ password_change_form.new_password1.id_for_label }}">
+                {% trans "Nueva Contraseña" %}:
+            </label>
+            {{ password_change_form.new_password1 }}
+            <span class="password-hint">
+                {% trans "La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números." %}
+                <br>
+                {% trans "La contraseña no debe ser completamente numérica." %}
+                <br>
+                {% trans "La contraseña no debe ser común o similar al nombre de usuario." %}
+                <br>
+            </span>
+            <br>
+            <label for="{{ password_change_form.new_password2.id_for_label }}">
+                {% trans "Confirmar Nueva Contraseña" %}:
+            </label>
+            {{ password_change_form.new_password2 }}
+            <button type="submit" class="btn btn-primary">{% trans "Cambiar Contraseña" %}</button>
+        </form>
+
+    {% else %}
+        <div class="alert alert-warning mt-5" role="alert">
+            {% trans "Inicia sesión para acceder a tu perfil de usuario." %}
+        </div>
+        <!-- Botón de inicio de sesión -->
+        <a href="{% url 'signin' %}" class="btn btn-primary login-button mt-3">{% trans "Iniciar Sesión" %}</a>
+    {% endif %}
+
+    <script>
+        // Script para mostrar/ocultar el formulario al hacer clic en el botón
+        document.getElementById('changePasswordBtn').addEventListener('click', function() {
+            document.getElementById('passwordChangeForm').style.display = 'block';
+        });
+    </script>
+{% endblock %}
