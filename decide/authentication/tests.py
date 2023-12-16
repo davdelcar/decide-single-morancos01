@@ -257,7 +257,7 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('new_password2: The password is too similar to the username.', messages)
 
-    def test_change_password_common_password(self): 
+    def test_change_password_common_password(self):
         self.client.force_login(self.user)
 
         activate('en')
