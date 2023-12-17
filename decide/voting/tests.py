@@ -73,13 +73,16 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
         return v
     
-    def error_create_voting_yes_no(self):
+    def testErrorCreateVotingYesNo(self):
         q = Question(desc='test question', types='YN')
         q.save()
         opt1 = QuestionOption(question=q, option='Puede')
-        self.assertRaises(ValidationError, opt1.save())
+        with self.assertRaises(ValidationError):
+            opt1.save()
         opt2 = QuestionOption(question=q, option='Tal vez')
-        self.assertRaises(ValidationError, opt2.save())
+        with self.assertRaises(ValidationError):
+            opt2.save()
+            
         v = Voting(name='test voting', question=q)
         v.save()
 
@@ -88,6 +91,129 @@ class VotingTestCase(BaseTestCase):
         a.save()
         v.auths.add(a)
         return v
+
+    def testErrorMoreThanTwoOptionsCreateVotingYesNo(self):
+        q = Question(desc='test question', types='YN')
+        q.save()
+        opt1 = QuestionOption(question=q, option='Yes')
+        opt1.save()
+        opt2 = QuestionOption(question=q, option='No')
+        opt2.save()
+        opt3 = QuestionOption(question=q, option='Tal vez')
+        with self.assertRaises(ValidationError):
+            opt3.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                        defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        return v
+        
+    def testCreateYesNoVotingFromAPI(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'question_opt': ['Yes', 'No'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 201)
+        
+    def testErrorCreateYesNoVotingFromAPI(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'question_opt': ['Tal vez', 'No'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+    
+    def testErrorMoreThan2QuestionsCreateYesNoVotingFromAPI(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'question_opt': ['Yes', 'No', 'Tal vez'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def testCreateVotingFromAPI(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'OQ',
+            'question_opt': ['option 1', 'option 2'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 201)
 
     def create_voters(self, v):
         for i in range(100):
@@ -148,8 +274,8 @@ class VotingTestCase(BaseTestCase):
         for q in v.postproc:
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
             
-    def test_create_yes_no_voting(self):
-        v = self.create_voting()
+    def testCreateVotingYesNo(self):
+        v = self.create_voting_yes_no()
         self.create_voters(v)
 
         v.create_pubkey()
@@ -370,7 +496,7 @@ class QuestionsTests(StaticLiveServerTestCase):
         self.cleaner.find_element(By.ID, "id_options-0-number").click()
         self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
         self.cleaner.find_element(By.ID, "id_options-0-option").click()
-        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('Yes')
+        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('Sí')
         self.cleaner.find_element(By.ID, "id_options-1-number").click()
         self.cleaner.find_element(By.ID, "id_options-1-number").send_keys('2')
         self.cleaner.find_element(By.ID, "id_options-1-option").click()
