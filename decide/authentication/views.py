@@ -18,7 +18,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.urls import reverse
+from rest_framework import status
 
 
 from .serializers import UserSerializer
@@ -44,8 +44,8 @@ class LogoutView(APIView):
         # Cerrar sesión manualmente
         logout(request)
 
-        # Redirigir a la página de bienvenida después del cierre de sesión
-        return redirect('welcome')
+        # Devolver una respuesta exitosa
+        return Response(status=status.HTTP_200_OK)
 
 
 class RegisterView(APIView):
