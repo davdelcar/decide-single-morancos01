@@ -18,6 +18,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.urls import reverse
 
 
 from .serializers import UserSerializer
@@ -40,7 +41,11 @@ class LogoutView(APIView):
         except ObjectDoesNotExist:
             pass
 
-        return Response({})
+        # Cerrar sesión manualmente
+        logout(request)
+
+        # Redirigir a la página de bienvenida después del cierre de sesión
+        return redirect('welcome')
 
 
 class RegisterView(APIView):
