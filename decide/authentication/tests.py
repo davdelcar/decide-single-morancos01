@@ -174,6 +174,7 @@ class WelcomeTestView(TestCase):
     def setUp(self):
         self.client = Client()
         self.url = reverse("welcome")
+        self.url_logout = reverse("logout")
         self.user = User.objects.create_user(username="testuser", password="testpass")
 
     def test_get_unauthenticated_user(self):
@@ -210,6 +211,25 @@ class WelcomeTestView(TestCase):
         self.assertContains(response, "Votaciones Cerradas:")
         self.assertContains(response, reverse("visualizer", args=[closed_voting.id]))
 
+    def test_logout_from_welcome_page(self):
+
+        login_data = {'username': 'testuser', 'password': 'testpass'}
+        login_response = self.client.post(reverse('login'), login_data, format='json')
+        self.assertEqual(login_response.status_code, 200)
+
+        self.client.force_login(self.user)  # Asegúrate de que el usuario esté autenticado
+        response_welcome = self.client.get(self.url)
+        self.assertEqual(response_welcome.status_code, 200)
+
+        users_before_logout = User.objects.filter(id=self.user.id).count()+1
+
+        self.assertContains(response_welcome, 'Cerrar Sesión', html=True)
+
+        logout_response = self.client.post(self.url_logout)
+        self.assertEqual(logout_response.status_code, 200)  # Código de estado OK después del cierre de sesión
+
+        users_after_logout = User.objects.filter(id=self.user.id).count()
+        self.assertEqual(users_after_logout, users_before_logout - 1)
     
 
 class UserProfileViewTest(TestCase):
