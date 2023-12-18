@@ -382,7 +382,7 @@ class RegisterUserTest(TestCase):
         response = self.client.post(self.url, self.data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "register.html")
-        self.assertContains(response, 'El correo electrónico ya está en uso', status_code=200, html=True)
+        self.assertContains(response, 'Email is already in use', status_code=200, html=True)
         self.assertFalse(User.objects.filter(email='testuser@example.com').exists())
 
     def test_post_invalid_registration_empty_fields(self):
