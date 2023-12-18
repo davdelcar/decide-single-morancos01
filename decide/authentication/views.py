@@ -19,6 +19,7 @@ from .forms import RegisterForm
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from rest_framework import status
 from .serializers import UserSerializer
 
 
@@ -39,7 +40,11 @@ class LogoutView(APIView):
         except ObjectDoesNotExist:
             pass
 
-        return Response({})
+        # Cerrar sesión manualmente
+        logout(request)
+
+        # Devolver una respuesta exitosa
+        return Response(status=status.HTTP_200_OK)
 
 
 class RegisterView(APIView):
