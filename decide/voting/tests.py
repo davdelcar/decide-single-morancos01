@@ -74,7 +74,7 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
         return v
     
-    def testErrorCreateVotingYesNo(self):
+    def test_error_create_voting_yes_no(self):
         q = Question(desc='test question', types='YN')
         q.save()
         opt1 = QuestionOption(question=q, option='Puede')
@@ -93,7 +93,7 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
         return v
 
-    def testErrorMoreThanTwoOptionsCreateVotingYesNo(self):
+    def test_error_more_than_two_options_create_voting_yes_no(self):
         q = Question(desc='test question', types='YN')
         q.save()
         opt1 = QuestionOption(question=q, option='Yes')
@@ -112,7 +112,7 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
         return v
         
-    def testCreateYesNoVotingFromAPI(self):
+    def test_create_yes_no_voting_from_api(self):
         data = {'name': 'Example'}
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 401)
@@ -138,7 +138,7 @@ class VotingTestCase(BaseTestCase):
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 201)
         
-    def testErrorCreateYesNoVotingFromAPI(self):
+    def test_error_create_yes_no_voting_from_api(self):
         data = {'name': 'Example'}
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 401)
@@ -164,7 +164,7 @@ class VotingTestCase(BaseTestCase):
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 400)
     
-    def testErrorMoreThan2QuestionsCreateYesNoVotingFromAPI(self):
+    def test_error_more_than_2_questions_create_yes_No_voting_from_api(self):
         data = {'name': 'Example'}
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 401)
@@ -190,7 +190,7 @@ class VotingTestCase(BaseTestCase):
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 400)
 
-    def testCreateVotingFromAPI(self):
+    def test_Create_Voting_From_API(self):
         data = {'name': 'Example'}
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 401)
@@ -275,7 +275,7 @@ class VotingTestCase(BaseTestCase):
         for q in v.postproc:
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
             
-    def testCreateVotingYesNo(self):
+    def test_create_voting_yes_no(self):
         v = self.create_voting_yes_no()
         self.create_voters(v)
 
@@ -396,7 +396,7 @@ class LogInSuccessTests(StaticLiveServerTestCase):
 
         self.base.tearDown()
 
-    def testsuccessLogIn(self):
+    def test_success_log_in(self):
         self.driver.get(self.live_server_url+"/admin/login/?next=/admin/")
         self.driver.set_window_size(1280, 720)
         
