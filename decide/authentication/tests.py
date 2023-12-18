@@ -174,6 +174,7 @@ class WelcomeTestView(TestCase):
     def setUp(self):
         self.client = Client()
         self.url = reverse("welcome")
+        self.url_logout = reverse("logout")
         self.user = User.objects.create_user(username="testuser", password="testpass")
 
     def test_get_unauthenticated_user(self):
@@ -228,7 +229,7 @@ class WelcomeTestView(TestCase):
         self.assertEqual(logout_response.status_code, 200)  # Código de estado OK después del cierre de sesión
 
         users_after_logout = User.objects.filter(id=self.user.id).count()
-        self.assertEqual(users_after_logout, users_before_logout - 1)    
+        self.assertEqual(users_after_logout, users_before_logout - 1)
 
 class UserProfileViewTest(TestCase):
     def setUp(self):
