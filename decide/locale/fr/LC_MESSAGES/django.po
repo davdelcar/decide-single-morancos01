@@ -144,7 +144,7 @@ msgstr "Registre"
 
 #: authentication/templates/welcome.html:81
 msgid "Gracias por unirte a nuestra plataforma de votación electrónica"
-msgstr "Merci d'avoir rejoint notre plateforme de vote électronique."
+msgstr "Merci d'avoir rejoint notre plateforme de vote électronique"
 
 #: authentication/templates/welcome.html:82
 msgid "Ir a Censos"
