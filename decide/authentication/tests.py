@@ -29,10 +29,10 @@ class AuthTestCase(APITestCase):
         u2.is_superuser = True
         u2.save()
 
-    def tearDown(self):
+    def tear_down(self):
         self.client = None
 
-    def testLogin(self):
+    def test_login(self):
         data = {'username': 'voter1', 'password': '123'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -40,12 +40,12 @@ class AuthTestCase(APITestCase):
         token = response.json()
         self.assertTrue(token.get('token'))
 
-    def testLoginFail(self):
+    def test_login_fail(self):
         data = {'username': 'voter1', 'password': '321'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 400)
 
-    def testGetuser(self):
+    def test_getuser(self):
         data = {'username': 'voter1', 'password': '123'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -58,12 +58,12 @@ class AuthTestCase(APITestCase):
         self.assertEqual(user['id'], 1)
         self.assertEqual(user['username'], 'voter1')
 
-    def testGetuserInventedToken(self):
+    def test_getuser_invented_token(self):
         token = {'token': 'invented'}
         response = self.client.post('/authentication/getuser/', token, format='json')
         self.assertEqual(response.status_code, 404)
 
-    def testGetuserInvalidToken(self):
+    def test_getuser_invalid_token(self):
         data = {'username': 'voter1', 'password': '123'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -78,7 +78,7 @@ class AuthTestCase(APITestCase):
         response = self.client.post('/authentication/getuser/', token, format='json')
         self.assertEqual(response.status_code, 404)
 
-    def testLogout(self):
+    def test_logout(self):
         data = {'username': 'voter1', 'password': '123'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -92,7 +92,7 @@ class AuthTestCase(APITestCase):
 
         self.assertEqual(Token.objects.filter(user__username='voter1').count(), 0)
 
-    def testRegisterBadPermissions(self):
+    def test_register_bad_permissions(self):
         data = {'username': 'voter1', 'password': '123'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -102,7 +102,7 @@ class AuthTestCase(APITestCase):
         response = self.client.post('/authentication/register/', token, format='json')
         self.assertEqual(response.status_code, 401)
 
-    def testRegisterBadRequest(self):
+    def test_register_bad_request(self):
         data = {'username': 'admin', 'password': 'admin'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -112,7 +112,7 @@ class AuthTestCase(APITestCase):
         response = self.client.post('/authentication/register/', token, format='json')
         self.assertEqual(response.status_code, 400)
 
-    def testRegisterUserAlreadyExist(self):
+    def test_register_user_already_exist(self):
         data = {'username': 'admin', 'password': 'admin'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -122,7 +122,7 @@ class AuthTestCase(APITestCase):
         response = self.client.post('/authentication/register/', token, format='json')
         self.assertEqual(response.status_code, 400)
 
-    def testRegister(self):
+    def test_register(self):
         data = {'username': 'admin', 'password': 'admin'}
         response = self.client.post('/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -223,7 +223,7 @@ class WelcomeTestView(TestCase):
 
         users_before_logout = User.objects.filter(id=self.user.id).count()+1
 
-        self.assertContains(response_welcome, 'Cerrar Sesión', html=True)
+        self.assertContains(response_welcome, 'Logout', html=True)
 
         logout_response = self.client.post(self.url_logout)
         self.assertEqual(logout_response.status_code, 200)  # Código de estado OK después del cierre de sesión
@@ -238,7 +238,7 @@ class UserProfileViewTest(TestCase):
         self.url = reverse("user_profile")
         self.user = User.objects.create_user(username="testuser", password="testpass")
 
-    def testChangePasswordValidForm(self):
+    def test_change_password_valid_form(self):
         self.client.force_login(self.user)
 
         activate('es')
@@ -256,7 +256,7 @@ class UserProfileViewTest(TestCase):
         self.assertContains(response, 'Tu contraseña ha sido cambiada con éxito.')
 
     # Comprueba dos restricciones: la contraseña actual es incorrecta y la contraseña nueva es muy corta (menos de 8 carracteres)
-    def testChangePasswordInvalidForm(self):
+    def test_change_password_invalid_form(self):
         self.client.force_login(self.user)
 
         activate('en')
@@ -275,7 +275,7 @@ class UserProfileViewTest(TestCase):
         self.assertIn('old_password: Your old password was entered incorrectly. Please enter it again.', messages)
         self.assertIn('new_password2: This password is too short. It must contain at least 8 characters.', messages)
 
-    def testChangePasswordNumericPassword(self): #No puede ser numérica
+    def test_change_password_numeric_password(self): #No puede ser numérica
         self.client.force_login(self.user)
 
         activate('en')
@@ -293,7 +293,7 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('new_password2: This password is entirely numeric.', messages)
 
-    def testChangePasswordUsernamePassword(self): #No puede ser similar al username
+    def test_change_password_username_password(self): #No puede ser similar al username
         self.client.force_login(self.user)
 
         activate('en')
@@ -311,7 +311,7 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('new_password2: The password is too similar to the username.', messages)
 
-    def testChangePasswordCommonPassword(self):
+    def test_change_password_common_password(self):
         self.client.force_login(self.user)
 
         activate('en')
@@ -329,24 +329,24 @@ class UserProfileViewTest(TestCase):
         messages = [m.message for m in get_messages(response.wsgi_request)]
         self.assertIn('new_password2: This password is too common.', messages)
 
-    def testChangePasswordUnauthenticatedUser(self):
+    def test_change_password_unauthenticated_user(self):
 
         response = self.client.post(self.url, follow=True)  # Agrega follow=True para seguir redirecciones
         self.assertEqual(response.status_code, 200)  # Se espera un código 200 después de la redirección
         self.assertContains(response, 'Login')
         self.assertNotContains(response, 'Deseo cambiar de contraseña')  # Verifica que el botón de cambio de contraseña no esté presente
 
-    def testGetAuthenticatedUser(self):
+    def test_get_authenticated_user(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "profile.html")
         self.assertEqual(response.context["user"], self.user)
 
-    def testGetUnauthenticatedUser(self):
+    def test_get_unauthenticated_user(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Inicia sesión para acceder a tu perfil de usuario.")
+        self.assertContains(response, "Log in to access your user profile.")
         self.assertContains(response, reverse("signin"))
  
 class RegisterUserTest(TestCase):
