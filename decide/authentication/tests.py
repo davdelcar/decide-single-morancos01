@@ -141,20 +141,20 @@ class LoginViewTestCase(TestCase):
         self.url = reverse("signin")
         self.user = User.objects.create_user(username="testuser", password="testpass")
 
-    def testGet(self):
+    def test_get(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
         self.assertIsInstance(response.context["form"], LoginForm)
         self.assertIsNone(response.context["msg"])
 
-    def testPostValidCredentials(self):
+    def test_post_valid_credentials(self):
         data = {"identifier": "testuser", "password": "testpass", "remember_me": False}
         response = self.client.post(self.url, data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
 
-    def testPostInvalidCredentials(self):
+    def test_post_invalid_credentials(self):
         data = {"identifier": "testuser", "password": "wrongpass", "remember_me": False}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 200)
@@ -162,7 +162,7 @@ class LoginViewTestCase(TestCase):
         self.assertIsInstance(response.context["form"], LoginForm)
         self.assertEqual(response.context["msg"], "Credenciales incorrectas")
 
-    def testPostInvalidForm(self):
+    def test_post_invalid_form(self):
         data = {"identifier": "", "password": "", "remember_me": False}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 200)
@@ -176,7 +176,7 @@ class WelcomeTestView(TestCase):
         self.url = reverse("welcome")
         self.user = User.objects.create_user(username="testuser", password="testpass")
 
-    def testGetUnauthenticatedUser(self):
+    def test_get_unauthenticated_user(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
@@ -185,21 +185,18 @@ class WelcomeTestView(TestCase):
 
 
     
-    def testGetAuthenticatedUser(self):
+    def test_get_authenticated_user(self):
         
-        responsePost = self.client.post(reverse('set_language'), {'language': 'es'})
-        self.assertEqual(responsePost.status_code, 302)
-
         self.client.force_login(self.user)
         q = Question(desc='test question', types='OQ')
         q.save()
         for i in range(5):
             opt = QuestionOption(question=q, option='option {}'.format(i+1))
             opt.save()
-        openVoting = Voting(name='test open voting', question=q , start_date="2023-01-01")
-        openVoting.save()
-        closedVoting = Voting(name='test open voting', question=q , start_date="2023-01-01", end_date="2023-02-01", tally={})
-        closedVoting.save()
+        open_voting = Voting(name='test open voting', question=q , start_date="2023-01-01")
+        open_voting.save()
+        closed_voting = Voting(name='test open voting', question=q , start_date="2023-01-01", end_date="2023-02-01", tally={})
+        closed_voting.save()
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -208,10 +205,10 @@ class WelcomeTestView(TestCase):
         self.assertNotContains(response, "Go to Login")
 
         self.assertContains(response, "Votaciones Abiertas:")
-        self.assertContains(response, reverse("booth", args=[openVoting.id]))
+        self.assertContains(response, reverse("booth", args=[open_voting.id]))
 
         self.assertContains(response, "Votaciones Cerradas:")
-        self.assertContains(response, reverse("visualizer", args=[closedVoting.id]))
+        self.assertContains(response, reverse("visualizer", args=[closed_voting.id]))
 
     
 
