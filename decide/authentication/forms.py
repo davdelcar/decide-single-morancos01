@@ -7,12 +7,12 @@ from django.utils.translation import gettext_lazy as _
 class LoginForm(forms.Form):
     identifier = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "Usuario o Correo Electrónico", "class": "form-control"}
+            attrs={"placeholder": _("Usuario o Correo Electrónico"), "class": "form-control"}
         )
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"placeholder": "Contraseña", "class": "form-control"}
+            attrs={"placeholder": _("Contraseña"), "class": "form-control"}
         )
     )
 
@@ -23,32 +23,32 @@ class LoginForm(forms.Form):
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(
         widget=forms.EmailInput(
-            attrs={"placeholder": "Correo electrónico", "class": "form-control"}
+            attrs={"placeholder": _("Correo electrónico"), "class": "form-control"}
         )
     )
     username = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "Nombre de usuario", "class": "form-control"}
+            attrs={"placeholder": _("Nombre de usuario"), "class": "form-control"}
         )
     )
     password1 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"placeholder": "Contraseña", "class": "form-control"}
+            attrs={"placeholder": _("Contraseña"), "class": "form-control"}
         )
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"placeholder": "Confirmar contraseña", "class": "form-control"}
+            attrs={"placeholder": _("Confirmar contraseña"), "class": "form-control"}
         )
     )
     first_name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "Nombre", "class": "form-control"}
+            attrs={"placeholder": _("Nombre"), "class": "form-control"}
         )
     )
     last_name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "Apellidos", "class": "form-control"}
+            attrs={"placeholder": _("Apellidos"), "class": "form-control"}
         )
     )
 
