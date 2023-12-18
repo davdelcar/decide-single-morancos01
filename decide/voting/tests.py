@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import Select
 from django.forms import ValidationError
 from django.utils import timezone
 from django.conf import settings
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
@@ -395,163 +396,16 @@ class LogInSuccessTests(StaticLiveServerTestCase):
 
         self.base.tearDown()
 
-    def successLogIn(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/")
-
-class LogInErrorTests(StaticLiveServerTestCase):
-
-    def setUp(self):
-        #Load base test functionality for decide
-        self.base = BaseTestCase()
-        self.base.setUp()
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        self.driver = webdriver.Chrome(options=options)
-
-        super().setUp()
-
-    def tearDown(self):
-        super().tearDown()
-        self.driver.quit()
-
-        self.base.tearDown()
-
-    def usernameWrongLogIn(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
+    def testsuccessLogIn(self):
+        self.driver.get(self.live_server_url+"/admin/login/?next=/admin/")
+        self.driver.set_window_size(1280, 720)
         
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("usuarioNoExistente")
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.NAME, "username")))
 
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("usuarioNoExistente")
+        self.driver.find_element(By.NAME, "username").click()
+        self.driver.find_element(By.NAME, "username").send_keys("admin")
+        self.driver.find_element(By.NAME, "password").click()
+        self.driver.find_element(By.NAME, "password").send_keys("qwerty")
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(self.driver.current_url == self.live_server_url+"/admin/")
 
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.assertTrue(self.cleaner.find_element_by_xpath('/html/body/div/div[2]/div/div[1]/p').text == 'Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
-
-    def passwordWrongLogIn(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("wrongPassword")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.assertTrue(self.cleaner.find_element_by_xpath('/html/body/div/div[2]/div/div[1]/p').text == 'Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
-
-class QuestionsTests(StaticLiveServerTestCase):
-
-    def setUp(self):
-        #Load base test functionality for decide
-        self.base = BaseTestCase()
-        self.base.setUp()
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        self.driver = webdriver.Chrome(options=options)
-
-        super().setUp()
-
-    def tearDown(self):
-        super().tearDown()
-        self.driver.quit()
-
-        self.base.tearDown()
-
-    def createQuestionYesNoSuccess(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.cleaner.get(self.live_server_url+"/admin/voting/question/add/")
-        
-        self.cleaner.find_element(By.ID, "id_desc").click()
-        self.cleaner.find_element(By.ID, "id_desc").send_keys('Test')
-        select_element = self.cleaner.find_element(By.ID, "id_types")
-        select = Select(select_element)
-        select.select_by_visible_text('Yes/No Question')
-        self.cleaner.find_element(By.ID, "id_options-0-number").click()
-        self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
-        self.cleaner.find_element(By.ID, "id_options-0-option").click()
-        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('Sí')
-        self.cleaner.find_element(By.ID, "id_options-1-number").click()
-        self.cleaner.find_element(By.ID, "id_options-1-number").send_keys('2')
-        self.cleaner.find_element(By.ID, "id_options-1-option").click()
-        self.cleaner.find_element(By.ID, "id_options-1-option").send_keys('No')
-        self.cleaner.find_element(By.NAME, "_save").click()
-
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/voting/question/")
-        
-    
-    def createQuestionSuccess(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.cleaner.get(self.live_server_url+"/admin/voting/question/add/")
-        
-        self.cleaner.find_element(By.ID, "id_desc").click()
-        self.cleaner.find_element(By.ID, "id_desc").send_keys('Test')
-        select_element = self.cleaner.find_element(By.ID, "id_types")
-        select = Select(select_element)
-        select.select_by_visible_text('Yes/No Question')
-        self.cleaner.find_element(By.ID, "id_options-0-number").click()
-        self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
-        self.cleaner.find_element(By.ID, "id_options-0-option").click()
-        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('test1')
-        self.cleaner.find_element(By.ID, "id_options-1-number").click()
-        self.cleaner.find_element(By.ID, "id_options-1-number").send_keys('2')
-        self.cleaner.find_element(By.ID, "id_options-1-option").click()
-        self.cleaner.find_element(By.ID, "id_options-1-option").send_keys('test2')
-        self.cleaner.find_element(By.NAME, "_save").click()
-
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/voting/question/")
-
-    def createCensusEmptyError(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.cleaner.get(self.live_server_url+"/admin/voting/question/add/")
-
-        self.cleaner.find_element(By.NAME, "_save").click()
-
-        self.assertTrue(self.cleaner.find_element_by_xpath('/html/body/div/div[3]/div/div[1]/div/form/div/p').text == 'Please correct the errors below.')
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/voting/question/add/")
