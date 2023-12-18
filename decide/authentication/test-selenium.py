@@ -3,9 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from django.contrib.auth.models import User
-import time
-from selenium.common.exceptions import TimeoutException
 
 class WelcomeLoginTests(StaticLiveServerTestCase):
     def setUp(self):

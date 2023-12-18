@@ -1,6 +1,6 @@
 /*Este código se utiliza para el visualizado de gráficas en visualizer.html*/
 
-function createBarChart(ctx, labels, data) {
+/*function createBarChart(ctx, labels, data) {
     new Chart(ctx, {
         type: 'bar',
         data: {
@@ -62,4 +62,6 @@ function createPieChart(ctx, labels, data) {
             responsive: true
         }
     });
-}
+}*/
+
+/*Comentado por el Codacy*/
