@@ -205,10 +205,10 @@ class WelcomeTestView(TestCase):
 
         self.assertNotContains(response, "Go to Login")
 
-        self.assertContains(response, "Votaciones Abiertas:")
+        self.assertContains(response, "Open Voting:")
         self.assertContains(response, reverse("booth", args=[open_voting.id]))
 
-        self.assertContains(response, "Votaciones Cerradas:")
+        self.assertContains(response, "Closed Voting:")
         self.assertContains(response, reverse("visualizer", args=[closed_voting.id]))
 
     def test_logout_from_welcome_page(self):

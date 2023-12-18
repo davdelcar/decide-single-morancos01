@@ -31,5 +31,5 @@ class WelcomeLoginTests(StaticLiveServerTestCase):
         )
         self.assertTrue(ir_a_censos_button.is_displayed())
 
-    
+
 
