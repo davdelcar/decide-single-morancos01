@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 
 class ChangeLanguageFormTest(TestCase):
 
-    def testChangeLanguageEnglish(self):
+    def test_change_languag_english(self):
 
         response_post = self.client.post(reverse('set_language'), {'language': 'en'})
         self.assertEqual(response_post.status_code, 302)
@@ -29,7 +29,7 @@ class ChangeLanguageFormTest(TestCase):
         self.assertIn('Welcome to Decide!', html_content)
         
 
-    def testChangeLanguageSpanish(self):
+    def test_change_language_spanish(self):
         
         response_post = self.client.post(reverse('set_language'), {'language': 'es'})
         self.assertEqual(response_post.status_code, 302)
@@ -46,7 +46,7 @@ class ChangeLanguageFormTest(TestCase):
         html_content = response.content.decode('utf-8')
         self.assertIn('Bienvenido a Decide!', html_content)
 
-    def testChangeLanguageFrench(self):
+    def test_change_language_french(self):
 
         response_post = self.client.post(reverse('set_language'), {'language': 'fr'})
         self.assertEqual(response_post.status_code, 302)
@@ -63,7 +63,7 @@ class ChangeLanguageFormTest(TestCase):
         html_content = response.content.decode('utf-8')
         self.assertIn('Bienvenue à Decide!', html_content)
 
-    def testErrorChangeLanguageEnglish(self):
+    def test_error_change_language_english(self):
 
         response_post = self.client.post(reverse('set_language'), {'language': 'en'})
         self.assertEqual(response_post.status_code, 302)
@@ -75,7 +75,7 @@ class ChangeLanguageFormTest(TestCase):
         html_content = response.content.decode('utf-8')
         self.assertNotIn('Bienvenido a Decide!', html_content)
 
-    def testErrorChangeLanguageSpanish(self):
+    def test_error_change_language_spanish(self):
 
         response_post = self.client.post(reverse('set_language'), {'language': 'es'})
         self.assertEqual(response_post.status_code, 302)
@@ -87,7 +87,7 @@ class ChangeLanguageFormTest(TestCase):
         html_content = response.content.decode('utf-8')
         self.assertNotIn('Welcome to Decide!', html_content)
 
-    def testErrorChangeLanguageFrench(self):
+    def test_error_change_language_french(self):
 
         response_post = self.client.post(reverse('set_language'), {'language': 'fr'})
         self.assertEqual(response_post.status_code, 302)
@@ -99,7 +99,7 @@ class ChangeLanguageFormTest(TestCase):
         html_content = response.content.decode('utf-8')
         self.assertNotIn('Welcome to Decide!', html_content)
 
-    def testSpanishTranslation(self):
+    def test_spanish_translation(self):
 
         #Vemos si se traducen las palabras correctamente al español desde el .po
         response_post = self.client.post(reverse('set_language'), {'language': 'es'})
@@ -108,7 +108,7 @@ class ChangeLanguageFormTest(TestCase):
         self.assertEqual(_("Congratulations. Your vote has been sent"), "Felicidades. Tu voto ha sido enviado.")
         deactivate_all()
 
-    def testEnglishTranslation(self):
+    def test_english_translation(self):
 
         #Vemos si se traducen las palabras correctamente al inglés desde el .po
         response_post = self.client.post(reverse('set_language'), {'language': 'en'})
@@ -117,7 +117,7 @@ class ChangeLanguageFormTest(TestCase):
         self.assertEqual(_("Gracias por unirte a nuestra plataforma de votación electrónica"), "Thank you for joining our electronic voting platform")
         deactivate_all()
 
-    def testFrenchTranslation(self):
+    def test_french_translation(self):
 
         #Vemos si se traducen las palabras correctamente al francés desde el .po
         response_post = self.client.post(reverse('set_language'), {'language': 'fr'})
