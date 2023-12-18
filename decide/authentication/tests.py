@@ -223,7 +223,7 @@ class WelcomeTestView(TestCase):
 
         users_before_logout = User.objects.filter(id=self.user.id).count()+1
 
-        self.assertContains(response_welcome, 'Cerrar Sesión', html=True)
+        self.assertContains(response_welcome, 'Logout', html=True)
 
         logout_response = self.client.post(self.url_logout)
         self.assertEqual(logout_response.status_code, 200)  # Código de estado OK después del cierre de sesión
@@ -346,7 +346,7 @@ class UserProfileViewTest(TestCase):
     def test_get_unauthenticated_user(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Inicia sesión para acceder a tu perfil de usuario.")
+        self.assertContains(response, "Log in to access your user profile.")
         self.assertContains(response, reverse("signin"))
  
 class RegisterUserTest(TestCase):
