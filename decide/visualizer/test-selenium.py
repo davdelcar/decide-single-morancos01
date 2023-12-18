@@ -15,7 +15,7 @@ from voting.models import Question, Voting, QuestionOption
 
 class VisualizerTestCase(StaticLiveServerTestCase):
     def create_votings(self):
-        #Creo una votación
+
         q = Question(desc='test question', types='OQ')
         q.save()
         for i in range(5):
@@ -40,7 +40,6 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         v_closed.auths.add(a)
         v_not_started.auths.add(a)
 
-        # Close voting
         v_closed.end_date = timezone.now()
         v_closed.save()
 
@@ -49,11 +48,9 @@ class VisualizerTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.v_open, self.v_closed, self.v_not_started = self.create_votings()
 
-        # Configuración de Selenium
         self.base = BaseTestCase()
         self.base.setUp()
 
-        # Opciones de Chrome
         options = webdriver.ChromeOptions()
         options.headless = True
         self.driver = webdriver.Chrome(options=options)
@@ -65,17 +62,14 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.base.tearDown()
 
     def test_votacion_cerrada(self):
-        # Abre la ruta del navegador
+
         self.driver.get(f"{self.live_server_url}/visualizer/{self.v_closed.id}")
 
-        # Espera a que la página se cargue completamente
         WebDriverWait(self.driver, 10).until(EC.title_contains("Decide"))
 
-        # Verifica elementos específicos en la página cerrada
         self.assertIn("Decide", self.driver.title)
         self.assertIn("Results:", self.driver.page_source)
 
-        # Espera a que los gráficos estén presentes y visibles
         bar_chart = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((By.ID, "barChart"))
         )
@@ -83,29 +77,24 @@ class VisualizerTestCase(StaticLiveServerTestCase):
             EC.visibility_of_element_located((By.ID, "pieChart"))
         )
 
-        # Verifica que los gráficos estén presentes y visibles
         self.assertTrue(bar_chart.is_displayed())
         self.assertTrue(pie_chart.is_displayed())
 
     
     def test_votacion_abierta(self):
-        # Abre la ruta del navegador
+
         self.driver.get(f"{self.live_server_url}/visualizer/{self.v_open.id}")
 
-        # Verifica elementos específicos en la página abierta
         self.assertTrue(len(self.driver.find_elements(By.ID, "app-visualizer")) == 1)
 
     def test_votacion_no_empezada(self):
-        # Abre la ruta del navegador
+
         self.driver.get(f"{self.live_server_url}/visualizer/{self.v_not_started.id}")
 
-        # Verifica que el elemento "app-visualizer" esté presente en el DOM
         self.assertTrue(self.driver.find_element(By.ID, "app-visualizer").is_displayed())
 
-        # Verifica que el elemento "barChart" no esté presente en el DOM
         with self.assertRaises(NoSuchElementException):
             self.driver.find_element(By.ID, "barChart")
 
-        # Verifica que el elemento "pieChart" no esté presente en el DOM
         with self.assertRaises(NoSuchElementException):
             self.driver.find_element(By.ID, "pieChart")
