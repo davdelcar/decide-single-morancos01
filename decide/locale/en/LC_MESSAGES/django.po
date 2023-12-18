@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 16:35+0100\n"
+"POT-Creation-Date: 2023-12-18 18:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,47 +19,175 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: authentication/forms.py:10 authentication/templates/login.html:29
+msgid "Usuario o Correo Electrónico"
+msgstr "Username or Email"
+
+#: authentication/forms.py:15 authentication/forms.py:36
+#: authentication/templates/login.html:33
+#: authentication/templates/register.html:33
+msgid "Contraseña"
+msgstr "Password"
+
+#: authentication/forms.py:26 authentication/templates/register.html:28
+msgid "Correo electrónico"
+msgstr "Email"
+
+#: authentication/forms.py:31
+msgid "Nombre de usuario"
+msgstr "Username"
+
+#: authentication/forms.py:41 authentication/templates/register.html:38
+msgid "Confirmar contraseña"
+msgstr "Confirm password"
+
+#: authentication/forms.py:46 authentication/templates/profile.html:81
+#: authentication/templates/register.html:43
+msgid "Nombre"
+msgstr "First name"
+
+#: authentication/forms.py:51 authentication/templates/profile.html:82
+#: authentication/templates/register.html:48
+msgid "Apellidos"
+msgstr "Last name"
+
+#: authentication/forms.py:58
+msgid "El correo electrónico ya está en uso"
+msgstr "Email is already in use"
+
 #: authentication/templates/login.html:5 booth/templates/booth/booth.html:30
 #: booth/templates/booth/booth.html:85 booth/templates/booth/booth.html:111
 msgid "Login"
 msgstr "Login"
 
 #: authentication/templates/login.html:18
-#: authentication/templates/welcome.html:41
+#: authentication/templates/welcome.html:80
 msgid "Bienvenido a Decide"
 msgstr "Welcome to Decide"
-
-#: authentication/templates/login.html:29
-msgid "Usuario"
-msgstr "User"
-
-#: authentication/templates/login.html:33
-msgid "Contraseña"
-msgstr "Password"
 
 #: authentication/templates/login.html:38
 msgid "Recuérdame"
 msgstr "Remember me"
 
 #: authentication/templates/login.html:41
+#: authentication/templates/profile.html:123
 msgid "Iniciar Sesión"
 msgstr "Login"
 
-#: authentication/templates/welcome.html:42
+#: authentication/templates/login.html:42
+#: authentication/templates/register.html:52
+msgid "Registrarse"
+msgstr "Register"
+
+#: authentication/templates/profile.html:4
+msgid "User Profile"
+msgstr "User Profile"
+
+#: authentication/templates/profile.html:78
+msgid "Perfil de usuario"
+msgstr "User profile"
+
+#: authentication/templates/profile.html:80
+#: authentication/templates/register.html:23
+msgid "Usuario"
+msgstr "User"
+
+#: authentication/templates/profile.html:83
+msgid "Email"
+msgstr "Email"
+
+#: authentication/templates/profile.html:88
+msgid "Deseo cambiar de contraseña"
+msgstr "I want to change my password"
+
+#: authentication/templates/profile.html:95
+msgid "Contraseña Actual"
+msgstr "Current Password"
+
+#: authentication/templates/profile.html:99
+msgid "Nueva Contraseña"
+msgstr "New Password"
+
+#: authentication/templates/profile.html:103
+msgid "La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números."
+msgstr "The password must contain at least 8 characters, including uppercase, lowercase and numbers."
+
+#: authentication/templates/profile.html:105
+msgid "La contraseña no debe ser completamente numérica."
+msgstr "The password must not be completely numeric."
+
+#: authentication/templates/profile.html:107
+msgid "La contraseña no debe ser común o similar al nombre de usuario."
+msgstr "The password must not be common or similar to the username."
+
+#: authentication/templates/profile.html:112
+msgid "Confirmar Nueva Contraseña"
+msgstr "Confirm New Password"
+
+#: authentication/templates/profile.html:115
+msgid "Cambiar Contraseña"
+msgstr "Change Password"
+
+#: authentication/templates/profile.html:120
+msgid "Inicia sesión para acceder a tu perfil de usuario."
+msgstr "Log in to access your user profile."
+
+#: authentication/templates/register.html:5
+#: authentication/templates/register.html:18
+msgid "Registro"
+msgstr "Register"
+
+#: authentication/templates/welcome.html:81
 msgid "Gracias por unirte a nuestra plataforma de votación electrónica"
 msgstr "Thank you for joining our electronic voting platform"
 
-#: authentication/templates/welcome.html:46
+#: authentication/templates/welcome.html:82
+msgid "Ir a Censos"
+msgstr "Go to Census"
+
+#: authentication/templates/welcome.html:86
 msgid "Ir a tu Perfil"
 msgstr "Go to your profile"
 
-#: authentication/templates/welcome.html:49
+#: authentication/templates/welcome.html:89 base/templates/base.html:16
+msgid "Cerrar Sesión"
+msgstr "Logout"
+
+#: authentication/templates/welcome.html:93
+msgid "Votaciones Cerradas:"
+msgstr "Closed Voting:"
+
+#: authentication/templates/welcome.html:99
+msgid "Fecha de Inicio:"
+msgstr "Start date:"
+
+#: authentication/templates/welcome.html:102
+msgid "Fecha de Finalización:"
+msgstr "End date:"
+
+#: authentication/templates/welcome.html:104
+msgid "Ver resultados"
+msgstr "See results"
+
+#: authentication/templates/welcome.html:108
+msgid "No hay votaciones disponibles en este momento"
+msgstr "No votes available at this time"
+
+#: authentication/templates/welcome.html:112
+msgid "Votaciones Abiertas:"
+msgstr "Open Voting:"
+
+#: authentication/templates/welcome.html:117
+msgid "Ir a Votación"
+msgstr "Go to Voting"
+
+#: authentication/templates/welcome.html:121
+msgid "No hay votaciones abiertas en este momento"
+msgstr "There are no open votes at the moment"
+
+#: authentication/templates/welcome.html:127
 msgid "Ir a Iniciar Sesión"
 msgstr "Go to Login"
-
-#: authentication/templates/welcome.html:52
-msgid "Ir a Censos"
-msgstr "Go to Census"
 
 #: base/models.py:26 voting/models.py:70
 msgid "Name"
@@ -190,13 +318,17 @@ msgstr "Import Census"
 msgid "Volver"
 msgstr "Return"
 
-#: decide/settings.py:151
+#: decide/settings.py:155
 msgid "English"
 msgstr "English"
 
-#: decide/settings.py:152
+#: decide/settings.py:156
 msgid "Spanish"
 msgstr "Spanish"
+
+#: decide/settings.py:157
+msgid "French"
+msgstr "French"
 
 #: mixnet/models.py:19
 msgid "Auth Position"
@@ -248,17 +380,15 @@ msgstr "Votes"
 
 #: voting/admin.py:21
 msgid "start"
-msgstr ""
+msgstr "start"
 
 #: voting/admin.py:30
 msgid "stop"
-msgstr ""
+msgstr "stop"
 
 #: voting/admin.py:39
-#, fuzzy
-#| msgid "Tally"
 msgid "tally"
-msgstr "Tally"
+msgstr "tally"
 
 #: voting/models.py:14 voting/models.py:71
 msgid "Description"
@@ -266,11 +396,11 @@ msgstr "Description"
 
 #: voting/models.py:17
 msgid "Optional Question"
-msgstr "Question"
+msgstr "Optional Question"
 
 #: voting/models.py:18
 msgid "Yes/No Question"
-msgstr "Question"
+msgstr "Yes/No Question"
 
 #: voting/models.py:24
 msgid "Type"
@@ -298,15 +428,15 @@ msgstr "Option"
 
 #: voting/models.py:46 voting/models.py:53
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: voting/models.py:47 voting/models.py:54
 msgid "This is a Yes/No question, option must be 'Yes' or 'No'."
-msgstr ""
+msgstr "This is a Yes/No question, option must be 'Yes' or 'No'"
 
 #: voting/models.py:49 voting/models.py:56
 msgid "This option already exists for this question."
-msgstr ""
+msgstr "This option already exists for this question."
 
 #: voting/models.py:65
 msgid "Question Option"
