@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-18 18:52+0100\n"
+"POT-Creation-Date: 2023-12-18 17:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,213 +17,218 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: authentication/forms.py:10 authentication/templates/login.html:29
 msgid "Usuario o Correo Electrónico"
-msgstr "Username or Email"
+msgstr "Nom d'utilisateur ou Courriel"
 
 #: authentication/forms.py:15 authentication/forms.py:36
 #: authentication/templates/login.html:33
 #: authentication/templates/register.html:33
 msgid "Contraseña"
-msgstr "Password"
+msgstr "Mot de passe"
 
 #: authentication/forms.py:26 authentication/templates/register.html:28
 msgid "Correo electrónico"
-msgstr "Email"
+msgstr "Adresse électronique"
 
 #: authentication/forms.py:31
 msgid "Nombre de usuario"
-msgstr "Username"
+msgstr "Profil de l'utilisateur"
 
 #: authentication/forms.py:41 authentication/templates/register.html:38
 msgid "Confirmar contraseña"
-msgstr "Confirm password"
+msgstr "Confirmer le mot de passe"
 
 #: authentication/forms.py:46 authentication/templates/profile.html:81
 #: authentication/templates/register.html:43
 msgid "Nombre"
-msgstr "First name"
+msgstr "Nom"
 
 #: authentication/forms.py:51 authentication/templates/profile.html:82
 #: authentication/templates/register.html:48
 msgid "Apellidos"
-msgstr "Last name"
+msgstr "Nom de famille"
 
 #: authentication/forms.py:58
 msgid "El correo electrónico ya está en uso"
-msgstr "Email is already in use"
+msgstr "Le courrier électronique est déjà utilisé"
 
 #: authentication/templates/login.html:5 booth/templates/booth/booth.html:30
 #: booth/templates/booth/booth.html:85 booth/templates/booth/booth.html:111
 msgid "Login"
-msgstr "Login"
+msgstr "Se connecter"
 
 #: authentication/templates/login.html:18
 #: authentication/templates/welcome.html:80
 msgid "Bienvenido a Decide"
-msgstr "Welcome to Decide"
+msgstr "Bienvenue à Decide"
 
 #: authentication/templates/login.html:38
 msgid "Recuérdame"
-msgstr "Remember me"
+msgstr "Se souvenir"
 
 #: authentication/templates/login.html:41
 #: authentication/templates/profile.html:123
 msgid "Iniciar Sesión"
-msgstr "Login"
+msgstr "Se connecter"
 
 #: authentication/templates/login.html:42
 #: authentication/templates/register.html:52
 msgid "Registrarse"
-msgstr "Register"
+msgstr "Registre"
 
 #: authentication/templates/profile.html:4
 msgid "User Profile"
-msgstr "User Profile"
+msgstr "Profil de l'utilisateur"
 
 #: authentication/templates/profile.html:78
 msgid "Perfil de usuario"
-msgstr "User profile"
+msgstr "Profil de l'utilisateur"
 
 #: authentication/templates/profile.html:80
 #: authentication/templates/register.html:23
 msgid "Usuario"
-msgstr "User"
+msgstr "Utilisateur"
 
 #: authentication/templates/profile.html:83
 msgid "Email"
-msgstr "Email"
+msgstr "Courriel"
 
 #: authentication/templates/profile.html:88
 msgid "Deseo cambiar de contraseña"
-msgstr "I want to change my password"
+msgstr "Je souhaite modifier mon mot de passe"
 
 #: authentication/templates/profile.html:95
 msgid "Contraseña Actual"
-msgstr "Current Password"
+msgstr "Mot de passe actuel"
 
 #: authentication/templates/profile.html:99
 msgid "Nueva Contraseña"
-msgstr "New Password"
+msgstr "Nouveau mot de passe"
 
 #: authentication/templates/profile.html:103
-msgid "La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números."
-msgstr "The password must contain at least 8 characters, including uppercase, lowercase and numbers."
+msgid ""
+"La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, "
+"minúsculas y números."
+msgstr ""
+"Le mot de passe doit contenir au moins 8 caractères, dont des majuscules, "
+"des minuscules et des chiffres."
 
 #: authentication/templates/profile.html:105
 msgid "La contraseña no debe ser completamente numérica."
-msgstr "The password must not be completely numeric."
+msgstr "Le mot de passe ne doit pas être entièrement numérique."
 
 #: authentication/templates/profile.html:107
 msgid "La contraseña no debe ser común o similar al nombre de usuario."
-msgstr "The password must not be common or similar to the username."
+msgstr ""
+"Le mot de passe ne doit pas être commun ou similaire au nom d'utilisateur."
 
 #: authentication/templates/profile.html:112
 msgid "Confirmar Nueva Contraseña"
-msgstr "Confirm New Password"
+msgstr "Confirmer le nouveau mot de passe"
 
 #: authentication/templates/profile.html:115
 msgid "Cambiar Contraseña"
-msgstr "Change Password"
+msgstr "Modifier le mot de passe"
 
 #: authentication/templates/profile.html:120
 msgid "Inicia sesión para acceder a tu perfil de usuario."
-msgstr "Log in to access your user profile."
+msgstr "Connectez-vous pour accéder à votre profil d'utilisateur."
 
 #: authentication/templates/register.html:5
 #: authentication/templates/register.html:18
 msgid "Registro"
-msgstr "Register"
+msgstr "Registre"
 
 #: authentication/templates/welcome.html:81
 msgid "Gracias por unirte a nuestra plataforma de votación electrónica"
-msgstr "Thank you for joining our electronic voting platform"
+msgstr "Merci d'avoir rejoint notre plateforme de vote électronique"
 
 #: authentication/templates/welcome.html:82
 msgid "Ir a Censos"
-msgstr "Go to Census"
+msgstr "Aller au recensement"
 
 #: authentication/templates/welcome.html:86
 msgid "Ir a tu Perfil"
-msgstr "Go to your profile"
+msgstr "Accédez à votre profil"
 
 #: authentication/templates/welcome.html:89 base/templates/base.html:16
 msgid "Cerrar Sesión"
-msgstr "Logout"
+msgstr "Se déconnecter"
 
 #: authentication/templates/welcome.html:93
 msgid "Votaciones Cerradas:"
-msgstr "Closed Voting:"
+msgstr "Clôture du vote:"
 
 #: authentication/templates/welcome.html:99
 msgid "Fecha de Inicio:"
-msgstr "Start date:"
+msgstr "Date de début:"
 
 #: authentication/templates/welcome.html:102
 msgid "Fecha de Finalización:"
-msgstr "End date:"
+msgstr "Date d'achèvement:"
 
 #: authentication/templates/welcome.html:104
 msgid "Ver resultados"
-msgstr "See results"
+msgstr "Voir les résultats"
 
 #: authentication/templates/welcome.html:108
 msgid "No hay votaciones disponibles en este momento"
-msgstr "No votes available at this time"
+msgstr "Pas de vote disponible pour le moment"
 
 #: authentication/templates/welcome.html:112
 msgid "Votaciones Abiertas:"
-msgstr "Open Voting:"
+msgstr "Vote ouvert:"
 
 #: authentication/templates/welcome.html:117
 msgid "Ir a Votación"
-msgstr "Go to Voting"
+msgstr "Aller au vote"
 
 #: authentication/templates/welcome.html:121
 msgid "No hay votaciones abiertas en este momento"
-msgstr "There are no open votes at the moment"
+msgstr "Il n'y a pas de vote ouvert pour le moment"
 
 #: authentication/templates/welcome.html:127
 msgid "Ir a Iniciar Sesión"
-msgstr "Go to Login"
+msgstr "Accéder à la connexion"
 
 #: base/models.py:26 voting/models.py:70
 msgid "Name"
-msgstr "Name"
+msgstr "Nom"
 
 #: base/models.py:28
 msgid "Me"
-msgstr "Me"
+msgstr "Moi"
 
 #: base/models.py:34
 msgid "Auth"
-msgstr "Auth"
+msgstr "Authentification"
 
 #: base/models.py:35 mixnet/models.py:20 voting/models.py:78
 msgid "Auths"
-msgstr "Auths"
+msgstr "Authentifications"
 
 #: base/templates/change_language.html:2
 msgid "Change language"
-msgstr "Change language"
+msgstr "Changer de langue"
 
 #: booth/templates/booth/booth.html:25
 msgid "Logout"
-msgstr "Logout"
+msgstr "Se déconnecter"
 
 #: booth/templates/booth/booth.html:76
 msgid "¡Debe iniciar sesión para poder acceder a la votación!"
-msgstr "You must log in to access voting!"
+msgstr "Vous devez être connecté pour accéder au vote!"
 
 #: booth/templates/booth/booth.html:92
 msgid "Username"
-msgstr "Username"
+msgstr "Nom d'utilisateur"
 
 #: booth/templates/booth/booth.html:102
 msgid "Password"
-msgstr "Password"
+msgstr "Mot de passe"
 
 #: booth/templates/booth/booth.html:133 store/models.py:20
 msgid "Vote"
@@ -232,59 +237,59 @@ msgstr "Vote"
 #: booth/templates/booth/booth.html:236 booth/templates/booth/booth.html:247
 #: booth/templates/booth/booth.html:283
 msgid "Error: "
-msgstr "Error: "
+msgstr "Erreur :"
 
 #: booth/templates/booth/booth.html:279
 msgid "Congratulations. Your vote has been sent"
-msgstr "Congratulations. Your vote has been sent"
+msgstr "Félicitations. Votre vote a été envoyé"
 
 #: census/models.py:7 mixnet/models.py:18 store/models.py:8
 msgid "Voting ID"
-msgstr "Voting ID"
+msgstr "ID de vote"
 
 #: census/models.py:8 store/models.py:9
 msgid "Voter ID"
-msgstr "Voter ID"
+msgstr "ID de l'électeur"
 
 #: census/models.py:12 census/models.py:13
 msgid "Census"
-msgstr "Census"
+msgstr "Recensement"
 
 #: census/templates/census/census.html:13
 msgid "Censos"
-msgstr "Census"
+msgstr "Recensement"
 
 #: census/templates/census/census.html:14
 msgid "En esta sección se pueden ver todos los censos creados"
-msgstr "In this section you can see all the censuses created"
+msgstr "Dans cette section, vous pouvez voir tous les recensements créés."
 
 #: census/templates/census/census.html:17
 msgid "Crear Censo"
-msgstr "Create Census"
+msgstr "Créer un recensement"
 
 #: census/templates/census/census.html:18
 msgid "Importar Censo"
-msgstr "Import Census"
+msgstr "Recensement des importations"
 
 #: census/templates/census/census.html:19
 msgid "Exportar Censo"
-msgstr "Export Census"
+msgstr "Recensement des exportations"
 
 #: census/templates/census/census.html:21
 msgid "Pestaña de Inicio"
-msgstr "Home Tab"
+msgstr "Onglet Accueil"
 
 #: census/templates/census/census.html:22
 msgid "Pestaña de Admin"
-msgstr "Admin Tab"
+msgstr "Onglet Admin"
 
 #: census/templates/census/census.html:32
 msgid "Voting_ID"
-msgstr "Voting ID"
+msgstr "ID de vote"
 
 #: census/templates/census/census.html:33
 msgid "Voter_ID"
-msgstr "Voter ID"
+msgstr "ID de l'électeur"
 
 #: census/templates/census/census.html:34
 msgid "Acciones"
@@ -292,63 +297,63 @@ msgstr "Actions"
 
 #: census/templates/census/census.html:44
 msgid "Ver"
-msgstr "Show"
+msgstr "Voir"
 
 #: census/templates/census/census.html:45
 msgid "Borrar"
-msgstr "Delete"
+msgstr "Supprimer"
 
 #: census/templates/census/import.html:13
 msgid "El archivo debe ser de Excel"
-msgstr "The file must be Excel"
+msgstr "Le fichier doit être un fichier Excel"
 
 #: census/templates/census/import.html:15
 msgid "En la primera columna debe aparecer el ID de la votación"
-msgstr "The vote ID must appear in the first column"
+msgstr "La première colonne doit contenir l'identifiant du vote."
 
 #: census/templates/census/import.html:16
 msgid "y en la segunda el ID del votante"
-msgstr "and in the second the voter ID"
+msgstr "et dans le second, l'identification des électeurs"
 
 #: census/templates/census/import.html:23
 msgid "Importar Censos"
-msgstr "Import Census"
+msgstr "Recensement des importations"
 
 #: census/templates/census/import.html:26
 msgid "Volver"
-msgstr "Return"
+msgstr "Retour à"
 
 #: decide/settings.py:155
 msgid "English"
-msgstr "English"
+msgstr "Anglais"
 
 #: decide/settings.py:156
 msgid "Spanish"
-msgstr "Spanish"
+msgstr "Espagnol"
 
 #: decide/settings.py:157
 msgid "French"
-msgstr "French"
+msgstr "Français"
 
 #: mixnet/models.py:19
 msgid "Auth Position"
-msgstr "Auth Position"
+msgstr "Position d'authentification"
 
 #: mixnet/models.py:23
 msgid "Key"
-msgstr "Key"
+msgstr "Clé"
 
 #: mixnet/models.py:26 voting/models.py:77
 msgid "Public Key"
-msgstr "Public Key"
+msgstr "Clé publique"
 
 #: mixnet/models.py:89
 msgid "Mixnet"
-msgstr "Mixnet"
+msgstr "Mixtes rouges"
 
 #: mixnet/models.py:90
 msgid "Mixnets"
-msgstr "Mixnets"
+msgstr "Réseaux mixtes"
 
 #: store/models.py:21
 msgid "Votes"
@@ -356,15 +361,15 @@ msgstr "Votes"
 
 #: visualizer/templates/visualizer/visualizer.html:25
 msgid "Votación no comenzada"
-msgstr "Voting not started"
+msgstr "Le vote n'a pas commencé"
 
 #: visualizer/templates/visualizer/visualizer.html:26
 msgid "Votación en curso"
-msgstr "Voting in progress"
+msgstr "Vote en cours"
 
 #: visualizer/templates/visualizer/visualizer.html:28
 msgid "Resultados"
-msgstr "Results"
+msgstr "Résultats"
 
 #: visualizer/templates/visualizer/visualizer.html:33
 msgid "Opción"
@@ -380,15 +385,15 @@ msgstr "Votes"
 
 #: voting/admin.py:21
 msgid "start"
-msgstr "start"
+msgstr "commencer"
 
 #: voting/admin.py:30
 msgid "stop"
-msgstr "stop"
+msgstr "arrêter"
 
 #: voting/admin.py:39
 msgid "tally"
-msgstr "tally"
+msgstr "compter"
 
 #: voting/models.py:14 voting/models.py:71
 msgid "Description"
@@ -396,11 +401,11 @@ msgstr "Description"
 
 #: voting/models.py:17
 msgid "Optional Question"
-msgstr "Optional Question"
+msgstr "Question facultative"
 
 #: voting/models.py:18
 msgid "Yes/No Question"
-msgstr "Yes/No Question"
+msgstr "Oui/Non Question"
 
 #: voting/models.py:24
 msgid "Type"
@@ -408,7 +413,7 @@ msgstr "Type"
 
 #: voting/models.py:31 voting/models.py:46 voting/models.py:53
 msgid "Yes"
-msgstr "Yes"
+msgstr "Oui"
 
 #: voting/models.py:35 voting/models.py:40 voting/models.py:72
 msgid "Question"
@@ -420,7 +425,7 @@ msgstr "Questions"
 
 #: voting/models.py:41
 msgid "Number"
-msgstr "Number"
+msgstr "Numéro"
 
 #: voting/models.py:42
 msgid "Option"
@@ -428,40 +433,41 @@ msgstr "Option"
 
 #: voting/models.py:46 voting/models.py:53
 msgid "No"
-msgstr "No"
+msgstr "Non"
 
 #: voting/models.py:47 voting/models.py:54
 msgid "This is a Yes/No question, option must be 'Yes' or 'No'."
-msgstr "This is a Yes/No question, option must be 'Yes' or 'No'"
+msgstr ""
+"Il s'agit d'une question de type Oui/Non, l'option doit être 'Oui' ou 'Non'."
 
 #: voting/models.py:49 voting/models.py:56
 msgid "This option already exists for this question."
-msgstr "This option already exists for this question."
+msgstr "Cette option existe déjà pour cette question."
 
 #: voting/models.py:65
 msgid "Question Option"
-msgstr "Question Option"
+msgstr "Option de la question"
 
 #: voting/models.py:66
 msgid "Question Options"
-msgstr "Question Options"
+msgstr "Options des questions"
 
 #: voting/models.py:74
 msgid "Start Date"
-msgstr "Start Date"
+msgstr "Date de début"
 
 #: voting/models.py:75
 msgid "End Date"
-msgstr "End Date"
+msgstr "Date de fin"
 
 #: voting/models.py:80
 msgid "Tally"
-msgstr "Tally"
+msgstr "compter"
 
 #: voting/models.py:174
 msgid "Voting"
-msgstr "Voting"
+msgstr "Vote"
 
 #: voting/models.py:175
 msgid "Votings"
-msgstr "Votings"
+msgstr "Votations"

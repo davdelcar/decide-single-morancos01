@@ -154,6 +154,7 @@ LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('en', _('English')),
     ('es', _('Spanish')),
+    ('fr', _('French')),
 ]
 
 TIME_ZONE = 'UTC'
@@ -173,6 +174,7 @@ PARLER_LANGUAGES = {
     None: (
         {'code': 'en', },
         {'code': 'es', },
+        {'code': 'fr', },
     ),
     'default': {
         'fallback': 'en',
