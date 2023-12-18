@@ -4,7 +4,6 @@ from selenium.webdriver.support.ui import Select
 from django.forms import ValidationError
 from django.utils import timezone
 from django.conf import settings
-from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
