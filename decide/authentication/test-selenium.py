@@ -69,4 +69,3 @@ class LoginTest(LiveServerTestCase):
 
 if __name__ == "__main__":
     LiveServerTestCase.main()
-
