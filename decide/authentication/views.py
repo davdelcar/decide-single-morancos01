@@ -21,6 +21,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from rest_framework import status
 from .serializers import UserSerializer
+from django.utils.translation import gettext_lazy as _
+
 
 
 class GetUserView(APIView):
@@ -119,9 +121,9 @@ class LoginView(TemplateView):
 
                 return redirect("/")
             else:
-                msg = "Credenciales incorrectas"
+                msg = _("Credenciales incorrectas")
         else:
-            msg = "Error en el formulario"
+            msg = _("Error en el formulario")
 
         return render(request, self.template_name, {"form": form, "msg": msg, "user": None})
 
@@ -146,7 +148,7 @@ class UserProfileView(TemplateView):
         if password_change_form.is_valid():
             user = password_change_form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Tu contraseña ha sido cambiada con éxito.')
+            messages.success(request, _('Tu contraseña ha sido cambiada con éxito.'))
         else:
             for field, errors in password_change_form.errors.items():
                 for error in errors:
@@ -182,7 +184,7 @@ class RegisterFormView(TemplateView):
                 # Usa self.template_name aquí
                 return redirect("/")
             else:
-                msg = "Error en el formulario"
+                msg = _("Error en el formulario")
         except IntegrityError:
             messages.error(request, 'Error: El usuario ya existe.')
         except ValueError as e:

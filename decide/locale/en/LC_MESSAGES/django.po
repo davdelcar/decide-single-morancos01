@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-18 18:52+0100\n"
+"POT-Creation-Date: 2023-12-19 22:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,8 +109,12 @@ msgid "Nueva Contraseña"
 msgstr "New Password"
 
 #: authentication/templates/profile.html:103
-msgid "La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números."
-msgstr "The password must contain at least 8 characters, including uppercase, lowercase and numbers."
+msgid ""
+"La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, "
+"minúsculas y números."
+msgstr ""
+"The password must contain at least 8 characters, including uppercase, "
+"lowercase and numbers."
 
 #: authentication/templates/profile.html:105
 msgid "La contraseña no debe ser completamente numérica."
@@ -189,19 +193,31 @@ msgstr "There are no open votes at the moment"
 msgid "Ir a Iniciar Sesión"
 msgstr "Go to Login"
 
-#: base/models.py:26 voting/models.py:70
+#: authentication/views.py:124
+msgid "Credenciales incorrectas"
+msgstr "Incorrect credentials"
+
+#: authentication/views.py:126 authentication/views.py:187
+msgid "Error en el formulario"
+msgstr "Error in the form"
+
+#: authentication/views.py:151
+msgid "Tu contraseña ha sido cambiada con éxito."
+msgstr "Your password has been successfully changed."
+
+#: base/models.py:25 voting/models.py:91
 msgid "Name"
 msgstr "Name"
 
-#: base/models.py:28
+#: base/models.py:27
 msgid "Me"
 msgstr "Me"
 
-#: base/models.py:34
+#: base/models.py:33
 msgid "Auth"
 msgstr "Auth"
 
-#: base/models.py:35 mixnet/models.py:20 voting/models.py:78
+#: base/models.py:34 mixnet/models.py:19 voting/models.py:99
 msgid "Auths"
 msgstr "Auths"
 
@@ -225,7 +241,7 @@ msgstr "Username"
 msgid "Password"
 msgstr "Password"
 
-#: booth/templates/booth/booth.html:133 store/models.py:20
+#: booth/templates/booth/booth.html:133 store/models.py:19
 msgid "Vote"
 msgstr "Vote"
 
@@ -238,15 +254,15 @@ msgstr "Error: "
 msgid "Congratulations. Your vote has been sent"
 msgstr "Congratulations. Your vote has been sent"
 
-#: census/models.py:7 mixnet/models.py:18 store/models.py:8
+#: census/models.py:6 mixnet/models.py:17 store/models.py:7
 msgid "Voting ID"
 msgstr "Voting ID"
 
-#: census/models.py:8 store/models.py:9
+#: census/models.py:7 store/models.py:8
 msgid "Voter ID"
 msgstr "Voter ID"
 
-#: census/models.py:12 census/models.py:13
+#: census/models.py:11 census/models.py:12
 msgid "Census"
 msgstr "Census"
 
@@ -263,6 +279,7 @@ msgid "Crear Censo"
 msgstr "Create Census"
 
 #: census/templates/census/census.html:18
+#: census/templates/census/import.html:12
 msgid "Importar Censo"
 msgstr "Import Census"
 
@@ -318,39 +335,63 @@ msgstr "Import Census"
 msgid "Volver"
 msgstr "Return"
 
-#: decide/settings.py:155
+#: census/views.py:57
+msgid "Error try to create census"
+msgstr "Error try to create census"
+
+#: census/views.py:58
+msgid "Census created"
+msgstr "Census created"
+
+#: census/views.py:72
+msgid "Voters deleted from census"
+msgstr "Voters deleted from census"
+
+#: census/views.py:79
+msgid "Invalid voter"
+msgstr "Invalid voter"
+
+#: census/views.py:80
+msgid "Valid voter"
+msgstr "Valid voter"
+
+#: census/views.py:111
+msgid "Importación finalizada"
+msgstr "Import completed"
+
+#: decide/settings.py:154
 msgid "English"
 msgstr "English"
 
-#: decide/settings.py:156
+#: decide/settings.py:155
 msgid "Spanish"
 msgstr "Spanish"
 
-#: decide/settings.py:157
+#: decide/settings.py:156
 msgid "French"
 msgstr "French"
 
-#: mixnet/models.py:19
+#: mixnet/models.py:18
 msgid "Auth Position"
 msgstr "Auth Position"
 
-#: mixnet/models.py:23
+#: mixnet/models.py:22
 msgid "Key"
 msgstr "Key"
 
-#: mixnet/models.py:26 voting/models.py:77
+#: mixnet/models.py:25 voting/models.py:98
 msgid "Public Key"
 msgstr "Public Key"
 
-#: mixnet/models.py:89
+#: mixnet/models.py:88
 msgid "Mixnet"
 msgstr "Mixnet"
 
-#: mixnet/models.py:90
+#: mixnet/models.py:89
 msgid "Mixnets"
 msgstr "Mixnets"
 
-#: store/models.py:21
+#: store/models.py:20
 msgid "Votes"
 msgstr "Votes"
 
@@ -390,78 +431,86 @@ msgstr "stop"
 msgid "tally"
 msgstr "tally"
 
-#: voting/models.py:14 voting/models.py:71
+#: voting/models.py:11 voting/models.py:92
 msgid "Description"
 msgstr "Description"
 
-#: voting/models.py:17
+#: voting/models.py:14
 msgid "Optional Question"
 msgstr "Optional Question"
 
-#: voting/models.py:18
+#: voting/models.py:15
 msgid "Yes/No Question"
 msgstr "Yes/No Question"
 
-#: voting/models.py:24
+#: voting/models.py:21
 msgid "Type"
 msgstr "Type"
 
-#: voting/models.py:31 voting/models.py:46 voting/models.py:53
+#: voting/models.py:23
+msgid "Vote Blank"
+msgstr "Vote Blank"
+
+#: voting/models.py:30 voting/models.py:37
+msgid "Vote Blank cannot be True for Yes/No question type."
+msgstr "Vote Blank cannot be True for Yes/No question type."
+
+#: voting/models.py:34 voting/models.py:67 voting/models.py:74
 msgid "Yes"
 msgstr "Yes"
 
-#: voting/models.py:35 voting/models.py:40 voting/models.py:72
+#: voting/models.py:56 voting/models.py:61 voting/models.py:93
 msgid "Question"
 msgstr "Question"
 
-#: voting/models.py:36
+#: voting/models.py:57
 msgid "Questions"
 msgstr "Questions"
 
-#: voting/models.py:41
+#: voting/models.py:62
 msgid "Number"
 msgstr "Number"
 
-#: voting/models.py:42
+#: voting/models.py:63
 msgid "Option"
 msgstr "Option"
 
-#: voting/models.py:46 voting/models.py:53
+#: voting/models.py:67 voting/models.py:74
 msgid "No"
 msgstr "No"
 
-#: voting/models.py:47 voting/models.py:54
+#: voting/models.py:68 voting/models.py:75
 msgid "This is a Yes/No question, option must be 'Yes' or 'No'."
 msgstr "This is a Yes/No question, option must be 'Yes' or 'No'"
 
-#: voting/models.py:49 voting/models.py:56
+#: voting/models.py:70 voting/models.py:77
 msgid "This option already exists for this question."
 msgstr "This option already exists for this question."
 
-#: voting/models.py:65
+#: voting/models.py:86
 msgid "Question Option"
 msgstr "Question Option"
 
-#: voting/models.py:66
+#: voting/models.py:87
 msgid "Question Options"
 msgstr "Question Options"
 
-#: voting/models.py:74
+#: voting/models.py:95
 msgid "Start Date"
 msgstr "Start Date"
 
-#: voting/models.py:75
+#: voting/models.py:96
 msgid "End Date"
 msgstr "End Date"
 
-#: voting/models.py:80
+#: voting/models.py:101
 msgid "Tally"
 msgstr "Tally"
 
-#: voting/models.py:174
+#: voting/models.py:195
 msgid "Voting"
 msgstr "Voting"
 
-#: voting/models.py:175
+#: voting/models.py:196
 msgid "Votings"
 msgstr "Votings"

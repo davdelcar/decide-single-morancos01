@@ -160,7 +160,7 @@ class LoginViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
         self.assertIsInstance(response.context["form"], LoginForm)
-        self.assertEqual(response.context["msg"], "Credenciales incorrectas")
+        self.assertEqual(response.context["msg"], "Incorrect credentials")
 
     def test_post_invalid_form(self):
         data = {"identifier": "", "password": "", "remember_me": False}
@@ -168,7 +168,7 @@ class LoginViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
         self.assertIsInstance(response.context["form"], LoginForm)
-        self.assertEqual(response.context["msg"], "Error en el formulario")
+        self.assertEqual(response.context["msg"], "Error in the form")
 
 class WelcomeTestView(TestCase):
     def setUp(self):
@@ -249,7 +249,7 @@ class UserProfileViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(username="testuser")
         self.assertTrue(check_password('JMC112003', user.password))
-        self.assertContains(response, 'Tu contraseña ha sido cambiada con éxito.')
+        self.assertContains(response, 'Your password has been successfully changed.')
 
     # Comprueba dos restricciones: la contraseña actual es incorrecta y la contraseña nueva es muy corta (menos de 8 carracteres)
     def test_change_password_invalid_form(self):
