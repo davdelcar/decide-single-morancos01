@@ -77,11 +77,25 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         return Response('Valid voter')
 
 
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
+
+def is_admin(user):
+    return user.is_authenticated and user.is_staff
+
+@method_decorator(user_passes_test(is_admin, login_url='/admin/login'), name='dispatch')
 class CensusImportView(TemplateView):
     template_name = "census/import.html"
 
     def post(self, request, *args, **kwargs):
-        if request.method == "POST" and request.FILES["census_file"]:
+        
+        if request.method == "POST":
+        
+            if "census_file" not in request.FILES:
+
+                messages.error(request, "Por favor, seleccione un archivo para importar.")
+                return HttpResponseRedirect("/census/import/")
+                        
             census_file = request.FILES["census_file"]
             workbook = openpyxl.load_workbook(census_file)
             sheet = workbook.active
@@ -106,4 +120,7 @@ class CensusImportView(TemplateView):
                     )
 
             messages.success(request, "Importación finalizada")
+            return HttpResponseRedirect("/census/import/")
+        else:
+            messages.error(request, "Importación fallida")
             return HttpResponseRedirect("/census/import/")
