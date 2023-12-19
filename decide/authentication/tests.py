@@ -181,11 +181,8 @@ class WelcomeTestView(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
-         
         self.assertContains(response, "Go to Login", msg_prefix="La cadena esperada no se encontró en la respuesta.")
 
-
-    
     def test_get_authenticated_user(self):
         
         self.client.force_login(self.user)
@@ -205,10 +202,10 @@ class WelcomeTestView(TestCase):
 
         self.assertNotContains(response, "Go to Login")
 
-        self.assertContains(response, "Votaciones Abiertas:")
+        self.assertContains(response, "Open Voting:")
         self.assertContains(response, reverse("booth", args=[open_voting.id]))
 
-        self.assertContains(response, "Votaciones Cerradas:")
+        self.assertContains(response, "Closed Voting:")
         self.assertContains(response, reverse("visualizer", args=[closed_voting.id]))
 
     def test_logout_from_welcome_page(self):
@@ -230,7 +227,6 @@ class WelcomeTestView(TestCase):
 
         users_after_logout = User.objects.filter(id=self.user.id).count()
         self.assertEqual(users_after_logout, users_before_logout - 1)
-    
 
 class UserProfileViewTest(TestCase):
     def setUp(self):
@@ -364,25 +360,25 @@ class RegisterUserTest(TestCase):
             'password2' : '123456789test'
         }
 
-    def testGetRegisterFrom(self):
+    def test_get_register_from(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "register.html")
         self.assertContains(response, "form")
 
-    def testPostValidRegistration(self):
+    def test_post_valid_registration(self):
         response = self.client.post(self.url, self.data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(User.objects.filter(username='testuser').exists())
 
-    def testPostInvalidRegistration(self):
+    def test_post_invalid_registration(self):
         data = {}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "register.html")
         self.assertContains(response, 'This field is required.', status_code=200, html=True)
 
-    def testPostExistingUserRegistration(self):
+    def test_post_existing_user_registration(self):
         self.data['username'] = 'createuser'
         response = self.client.post(self.url, self.data)
         self.assertEqual(response.status_code, 200)
@@ -390,22 +386,54 @@ class RegisterUserTest(TestCase):
         self.assertContains(response, 'A user with that username already exists.', status_code=200, html=True)
         self.assertFalse(User.objects.filter(username='testuser').exists())
 
-    def testPostValueErrorRegistration(self):
+    def test_post_value_error_registration(self):
         self.data['password2'] = 'invalidpassword'
         response = self.client.post(self.url, self.data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "register.html")
         self.assertContains(response, 'The two password fields didn’t match.', status_code=200, html=True)
 
-    def testPostDuplicateEmailRegistration(self):
+    def test_numeric_password_registration(self):
+        self.data['password1'] = '123456789'
+        self.data['password2'] = '123456789'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'This password is entirely numeric.', status_code=200, html=True)
+
+    def test_short_password_registration(self):
+        self.data['password1'] = 'test'
+        self.data['password2'] = 'test'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'This password is too short. It must contain at least 8 characters.', status_code=200, html=True)
+
+    def test_similar_username_password_registration(self):
+        self.data['password1'] = 'testuser'
+        self.data['password2'] = 'testuser'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'The password is too similar to the username.', status_code=200, html=True)
+
+    def test_common_password_registration(self):
+        self.data['password1'] = 'password123'
+        self.data['password2'] = 'password123'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'This password is too common.', status_code=200, html=True)
+
+    def test_post_duplicate_email_registration(self):
         self.data['email'] = 'createuser@gmail.com'
         response = self.client.post(self.url, self.data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "register.html")
-        self.assertContains(response, 'El correo electrónico ya está en uso', status_code=200, html=True)
+        self.assertContains(response, 'Email is already in use', status_code=200, html=True)
         self.assertFalse(User.objects.filter(email='testuser@example.com').exists())
 
-    def testPostInvalidRegistrationEmptyFields(self):
+    def test_post_invalid_registration_empty_fields(self):
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
         for field in fields:

@@ -23,7 +23,6 @@ from rest_framework import status
 from .serializers import UserSerializer
 
 
-
 class GetUserView(APIView):
     def post(self, request):
         key = request.data.get('token', '')

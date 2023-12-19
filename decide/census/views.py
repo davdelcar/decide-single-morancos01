@@ -12,7 +12,6 @@ from rest_framework.status import (
 
 from base.perms import UserIsStaff
 from .models import Census
-import csv
 from django.http import HttpResponse
 
 from import_export import resources
@@ -30,9 +29,6 @@ def export_csv(request):
 
 from django.contrib import messages
 import openpyxl
-from openpyxl import Workbook
-from openpyxl.styles import PatternFill, Font, Alignment
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 
