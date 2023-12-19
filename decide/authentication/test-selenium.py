@@ -67,5 +67,6 @@ class LoginTest(LiveServerTestCase):
         # Cierra el navegador al finalizar las pruebas
         self.driver.quit()
 
+
 if __name__ == "__main__":
     LiveServerTestCase.main()
