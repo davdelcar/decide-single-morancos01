@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from django.test import LiveServerTestCase
 
 
 class WelcomeLoginTests(StaticLiveServerTestCase):
@@ -31,12 +30,18 @@ class WelcomeLoginTests(StaticLiveServerTestCase):
         )
         self.assertTrue(ir_a_censos_button.is_displayed())
 
-class LoginTest(LiveServerTestCase):
+class LoginTest(StaticLiveServerTestCase):
 
     def setUp(self):
-        # Configura el navegador web (asegúrate de que tengas ChromeDriver u otro driver instalado)
-        self.driver = webdriver.Chrome()
-        self.driver.implicitly_wait(10)  # Espera implícita
+        # Configuración de Selenium
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+
+    def tearDown(self):
+        self.driver.quit()
+        super().tearDown()
 
     def test_login_process(self):
         # Abre la aplicación web en la URL deseada
@@ -60,13 +65,7 @@ class LoginTest(LiveServerTestCase):
         time.sleep(3)
 
         # Realiza aserciones para verificar que estás en la página después de iniciar sesión
-        error_message = self.driver.find_element(By.XPATH, "//div[@class='alert alert-danger']")  # Reemplaza con el selector real del mensaje de error
+        error_message = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//div[@class='alert alert-danger']"))
+        )
         self.assertIsNotNone(error_message)
-
-    def tearDown(self):
-        # Cierra el navegador al finalizar las pruebas
-        self.driver.quit()
-
-
-if __name__ == "__main__":
-    LiveServerTestCase.main()
