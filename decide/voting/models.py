@@ -2,7 +2,6 @@ from django.db import models
 from django.db.models import JSONField
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
-from parler.models import TranslatableModel, TranslatedFields
 
 from base import mods
 from base.models import Auth, Key
