@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 from parler.models import TranslatableModel, TranslatedFields
+from django.core.exceptions import BadRequest
 
 from base import mods
 from base.models import Auth, Key
@@ -22,13 +23,37 @@ class Question(models.Model):
         choices=voting_types,
         default='YN',
         verbose_name=_('Type'),)
+    
+    voteBlank = models.BooleanField(default=False, verbose_name=_('Vote Blank'))
 
     def __str__(self):
         return self.desc
-    
+        
+    def clean(self):
+        if self.types == 'YN' and self.voteBlank:
+            raise ValidationError(_("Vote Blank cannot be True for Yes/No question type."))
+            
     def save(self, *args, **kwargs):
         if self.voting_types == 'YN':
             self.options = [_('Yes'), 'No']
+        
+        if self.types == 'YN' and self.voteBlank:
+            raise ValidationError(_("Vote Blank cannot be True for Yes/No question type."))
+
+        if (
+            (self.types == 'OQ')
+            and self.voteBlank
+            and QuestionOption.objects.filter(
+                question__id=self.id, option__startswith="Voto En Blanco"
+            ).count()
+            == 0
+        ):
+            enBlanco = QuestionOption(
+                question=self, number=self.options.count() + 1, option="Voto En Blanco"
+            )
+            enBlanco.save()
+            self.options.add(enBlanco)
+        
         super().save(*args, **kwargs)
 
     class Meta:

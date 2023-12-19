@@ -56,6 +56,36 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
         return v
     
+    def create_voting_without_vote_blank(self):
+        q = Question(desc='test question', types='OQ', voteBlank=False)
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        return v
+    
+    def create_voting_vote_blank(self):
+        q = Question(desc='test question', types='OQ', voteBlank=True)
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        return v
+    
     def create_voting_yes_no(self):
         q = Question(desc='test question', types='YN')
         q.save()
@@ -72,6 +102,7 @@ class VotingTestCase(BaseTestCase):
         a.save()
         v.auths.add(a)
         return v
+    
     
     def test_error_create_voting_yes_no(self):
         q = Question(desc='test question', types='YN')
@@ -91,6 +122,37 @@ class VotingTestCase(BaseTestCase):
         a.save()
         v.auths.add(a)
         return v
+    
+    def create_voting_yes_no_without_vote_blank(self):
+        q = Question(desc='test question', types='YN', voteBlank=False)
+        q.save()
+        opt1 = QuestionOption(question=q, option='Yes')
+        opt1.save()
+        opt2 = QuestionOption(question=q, option='No')
+        opt2.save()
+        
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        return v
+    
+    def test_error_create_voting_yes_no_vote_blank(self):
+        q = Question(desc='test question', types='YN', voteBlank=True)
+        with self.assertRaises(ValidationError):
+            q.save()
+
+        opt1 = QuestionOption(question=q, option='Yes')
+        with self.assertRaises(ValueError):
+               opt1.save()
+        opt2 = QuestionOption(question=q, option='No')
+        with self.assertRaises(ValueError):
+               opt2.save()
+
+        return q
 
     def test_error_more_than_two_options_create_voting_yes_no(self):
         q = Question(desc='test question', types='YN')
@@ -132,6 +194,34 @@ class VotingTestCase(BaseTestCase):
             'question': 'I want a ',
             'question_types': 'YN',
             'question_opt': ['Yes', 'No'],
+            'voteBlank': False,
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_yes_no_voting_without_vote_blank_from_api(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'voteBlank': False,
+            'question_opt': ['Yes', 'No'],
         }
 
         response = self.client.post('/voting/', data, format='json')
@@ -158,6 +248,34 @@ class VotingTestCase(BaseTestCase):
             'question': 'I want a ',
             'question_types': 'YN',
             'question_opt': ['Tal vez', 'No'],
+            'voteBlank': False,
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_error_vote_blank_create_yes_no_voting_from_api(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'voteBlank': True,
+            'question_opt': ['Yes', 'No'],
         }
 
         response = self.client.post('/voting/', data, format='json')
@@ -184,6 +302,7 @@ class VotingTestCase(BaseTestCase):
             'question': 'I want a ',
             'question_types': 'YN',
             'question_opt': ['Yes', 'No', 'Tal vez'],
+            'voteBlank': False,
         }
 
         response = self.client.post('/voting/', data, format='json')
@@ -209,6 +328,62 @@ class VotingTestCase(BaseTestCase):
             'desc': 'Description example',
             'question': 'I want a ',
             'question_types': 'OQ',
+            'question_opt': ['option 1', 'option 2'],
+            'voteBlank': False,
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 201)
+
+    def test_error_create_voting_vote_blank_from_API(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'OQ',
+            'voteBlank': True,
+            'question_opt': ['option 1', 'option 2'],
+            
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_voting_without_vote_blank_from_API(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'OQ',
+            'voteBlank': False,
             'question_opt': ['option 1', 'option 2'],
         }
 
