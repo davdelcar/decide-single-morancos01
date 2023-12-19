@@ -181,11 +181,8 @@ class WelcomeTestView(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "welcome.html")
-         
         self.assertContains(response, "Go to Login", msg_prefix="La cadena esperada no se encontró en la respuesta.")
 
-
-    
     def test_get_authenticated_user(self):
         
         self.client.force_login(self.user)
@@ -395,6 +392,38 @@ class RegisterUserTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "register.html")
         self.assertContains(response, 'The two password fields didn’t match.', status_code=200, html=True)
+
+    def test_numeric_password_registration(self):
+        self.data['password1'] = '123456789'
+        self.data['password2'] = '123456789'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'This password is entirely numeric.', status_code=200, html=True)
+
+    def test_short_password_registration(self):
+        self.data['password1'] = 'test'
+        self.data['password2'] = 'test'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'This password is too short. It must contain at least 8 characters.', status_code=200, html=True)
+
+    def test_similar_username_password_registration(self):
+        self.data['password1'] = 'testuser'
+        self.data['password2'] = 'testuser'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'The password is too similar to the username.', status_code=200, html=True)
+
+    def test_common_password_registration(self):
+        self.data['password1'] = 'password123'
+        self.data['password2'] = 'password123'
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "register.html")
+        self.assertContains(response, 'This password is too common.', status_code=200, html=True)
 
     def test_post_duplicate_email_registration(self):
         self.data['email'] = 'createuser@gmail.com'

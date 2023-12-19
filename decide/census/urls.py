@@ -1,6 +1,7 @@
 from django.urls import path, include
 from . import views
 
+
 urlpatterns = [
     path('export/', views.export_csv, name='export'),
     path('', views.CensusList.as_view(), name='census_list'),

@@ -1,6 +1,5 @@
 import random
 import itertools
-from selenium.webdriver.support.ui import Select
 from django.forms import ValidationError
 from django.utils import timezone
 from django.conf import settings

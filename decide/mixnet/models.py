@@ -7,7 +7,6 @@ from base.models import Auth, Key
 from base.serializers import AuthSerializer
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from parler.models import TranslatableModel, TranslatedFields
 
 
 # number of bits for the key, all auths should use the same number of bits

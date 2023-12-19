@@ -1,12 +1,6 @@
-from django.contrib.auth.models import User
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
 from django.test import TestCase
 from django.urls import reverse
-from django.utils.translation import activate, deactivate_all, get_language, gettext
-from django.contrib.auth.models import User
-from django.utils.translation import activate, get_language, gettext
-from django.utils import translation
+from django.utils.translation import activate, deactivate_all
 from django.utils.translation import gettext_lazy as _
 
 class ChangeLanguageFormTest(TestCase):
@@ -28,7 +22,6 @@ class ChangeLanguageFormTest(TestCase):
         html_content = response.content.decode('utf-8')
         self.assertIn('Welcome to Decide!', html_content)
         
-
     def test_change_language_spanish(self):
         
         response_post = self.client.post(reverse('set_language'), {'language': 'es'})

@@ -1,7 +1,5 @@
 from django.db import models
 from django.db.models import JSONField
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 from parler.models import TranslatableModel, TranslatedFields

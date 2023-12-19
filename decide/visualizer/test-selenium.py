@@ -80,7 +80,6 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.assertTrue(bar_chart.is_displayed())
         self.assertTrue(pie_chart.is_displayed())
 
-    
     def test_votacion_abierta(self):
 
         self.driver.get(f"{self.live_server_url}/visualizer/{self.v_open.id}")
