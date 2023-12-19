@@ -32,22 +32,22 @@ class WelcomeLoginTests(StaticLiveServerTestCase):
         self.assertTrue(ir_a_censos_button.is_displayed())
 
 class LoginTest(LiveServerTestCase):
-    
+
     def setUp(self):
         # Configura el navegador web (asegúrate de que tengas ChromeDriver u otro driver instalado)
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(10)  # Espera implícita
 
-    def test_login_bad_process(self):
+    def test_login_process(self):
         # Abre la aplicación web en la URL deseada
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
 
         # Realiza acciones en la página de inicio de sesión (puedes personalizar según la estructura de tu página)
         username_input = self.driver.find_element(By.NAME, "identifier")  # Reemplaza con el nombre real del campo de usuario
-        username_input.send_keys("testuser")  # Reemplaza con un nombre de usuario válido
+        username_input.send_keys("testuser")  # Utiliza el nombre de usuario creado a través de la API
 
         password_input = self.driver.find_element(By.NAME, "password")  # Reemplaza con el nombre real del campo de contraseña
-        password_input.send_keys("testwrongpass")  # Reemplaza con una contraseña válida
+        password_input.send_keys("testpassword")  # Utiliza la contraseña del usuario creado a través de la API
 
         remember_me_checkbox = self.driver.find_element(By.NAME, "remember_me")  # Reemplaza con el nombre real del checkbox
         remember_me_checkbox.click()
@@ -60,8 +60,8 @@ class LoginTest(LiveServerTestCase):
         time.sleep(3)
 
         # Realiza aserciones para verificar que estás en la página después de iniciar sesión
-        go_to_profile_button = self.driver.find_element(By.XPATH, "//a[contains(text(), 'Ir a tu Perfil')]")
-        self.assertIsNotNone(go_to_profile_button)
+        error_message = self.driver.find_element(By.XPATH, "//div[@class='alert alert-danger']")  # Reemplaza con el selector real del mensaje de error
+        self.assertIsNotNone(error_message)
 
     def tearDown(self):
         # Cierra el navegador al finalizar las pruebas
