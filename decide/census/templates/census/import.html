@@ -9,7 +9,7 @@
 
 {% block content %}
   <div class="voting container">
-    <h3>% trans 'Importar Censo' %}</h3>
+    <h3>{% trans 'Importar Censo' %}</h3>
     <p>{% trans 'El archivo debe ser de Excel' %} (.xlsx)</p>
     <p>
       {% trans 'En la primera columna debe aparecer el ID de la votación' %} <b>(voting_id)</b>,
@@ -23,7 +23,7 @@
       <button class="btn btn-primary btn-sm" type="submit">{% trans 'Importar Censos' %}</button>
     </form>
 
-    <br><button class="btn btn-primary btn-sm" onclick="window.location.href='/census'">>{% trans 'Volver' %}</button>
+    <br><button class="btn btn-primary btn-sm" onclick="window.location.href='/census'">{% trans 'Volver' %}</button>
 
   </div>
 
