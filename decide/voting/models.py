@@ -26,19 +26,19 @@ class Question(models.Model):
         return self.desc
         
     def clean(self):
-        if self.types == 'YN' and self.voteBlank:
+        if self.types == 'YN' and self.vote_blank:
             raise ValidationError(_("Vote Blank cannot be True for Yes/No question type."))
             
     def save(self, *args, **kwargs):
         if self.voting_types == 'YN':
             self.options = [_('Yes'), 'No']
         
-        if self.types == 'YN' and self.voteBlank:
+        if self.types == 'YN' and self.vote_blank:
             raise ValidationError(_("Vote Blank cannot be True for Yes/No question type."))
 
         if (
             (self.types == 'OQ')
-            and self.voteBlank
+            and self.vote_blank
             and QuestionOption.objects.filter(
                 question__id=self.id, option__startswith="Voto En Blanco"
             ).count()
