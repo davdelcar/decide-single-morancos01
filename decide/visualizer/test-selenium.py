@@ -52,7 +52,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.base.setUp()
 
         options = webdriver.ChromeOptions()
-        options.headless = True
+        options.headless = False
         self.driver = webdriver.Chrome(options=options)
         super().setUp()
 
