@@ -1,12 +1,7 @@
-from django.contrib.auth.models import User
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
 from django.test import TestCase
 from django.urls import reverse
-from django.utils.translation import activate, deactivate_all, get_language, gettext
-from django.contrib.auth.models import User
-from django.utils.translation import activate, get_language, gettext
-from django.utils import translation
+from django.utils.translation import activate, deactivate_all
+from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
 
 class ChangeLanguageFormTest(TestCase):
