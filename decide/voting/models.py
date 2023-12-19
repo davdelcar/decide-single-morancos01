@@ -30,6 +30,8 @@ class Question(models.Model):
             raise ValidationError(_("Vote Blank cannot be True for Yes/No question type."))
             
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
         if self.voting_types == 'YN':
             self.options = [_('Yes'), 'No']
         
@@ -49,9 +51,9 @@ class Question(models.Model):
             )
             enBlanco.save()
             self.options.add(enBlanco)
+        return super().save(*args, **kwargs)
         
-        super().save(*args, **kwargs)
-
+        
     class Meta:
         verbose_name = _('Question')
         verbose_name_plural = _('Questions')

@@ -145,11 +145,9 @@ class VotingTestCase(BaseTestCase):
             q.save()
 
         opt1 = QuestionOption(question=q, option='Yes')
-        with self.assertRaises(ValueError):
-            opt1.save()
+        opt1.save()
         opt2 = QuestionOption(question=q, option='No')
-        with self.assertRaises(ValueError):
-            opt2.save()
+        opt2.save()
 
         return q
 
@@ -334,7 +332,7 @@ class VotingTestCase(BaseTestCase):
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 201)
 
-    def test_error_create_voting_vote_blank_from_API(self):
+    def test_create_voting_vote_blank_from_API(self):
         data = {'name': 'Example'}
         response = self.client.post('/voting/', data, format='json')
         self.assertEqual(response.status_code, 401)
@@ -360,7 +358,7 @@ class VotingTestCase(BaseTestCase):
         }
 
         response = self.client.post('/voting/', data, format='json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
     def test_create_voting_without_vote_blank_from_API(self):
         data = {'name': 'Example'}
