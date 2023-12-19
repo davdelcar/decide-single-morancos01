@@ -15,6 +15,9 @@ from .models import Census
 from django.http import HttpResponse
 
 from import_export import resources
+from django.utils.translation import gettext_lazy as _
+
+
 
 def export_csv(request):
 
@@ -51,8 +54,8 @@ class CensusCreate(generics.ListCreateAPIView):
                 census = Census(voting_id=voting_id, voter_id=voter)
                 census.save()
         except IntegrityError:
-            return Response('Error try to create census', status=ST_409)
-        return Response('Census created', status=ST_201)
+            return Response(_('Error try to create census'), status=ST_409)
+        return Response(_('Census created'), status=ST_201)
 
     def list(self, request, *args, **kwargs):
         voting_id = request.GET.get('voting_id')
@@ -66,22 +69,29 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         voters = request.data.get('voters')
         census = Census.objects.filter(voting_id=voting_id, voter_id__in=voters)
         census.delete()
-        return Response('Voters deleted from census', status=ST_204)
+        return Response(_('Voters deleted from census'), status=ST_204)
 
     def retrieve(self, request, voting_id, *args, **kwargs):
         voter = request.GET.get('voter_id')
         try:
             Census.objects.get(voting_id=voting_id, voter_id=voter)
         except ObjectDoesNotExist:
-            return Response('Invalid voter', status=ST_401)
-        return Response('Valid voter')
+            return Response(_('Invalid voter'), status=ST_401)
+        return Response(_('Valid voter'))
 
 
 class CensusImportView(TemplateView):
     template_name = "census/import.html"
 
     def post(self, request, *args, **kwargs):
-        if request.method == "POST" and request.FILES["census_file"]:
+        
+        if request.method == "POST":
+        
+            if "census_file" not in request.FILES:
+
+                messages.error(request, "Por favor, seleccione un archivo para importar.")
+                return HttpResponseRedirect("/census/import/")
+                        
             census_file = request.FILES["census_file"]
             workbook = openpyxl.load_workbook(census_file)
             sheet = workbook.active
@@ -105,5 +115,5 @@ class CensusImportView(TemplateView):
                         f"Ya existe un registro para la pareja de voting_id={voting_id} y voter_id={voter_id}",
                     )
 
-            messages.success(request, "Importación finalizada")
+            messages.success(request, _("Importación finalizada"))
             return HttpResponseRedirect("/census/import/")
