@@ -15,13 +15,12 @@ from .forms import LoginForm
 from django.shortcuts import render
 from voting.models import Voting
 from django.views.generic import TemplateView
-from django.contrib.auth.forms import PasswordChangeForm
+from .forms import RegisterForm
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-
-
+from rest_framework import status
 from .serializers import UserSerializer
-
 
 
 class GetUserView(APIView):
@@ -40,7 +39,11 @@ class LogoutView(APIView):
         except ObjectDoesNotExist:
             pass
 
-        return Response({})
+        # Cerrar sesión manualmente
+        logout(request)
+
+        # Devolver una respuesta exitosa
+        return Response(status=status.HTTP_200_OK)
 
 
 class RegisterView(APIView):
@@ -152,4 +155,44 @@ class UserProfileView(TemplateView):
         # Volver a renderizar la página con el formulario actualizado
         context = self.get_context_data()
         return self.render_to_response(context)
+    
+class RegisterFormView(TemplateView):
+    template_name = 'register.html'
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.template_name = 'register.html'
+
+    def post(self, request, *args, **kwargs):
+        form = RegisterForm(request.POST)
+        msg = None
+
+        try:
+            if form.is_valid():
+                user = form.save()
+                user.refresh_from_db()
+                user.username = form.cleaned_data.get('username')
+                user.first_name = form.cleaned_data.get('first_name')
+                user.last_name = form.cleaned_data.get('last_name')
+                user.email = form.cleaned_data.get('email')
+                user.save()
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(request, username=user.username, password=raw_password)
+                login(request, user)
+                # Usa self.template_name aquí
+                return redirect("/")
+            else:
+                msg = "Error en el formulario"
+        except IntegrityError:
+            messages.error(request, 'Error: El usuario ya existe.')
+        except ValueError as e:
+            messages.error(request, f'Error en el formulario: {str(e)}')
+        except Exception as e:
+            messages.error(request, f'Error inesperado: {str(e)}')
+        
+        # Retorno de la vista en el caso de credenciales incorrectas o error en el formulario
+        return render(request, self.template_name, {"form": form, "msg": msg, "user": None})
+
+    def get(self, request, *args, **kwargs):
+        form = RegisterForm(None)
+        return render(request, self.template_name, {"form": form, "msg": None})

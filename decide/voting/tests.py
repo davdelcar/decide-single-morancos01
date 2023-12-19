@@ -1,6 +1,5 @@
 import random
 import itertools
-from selenium.webdriver.support.ui import Select
 from django.forms import ValidationError
 from django.utils import timezone
 from django.conf import settings
@@ -73,13 +72,16 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
         return v
     
-    def error_create_voting_yes_no(self):
+    def test_error_create_voting_yes_no(self):
         q = Question(desc='test question', types='YN')
         q.save()
         opt1 = QuestionOption(question=q, option='Puede')
-        self.assertRaises(ValidationError, opt1.save())
+        with self.assertRaises(ValidationError):
+            opt1.save()
         opt2 = QuestionOption(question=q, option='Tal vez')
-        self.assertRaises(ValidationError, opt2.save())
+        with self.assertRaises(ValidationError):
+            opt2.save()
+            
         v = Voting(name='test voting', question=q)
         v.save()
 
@@ -88,6 +90,129 @@ class VotingTestCase(BaseTestCase):
         a.save()
         v.auths.add(a)
         return v
+
+    def test_error_more_than_two_options_create_voting_yes_no(self):
+        q = Question(desc='test question', types='YN')
+        q.save()
+        opt1 = QuestionOption(question=q, option='Yes')
+        opt1.save()
+        opt2 = QuestionOption(question=q, option='No')
+        opt2.save()
+        opt3 = QuestionOption(question=q, option='Tal vez')
+        with self.assertRaises(ValidationError):
+            opt3.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                        defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        return v
+        
+    def test_create_yes_no_voting_from_api(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'question_opt': ['Yes', 'No'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 201)
+        
+    def test_error_create_yes_no_voting_from_api(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'question_opt': ['Tal vez', 'No'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+    
+    def test_error_more_than_2_questions_create_yes_No_voting_from_api(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'YN',
+            'question_opt': ['Yes', 'No', 'Tal vez'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_Create_Voting_From_API(self):
+        data = {'name': 'Example'}
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+
+        # login with user no admin
+        self.login(user='noadmin')
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 403)
+
+        # login with user admin
+        self.login()
+        response = mods.post('voting', params=data, response=True)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'name': 'Example',
+            'desc': 'Description example',
+            'question': 'I want a ',
+            'question_types': 'OQ',
+            'question_opt': ['option 1', 'option 2'],
+        }
+
+        response = self.client.post('/voting/', data, format='json')
+        self.assertEqual(response.status_code, 201)
 
     def create_voters(self, v):
         for i in range(100):
@@ -148,8 +273,8 @@ class VotingTestCase(BaseTestCase):
         for q in v.postproc:
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
             
-    def test_create_yes_no_voting(self):
-        v = self.create_voting()
+    def test_create_voting_yes_no(self):
+        v = self.create_voting_yes_no()
         self.create_voters(v)
 
         v.create_pubkey()
@@ -269,163 +394,16 @@ class LogInSuccessTests(StaticLiveServerTestCase):
 
         self.base.tearDown()
 
-    def successLogIn(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/")
-
-class LogInErrorTests(StaticLiveServerTestCase):
-
-    def setUp(self):
-        #Load base test functionality for decide
-        self.base = BaseTestCase()
-        self.base.setUp()
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        self.driver = webdriver.Chrome(options=options)
-
-        super().setUp()
-
-    def tearDown(self):
-        super().tearDown()
-        self.driver.quit()
-
-        self.base.tearDown()
-
-    def usernameWrongLogIn(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
+    def test_success_log_in(self):
+        self.driver.get(self.live_server_url+"/admin/login/?next=/admin/")
+        self.driver.set_window_size(1280, 720)
         
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("usuarioNoExistente")
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.NAME, "username")))
 
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("usuarioNoExistente")
+        self.driver.find_element(By.NAME, "username").click()
+        self.driver.find_element(By.NAME, "username").send_keys("admin")
+        self.driver.find_element(By.NAME, "password").click()
+        self.driver.find_element(By.NAME, "password").send_keys("qwerty")
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(self.driver.current_url == self.live_server_url+"/admin/")
 
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.assertTrue(self.cleaner.find_element_by_xpath('/html/body/div/div[2]/div/div[1]/p').text == 'Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
-
-    def passwordWrongLogIn(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("wrongPassword")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.assertTrue(self.cleaner.find_element_by_xpath('/html/body/div/div[2]/div/div[1]/p').text == 'Please enter the correct username and password for a staff account. Note that both fields may be case-sensitive.')
-
-class QuestionsTests(StaticLiveServerTestCase):
-
-    def setUp(self):
-        #Load base test functionality for decide
-        self.base = BaseTestCase()
-        self.base.setUp()
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        self.driver = webdriver.Chrome(options=options)
-
-        super().setUp()
-
-    def tearDown(self):
-        super().tearDown()
-        self.driver.quit()
-
-        self.base.tearDown()
-
-    def createQuestionYesNoSuccess(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.cleaner.get(self.live_server_url+"/admin/voting/question/add/")
-        
-        self.cleaner.find_element(By.ID, "id_desc").click()
-        self.cleaner.find_element(By.ID, "id_desc").send_keys('Test')
-        select_element = self.cleaner.find_element(By.ID, "id_types")
-        select = Select(select_element)
-        select.select_by_visible_text('Yes/No Question')
-        self.cleaner.find_element(By.ID, "id_options-0-number").click()
-        self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
-        self.cleaner.find_element(By.ID, "id_options-0-option").click()
-        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('Yes')
-        self.cleaner.find_element(By.ID, "id_options-1-number").click()
-        self.cleaner.find_element(By.ID, "id_options-1-number").send_keys('2')
-        self.cleaner.find_element(By.ID, "id_options-1-option").click()
-        self.cleaner.find_element(By.ID, "id_options-1-option").send_keys('No')
-        self.cleaner.find_element(By.NAME, "_save").click()
-
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/voting/question/")
-        
-    
-    def createQuestionSuccess(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.cleaner.get(self.live_server_url+"/admin/voting/question/add/")
-        
-        self.cleaner.find_element(By.ID, "id_desc").click()
-        self.cleaner.find_element(By.ID, "id_desc").send_keys('Test')
-        select_element = self.cleaner.find_element(By.ID, "id_types")
-        select = Select(select_element)
-        select.select_by_visible_text('Yes/No Question')
-        self.cleaner.find_element(By.ID, "id_options-0-number").click()
-        self.cleaner.find_element(By.ID, "id_options-0-number").send_keys('1')
-        self.cleaner.find_element(By.ID, "id_options-0-option").click()
-        self.cleaner.find_element(By.ID, "id_options-0-option").send_keys('test1')
-        self.cleaner.find_element(By.ID, "id_options-1-number").click()
-        self.cleaner.find_element(By.ID, "id_options-1-number").send_keys('2')
-        self.cleaner.find_element(By.ID, "id_options-1-option").click()
-        self.cleaner.find_element(By.ID, "id_options-1-option").send_keys('test2')
-        self.cleaner.find_element(By.NAME, "_save").click()
-
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/voting/question/")
-
-    def createCensusEmptyError(self):
-        self.cleaner.get(self.live_server_url+"/admin/login/?next=/admin/")
-        self.cleaner.set_window_size(1280, 720)
-
-        self.cleaner.find_element(By.ID, "id_username").click()
-        self.cleaner.find_element(By.ID, "id_username").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").click()
-        self.cleaner.find_element(By.ID, "id_password").send_keys("decide")
-
-        self.cleaner.find_element(By.ID, "id_password").send_keys("Keys.ENTER")
-
-        self.cleaner.get(self.live_server_url+"/admin/voting/question/add/")
-
-        self.cleaner.find_element(By.NAME, "_save").click()
-
-        self.assertTrue(self.cleaner.find_element_by_xpath('/html/body/div/div[3]/div/div[1]/div/form/div/p').text == 'Please correct the errors below.')
-        self.assertTrue(self.cleaner.current_url == self.live_server_url+"/admin/voting/question/add/")

@@ -1,7 +1,6 @@
 from django.db import models
 from base.models import BigBigField
 from django.utils.translation import gettext_lazy as _
-from parler.models import TranslatableModel, TranslatedFields
 
 
 class Vote(models.Model):

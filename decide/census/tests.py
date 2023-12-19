@@ -15,10 +15,6 @@ from base import mods
 from base.tests import BaseTestCase
 from datetime import datetime
 
-
-from base.tests import BaseTestCase
-from datetime import datetime
-
 from voting.models import Voting, Question, QuestionOption
 from base.models import Auth
 from django.conf import settings

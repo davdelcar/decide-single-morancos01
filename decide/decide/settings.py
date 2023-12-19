@@ -49,8 +49,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'gateway',
-    'import_export',
 ]
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -152,6 +153,7 @@ LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('en', _('English')),
     ('es', _('Spanish')),
+    ('fr', _('French')),
 ]
 
 TIME_ZONE = 'UTC'
@@ -171,6 +173,7 @@ PARLER_LANGUAGES = {
     None: (
         {'code': 'en', },
         {'code': 'es', },
+        {'code': 'fr', },
     ),
     'default': {
         'fallback': 'en',
