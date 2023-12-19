@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Login' %}{% endblock %}
+{% block extrahead %}
+    <!-- Agrega el enlace a Bootstrap CSS -->
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+<link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-center mb-4">{% trans 'Bienvenido a Decide' %}!</h2>
+
+                {% if msg %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ msg }}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.identifier.id_for_label }}">{% trans 'Usuario o Correo Electrónico' %}</label>
+                        {{ form.identifier }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}">{% trans 'Contraseña' %}</label>
+                        {{ form.password }}
+                    </div>
+                    <div class="form-group form-check">
+                        {{ form.remember_me }}
+                        <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">{% trans 'Recuérdame' %}</label>
+                    </div>
+                    <!-- Aumenta el tamaño del botón y centra -->
+                    <button type="submit" class="btn btn-primary btn-block">{% trans 'Iniciar Sesión' %}</button>
+                    <a href="{% url 'registerUser' %}" class="card-link">{% trans 'Registrarse' %}</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

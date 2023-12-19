@@ -16,16 +16,26 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
+from authentication.views import WelcomeView
+
 
 
 schema_view = get_swagger_view(title='Decide API')
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
+    path('auth/', include('authentication.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
+    path('', WelcomeView.as_view(), name='welcome'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 for module in settings.MODULES:
     urlpatterns += [

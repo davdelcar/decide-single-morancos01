@@ -6,6 +6,7 @@ from base import mods
 from base.models import Auth, Key
 from base.serializers import AuthSerializer
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 # number of bits for the key, all auths should use the same number of bits
@@ -13,15 +14,15 @@ B = settings.KEYBITS
 
 
 class Mixnet(models.Model):
-    voting_id = models.PositiveIntegerField()
-    auth_position = models.PositiveIntegerField(default=0)
-    auths = models.ManyToManyField(Auth, related_name="mixnets")
+    voting_id = models.PositiveIntegerField(verbose_name=_('Voting ID'))
+    auth_position = models.PositiveIntegerField(default=0, verbose_name=_('Auth Position'))
+    auths = models.ManyToManyField(Auth, related_name="mixnets", verbose_name=_('Auths'))
     key = models.ForeignKey(Key, blank=True, null=True,
                             related_name="mixnets",
-                            on_delete=models.SET_NULL)
+                            on_delete=models.SET_NULL, verbose_name=_('Key'))
     pubkey = models.ForeignKey(Key, blank=True, null=True,
                                related_name="mixnets_pub",
-                               on_delete=models.SET_NULL)
+                               on_delete=models.SET_NULL, verbose_name=_('Public Key'))
 
     def __str__(self):
         auths = ", ".join(a.name for a in self.auths.all())
@@ -82,3 +83,7 @@ class Mixnet(models.Model):
             next_auths = next_auths[1:]
 
         return next_auths
+    
+    class Meta:
+        verbose_name = _('Mixnet')
+        verbose_name_plural = _('Mixnets')

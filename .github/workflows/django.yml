@@ -1,16 +1,24 @@
 name: Python application
 
 on:
-  push:
+  pull_request:
     branches:
-      - develop
-      - master
+    - develop
+    - main
+  push:
+     branches:
+     - develop 
+     - main
+  workflow_call:
+    secrets:
+      CODACY_PROJECT_TOKEN:
+        required: true
 
 jobs:
   build:
     strategy:
       matrix:
-        pyversion: ['3.8','3.9']
+        pyversion: ['3.10.12','3.11']
 
     runs-on: ubuntu-latest
 
@@ -43,15 +51,15 @@ jobs:
     - name: Run migrations (unnecessary)
       run: |
         cd decide
+        python manage.py makemigrations
         python manage.py migrate
     - name: Run tests
       run: |
         cd decide
         coverage run --branch --source=. ./manage.py test  --keepdb 
-        coverage xml 
+        coverage xml
     - name: Codacy Coverage Reporter
       uses: codacy/codacy-coverage-reporter-action@v1
       with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: decide/coverage.xml
-

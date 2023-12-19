@@ -31,15 +31,18 @@ class VotingView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         self.permission_classes = (UserIsStaff,)
         self.check_permissions(request)
-        for data in ['name', 'desc', 'question', 'question_opt']:
+        for data in ['name', 'desc', 'question','question_types','question_opt']:
             if not data in request.data:
                 return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
-        question = Question(desc=request.data.get('question'))
+        question = Question(desc=request.data.get('question'), types=request.data.get('question_types'))
         question.save()
         for idx, q_opt in enumerate(request.data.get('question_opt')):
             opt = QuestionOption(question=question, option=q_opt, number=idx)
-            opt.save()
+            try:
+                opt.save()
+            except Exception:
+                return Response({}, status=status.HTTP_400_BAD_REQUEST)
         voting = Voting(name=request.data.get('name'), desc=request.data.get('desc'),
                 question=question)
         voting.save()

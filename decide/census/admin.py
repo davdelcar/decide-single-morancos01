@@ -1,4 +1,6 @@
 from django.contrib import admin
+from parler.admin import TranslatableAdmin
+
 
 from .models import Census
 
@@ -11,3 +13,6 @@ class CensusAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Census, CensusAdmin)
+
+class CensusAdmin(TranslatableAdmin):
+    pass

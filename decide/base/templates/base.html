@@ -1,14 +1,45 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
         <title>{% block title %}Decide!{% endblock %}</title>
         {% block extrahead %}{% endblock %}
+        {% include "change_language.html" %}
     </head>
     <body>
         {% block content %}
         {% endblock %}
 
+        <!-- Botón de cerrar sesión -->
+        {% if user.is_authenticated %}
+            <button class="btn btn-danger logout-button" onclick="logoutAndRedirect('{% url 'welcome' %}')">{% trans 'Cerrar Sesión' %}</button>
+        {% endif %}
+
         {% block extrabody %}{% endblock %}
+
+        <!-- Script JavaScript para cerrar sesión -->
+        <script>
+            function logoutAndRedirect(redirectUrl) {
+                // Realizar una solicitud POST para cerrar sesión
+                fetch('{% url 'logout' %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({}),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Redirigir a la página de bienvenida después del cierre de sesión
+                        window.location.href = redirectUrl;
+                    } else {
+                        console.error('Error al cerrar sesión');
+                    }
+                })
+                .catch(error => console.error('Error de red:', error));
+            }
+        </script>
     </body>
 </html>

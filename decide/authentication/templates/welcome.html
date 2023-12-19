@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}Decide! - Welcome{% endblock %} 
+
+{% block extrahead %}
+    <!-- Agrega el enlace a Bootstrap CSS -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Agrega estilos personalizados si los tienes -->
+    
+    <style>
+        /* Estilos personalizados para la página de bienvenida */
+        .welcome-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .login-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilos para las votaciones */
+        .voting-container {
+            margin-top: 30px;
+        }
+
+        .voting-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .voting-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .voting-desc {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .voting-date {
+            font-style: italic;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="welcome-container">
+        <h1>{% trans 'Bienvenido a Decide' %}!</h1>
+        <p class="welcome-message">¡{% trans 'Gracias por unirte a nuestra plataforma de votación electrónica' %}!</p>
+        <br><br><button class="btn btn-primary login-button" onclick="window.location.href='/census/'">{% trans 'Ir a Censos' %}</button>
+
+        {% if user.is_authenticated %}
+            <!-- Mostrar un mensaje cuando la sesión está iniciada -->
+            <a href="{% url 'user_profile' %}" class="btn btn-primary login-button">{% trans 'Ir a tu Perfil' %}</a>
+
+            <!-- Botón de cerrar sesión en la esquina superior derecha -->
+            <button class="btn btn-danger logout-button" onclick="logoutAndRedirect('{% url 'welcome' %}')">{% trans 'Cerrar Sesión' %}</button>
+            
+            <div class="voting-container">
+                {% if closed_votings %}
+                    <h2>{% trans 'Votaciones Cerradas:' %}</h2>
+                    {% for voting in closed_votings %}
+                        <div class="voting-box">
+                            <p class="voting-name">{{ voting.name }}</p>
+                            <p class="voting-desc">{{ voting.desc }}</p>
+                            {% if voting.start_date %}
+                                <p class="voting-date">{% trans 'Fecha de Inicio:' %} {{ voting.start_date }}</p>
+                            {% endif %}
+                            {% if voting.end_date %}
+                                <p class="voting-date">{% trans 'Fecha de Finalización:' %} {{ voting.end_date }}</p>
+                            {% endif %}
+                            <a class="btn btn-primary" href="{% url 'visualizer' voting.id %}">{% trans 'Ver resultados'%}</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>{% trans 'No hay votaciones disponibles en este momento' %}</p>
+                {% endif %}
+                
+                {% if open_votings %}
+                    <h2>{% trans 'Votaciones Abiertas:'%}</h2>
+                    {% for voting in open_votings %}
+                        <div class="voting-box">
+                            <p class="voting-name">{{ voting.name }}</p>
+                            <p class="voting-desc">{{ voting.desc }}</p>
+                            <a class="btn btn-primary" href="{% url 'booth' voting.id %}">{%trans 'Ir a Votación'%}</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>{% trans 'No hay votaciones abiertas en este momento' %}</p>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <!-- Enlace a Iniciar Sesión como botón -->
+            <a href="{% url 'signin' %}" class="btn btn-primary login-button">{% trans 'Ir a Iniciar Sesión' %}</a>
+        {% endif %}
+
+    </div>
+
+    <!-- Script JavaScript para cerrar sesión -->
+    <script>
+        function logoutAndRedirect(redirectUrl) {
+            // Realizar una solicitud POST para cerrar sesión
+            fetch('{% url 'logout' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({}),
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirigir a la página de bienvenida después del cierre de sesión
+                    window.location.href = redirectUrl;
+                } else {
+                    console.error('Error al cerrar sesión');
+                }
+            })
+            .catch(error => console.error('Error de red:', error));
+        }
+    </script>
+{% endblock %}
