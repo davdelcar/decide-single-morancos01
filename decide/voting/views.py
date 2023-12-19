@@ -35,7 +35,7 @@ class VotingView(generics.ListCreateAPIView):
             if not data in request.data:
                 return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
-        question = Question(desc=request.data.get('question'), types=request.data.get('question_types'), voteBlank=request.data.get('voteBlank'))
+        question = Question(desc=request.data.get('question'), types=request.data.get('question_types'), vote_blank=request.data.get('vote_blank'))
         try:
             question.save()
         except Exception:
