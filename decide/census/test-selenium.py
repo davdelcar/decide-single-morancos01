@@ -47,7 +47,7 @@ class CensusTestCase(LiveServerTestCase):
         )
         ir_a_import_censos_button.click()
 
-        self.assertIn("Importar Censo", self.driver.page_source)
+        self.assertIn("Import Census", self.driver.page_source)
 
         volver_button = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, "//button[contains(text(), 'Return')]"))
