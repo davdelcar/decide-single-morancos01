@@ -77,6 +77,8 @@ MODULES = [
     'voting',
 ]
 
+BASEURL = os.environ.get("BASEURL", "http://localhost:8000")
+
 APIS = {
     'authentication': BASEURL,
     'base': BASEURL,
@@ -89,7 +91,7 @@ APIS = {
     'voting': BASEURL,
 }
 
-BASEURL = os.environ.get("BASEURL", "http://localhost:8000")
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
