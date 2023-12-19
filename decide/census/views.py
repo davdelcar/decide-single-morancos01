@@ -84,7 +84,14 @@ class CensusImportView(TemplateView):
     template_name = "census/import.html"
 
     def post(self, request, *args, **kwargs):
-        if request.method == "POST" and request.FILES["census_file"]:
+        
+        if request.method == "POST":
+        
+            if "census_file" not in request.FILES:
+
+                messages.error(request, "Por favor, seleccione un archivo para importar.")
+                return HttpResponseRedirect("/census/import/")
+                        
             census_file = request.FILES["census_file"]
             workbook = openpyxl.load_workbook(census_file)
             sheet = workbook.active
