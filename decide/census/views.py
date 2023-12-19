@@ -29,7 +29,6 @@ def export_csv(request):
 
 from django.contrib import messages
 import openpyxl
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 

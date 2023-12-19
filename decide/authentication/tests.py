@@ -183,8 +183,6 @@ class WelcomeTestView(TestCase):
         self.assertTemplateUsed(response, "welcome.html")
         self.assertContains(response, "Go to Login", msg_prefix="La cadena esperada no se encontró en la respuesta.")
 
-
-    
     def test_get_authenticated_user(self):
         
         self.client.force_login(self.user)
