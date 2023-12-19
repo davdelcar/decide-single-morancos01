@@ -227,7 +227,7 @@ class CensusImportViewTest(BaseTestCase):
         messages = list(response.context["messages"])
         expected_messages = [
             "Ya existe un registro para la pareja de voting_id=1 y voter_id=1",
-            "Importación finalizada",
+            "Import completed",
         ]
         self.assertEqual([str(msg) for msg in messages], expected_messages)
 
