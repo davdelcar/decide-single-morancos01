@@ -146,10 +146,10 @@ class VotingTestCase(BaseTestCase):
 
         opt1 = QuestionOption(question=q, option='Yes')
         with self.assertRaises(ValueError):
-               opt1.save()
+            opt1.save()
         opt2 = QuestionOption(question=q, option='No')
         with self.assertRaises(ValueError):
-               opt2.save()
+            opt2.save()
 
         return q
 

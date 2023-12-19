@@ -3,7 +3,6 @@ from django.db.models import JSONField
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 from parler.models import TranslatableModel, TranslatedFields
-from django.core.exceptions import BadRequest
 
 from base import mods
 from base.models import Auth, Key
@@ -22,7 +21,7 @@ class Question(models.Model):
         default='YN',
         verbose_name=_('Type'),)
     
-    voteBlank = models.BooleanField(default=False, verbose_name=_('Vote Blank'))
+    vote_blank = models.BooleanField(default=False, verbose_name=_('Vote Blank'))
 
     def __str__(self):
         return self.desc
