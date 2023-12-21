@@ -15,10 +15,6 @@ from base import mods
 from base.tests import BaseTestCase
 from datetime import datetime
 
-
-from base.tests import BaseTestCase
-from datetime import datetime
-
 from voting.models import Voting, Question, QuestionOption
 from base.models import Auth
 from django.conf import settings
@@ -231,7 +227,7 @@ class CensusImportViewTest(BaseTestCase):
         messages = list(response.context["messages"])
         expected_messages = [
             "Ya existe un registro para la pareja de voting_id=1 y voter_id=1",
-            "Importación finalizada",
+            "Import completed",
         ]
         self.assertEqual([str(msg) for msg in messages], expected_messages)
 

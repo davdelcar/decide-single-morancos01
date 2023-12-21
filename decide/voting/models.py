@@ -1,10 +1,7 @@
 from django.db import models
 from django.db.models import JSONField
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
-from parler.models import TranslatableModel, TranslatedFields
 
 from base import mods
 from base.models import Auth, Key
@@ -22,15 +19,41 @@ class Question(models.Model):
         choices=voting_types,
         default='YN',
         verbose_name=_('Type'),)
+    
+    vote_blank = models.BooleanField(default=False, verbose_name=_('Vote Blank'))
 
     def __str__(self):
         return self.desc
-    
+        
+    def clean(self):
+        if self.types == 'YN' and self.vote_blank:
+            raise ValidationError(_("Vote Blank cannot be True for Yes/No question type."))
+            
     def save(self, *args, **kwargs):
-        if self.voting_types == 'YN':
-            self.options = [_('Yes'), 'No']
         super().save(*args, **kwargs)
 
+        if self.voting_types == 'YN':
+            self.options = [_('Yes'), 'No']
+        
+        if self.types == 'YN' and self.vote_blank:
+            raise ValidationError(_("Vote Blank cannot be True for Yes/No question type."))
+
+        if (
+            (self.types == 'OQ')
+            and self.vote_blank
+            and QuestionOption.objects.filter(
+                question__id=self.id, option__startswith="Voto En Blanco"
+            ).count()
+            == 0
+        ):
+            enBlanco = QuestionOption(
+                question=self, number=self.options.count() + 1, option="Voto En Blanco"
+            )
+            enBlanco.save()
+            self.options.add(enBlanco)
+        return super().save(*args, **kwargs)
+        
+        
     class Meta:
         verbose_name = _('Question')
         verbose_name_plural = _('Questions')
