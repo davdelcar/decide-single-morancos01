@@ -78,7 +78,7 @@
 {% block content %}
     <div class="welcome-container">
         <h1>{% trans 'Bienvenido a Decide' %}!</h1>
-        <p class="welcome-message">¡{% trans 'Gracias por unirte a nuestra plataforma de votación electrónica' %}!</p>
+        <p class="welcome-message">¡{% trans 'Gracias por unirte a nuestra plataforma' %}!</p>
         <br><br><button class="btn btn-primary login-button" onclick="window.location.href='/census/'">{% trans 'Ir a Censos' %}</button>
 
         {% if user.is_authenticated %}
